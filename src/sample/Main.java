@@ -9,8 +9,12 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
+
+    public List<String> mapDataList = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -30,7 +34,7 @@ public class Main extends Application {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                mapDataList.add(line);
             }
         } catch (IOException e) {
             // TODO show dialog if file not found
