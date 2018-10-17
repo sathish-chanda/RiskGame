@@ -1,7 +1,7 @@
 package game;
 
 import game.model.Continent;
-import game.model.Country;
+import game.model.Territory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,17 +15,17 @@ import java.util.Scanner;
  * The continentMao is an ArrayList which contains several sub-maps as continents.
  * This class also contains two methods to verify the correctness of input maps.
  */
-public class Map {
+public class GameMap {
 
-    ArrayList<Country> countryMap;//the elements in the countryMap is examples of Country class
+    ArrayList<Territory> countryMap;//the elements in the countryMap is examples of Territory class
     ArrayList<Continent> continentMap;//the element in the continentMap is examples of Continent class
 
-    Map(String mapName) {
+    public GameMap(String mapName) {
         // ToDo the input of constructor is the name of the .txt
         // file some code for reading the file should be applied here
     }
 
-    public Country searchCountry(String countryName) {
+    public Territory searchCountry(String countryName) {
         for (int i = 0; i < countryMap.size(); i++)
             if (countryMap.get(i).getCountryName() == countryName)
                 return countryMap.get(i);
@@ -55,7 +55,7 @@ public class Map {
             if ((countryMapSize == 1) || (countryMapSize == 0)) {
                 return true;
             } else {
-                ArrayList<Country> countryList = continentMap.get(i).getcountryMap();
+                ArrayList<Territory> countryList = continentMap.get(i).getcountryMap();
                 for (int j = 0; j < countryMapSize; j++) {
                     String countryName = countryList.get(j).getCountryName();
                     for (int k = 0; k < countryMapSize; k++) {
@@ -71,16 +71,16 @@ public class Map {
             }
 
 
-            Queue<Country> q = new LinkedList<Country>();
+            Queue<Territory> q = new LinkedList<Territory>();
             int totalVisitedCountry = 0;
-            Country startCountry = continentMap.get(i).getcountryMap().get(0);
+            Territory startCountry = continentMap.get(i).getcountryMap().get(0);
             totalVisitedCountry++;
             startCountry.visitedContinentMap = true;
             q.offer(startCountry);
             while (!q.isEmpty()) {
-                Country c = q.poll();
+                Territory c = q.poll();
                 for (int y = 0; y < c.getAdjacentCountry().size(); y++) {
-                    Country adjacentCountry = searchCountry(c.getAdjacentCountry().get(y));
+                    Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(y));
                     if ((adjacentCountry.visitedContinentMap == false) && (adjacentCountry.getContinentName() == continentMap.get(i).getContinentName())) {
                         totalVisitedCountry++;
                         adjacentCountry.visitedWholeMap = true;
@@ -127,15 +127,15 @@ public class Map {
                 }
             }
         }
-        Queue<Country> q = new LinkedList<Country>();
+        Queue<Territory> q = new LinkedList<Territory>();
         int totalVisitedCountry = 0;
         countryMap.get(0).visitedWholeMap = true;
         q.offer(countryMap.get(0));
         totalVisitedCountry++;
         while (!q.isEmpty()) {
-            Country c = q.poll();
+            Territory c = q.poll();
             for (int j = 0; j < c.getAdjacentCountry().size(); j++) {
-                Country adjacentCountry = searchCountry(c.getAdjacentCountry().get(j));
+                Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(j));
                 if (adjacentCountry.visitedWholeMap == false) {
                     totalVisitedCountry++;
                     adjacentCountry.visitedWholeMap = true;
@@ -153,15 +153,15 @@ public class Map {
     }
 
     void fortification(String countryName1, String countryName2, int playerID) {
-        Queue<Country> q = new LinkedList<Country>();
+        Queue<Territory> q = new LinkedList<Territory>();
         boolean flag = false;
-        Country startCountry = searchCountry(countryName1);
+        Territory startCountry = searchCountry(countryName1);
         q.offer(startCountry);
 
         while (!q.isEmpty()) {
-            Country c = q.poll();
+            Territory c = q.poll();
             for (int i = 0; i < c.getAdjacentCountry().size(); i++) {
-                Country adjacentCountry = searchCountry(c.getAdjacentCountry().get(i));
+                Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(i));
                 if (adjacentCountry.getCountryName() == countryName2) {
                     flag = true;
                 } else if (adjacentCountry.getPlayerID() == playerID) {
