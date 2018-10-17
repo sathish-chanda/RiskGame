@@ -6,7 +6,6 @@ import game.model.Country;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
 
 /**
  * This class implements the idea of a map.
@@ -69,26 +68,29 @@ public class Map {
                     }
                 }
             }
-
-
             Queue<Country> q = new LinkedList<Country>();
             int totalVisitedCountry = 0;
-            Country startCountry = continentMap.get(i).getcountryMap().get(0);
-            totalVisitedCountry++;
-            startCountry.visitedContinentMap = true;
-            q.offer(startCountry);
-            while (!q.isEmpty()) {
-                Country c = q.poll();
-                for (int y = 0; y < c.getAdjacentCountry().size(); y++) {
-                    Country adjacentCountry = searchCountry(c.getAdjacentCountry().get(y));
-                    if ((adjacentCountry.visitedContinentMap == false) && (adjacentCountry.getContinentName() == continentMap.get(i).getContinentName())) {
-                        totalVisitedCountry++;
-                        adjacentCountry.visitedWholeMap = true;
-                        q.offer(adjacentCountry);
+            for (int x = 0; x < countryMapSize; x++) {
+                Country c = continentMap.get(i).getcountryMap().get(x);
+                if (c.visitedContinentMap == false) {
+                    q.offer(c);
+                    totalVisitedCountry++;
+                    c.visitedContinentMap = true;
+                    while (!q.isEmpty()) {
+                        Country d = q.element();
+                        q.poll();
+                        for (int y = 0; y < d.getAdjacentCountry().size(); y++) {
+                            Country adjacentCountry = searchCountry(countryMap.get(x).getAdjacentCountry().get(y));
+                            if (adjacentCountry.visitedContinentMap == false && adjacentCountry.getContinentName() == continentMap.get(i).getContinentName()) {
+                                q.offer(adjacentCountry);
+                                totalVisitedCountry++;
+                                adjacentCountry.visitedContinentMap = true;
+                            }
+                        }
                     }
                 }
             }
-            if (totalVisitedCountry != continentMap.get(i).getcountryMap().size()) {
+            if (totalVisitedCountry != countryMap.size()) {
                 System.out.println("the input map is invalid");
                 System.out.println("the problem is in the continent" + continentMap.get(i).getContinentName());
                 return false;
@@ -98,7 +100,6 @@ public class Map {
         }
         return true;
     }
-
 
     /**
      * The verifyCountryMap method verify if all the country of the whole map is connected.
@@ -129,66 +130,32 @@ public class Map {
         }
         Queue<Country> q = new LinkedList<Country>();
         int totalVisitedCountry = 0;
-        countryMap.get(0).visitedWholeMap = true;
-        q.offer(countryMap.get(0));
-        totalVisitedCountry++;
-        while (!q.isEmpty()) {
-            Country c = q.poll();
-            for (int j = 0; j < c.getAdjacentCountry().size(); j++) {
-                Country adjacentCountry = searchCountry(c.getAdjacentCountry().get(j));
-                if (adjacentCountry.visitedWholeMap == false) {
-                    totalVisitedCountry++;
-                    adjacentCountry.visitedWholeMap = true;
-                    q.offer(adjacentCountry);
+        for (int i = 0; i < countryMap.size(); i++) {
+            if (countryMap.get(i).visitedWholeMap == false) {
+                q.offer(countryMap.get(i));
+                totalVisitedCountry++;
+                countryMap.get(i).visitedWholeMap = true;
+                while (!q.isEmpty()) {
+                    Country c = q.element();
+                    q.poll();
+                    for (int j = 0; j < c.getAdjacentCountry().size(); j++) {
+                        Country adjacentCountry = searchCountry(countryMap.get(i).getAdjacentCountry().get(j));
+                        if (adjacentCountry.visitedWholeMap == false) {
+                            q.offer(adjacentCountry);
+                            totalVisitedCountry++;
+                            adjacentCountry.visitedWholeMap = true;
+                        }
+                    }
                 }
             }
         }
-        if (totalVisitedCountry != countryMapSize) {
+        if (totalVisitedCountry != countryMap.size()) {
             System.out.println("the input map is invalid");
             return false;
-        } else {
-            System.out.println("the input map is valid");
-            return true;
         }
-    }
-
-    void fortification(String countryName1, String countryName2, int playerID) {
-        Queue<Country> q = new LinkedList<Country>();
-        boolean flag = false;
-        Country startCountry = searchCountry(countryName1);
-        q.offer(startCountry);
-
-        while (!q.isEmpty()) {
-            Country c = q.poll();
-            for (int i = 0; i < c.getAdjacentCountry().size(); i++) {
-                Country adjacentCountry = searchCountry(c.getAdjacentCountry().get(i));
-                if (adjacentCountry.getCountryName() == countryName2) {
-                    flag = true;
-                } else if (adjacentCountry.getPlayerID() == playerID) {
-                    q.offer(adjacentCountry);
-                } else
-                    continue;
-            }
-        }
-        if (flag) {
-            int moveArmyNum = 0;
-            System.out.println("please input the number of armys you want to move");
-            System.out.println("you can move up to " + searchCountry(countryName1).getArmyNum() + " armies");
-            Scanner readInput = new Scanner(System.in);
-            if (readInput.hasNextInt())
-                moveArmyNum = readInput.nextInt();
-            while (moveArmyNum > searchCountry(countryName1).getArmyNum()) {
-                System.out.println("exceed maximum number you can move");
-                System.out.println("please input the number of armys you want to move");
-                System.out.println("you can move up to " + searchCountry(countryName1).getArmyNum() + " armies");
-                if (readInput.hasNextInt())
-                    moveArmyNum = readInput.nextInt();
-            }
-            searchCountry(countryName1).updateArmyNum(0-moveArmyNum);
-            searchCountry(countryName2).updateArmyNum(moveArmyNum);
-
-        }
-        else
-            return;
+        System.out.println("the input map is valid");
+        return true;
     }
 }
+
+
