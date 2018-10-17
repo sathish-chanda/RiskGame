@@ -1,6 +1,6 @@
 package game;
 
-import game.model.Territory;
+import game.model.Country;
 
 import java.util.ArrayList;
 
@@ -13,13 +13,13 @@ public class Player {
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
     private int armyNum;//number of army owned by a player
-    private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
+    private ArrayList<Country> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
 
-    public Player() {
+    Player() {
         playerID = ++playerCounter;
     }
 
-    public void increaseCountryNum() {
+    void increaseCountryNum() {
         countryNum = countryNum + 1;
     }
 
@@ -31,15 +31,15 @@ public class Player {
         return playerID;
     }
 
-    public void addCountry(Territory country) {
+    public void addCountry(Country country) {
         ownedCountry.add(country);
     }
 
-    public void removeCountry(Territory country) {
+    public void removeCountry(Country country) {
         ownedCountry.remove(country);
     }
 
-    public ArrayList<Territory> getCountry() {
+    public ArrayList<Country> getCountry() {
         return ownedCountry;
     }
 
