@@ -1,6 +1,7 @@
-package game;
+package game.model;
 
-import game.model.Territory;
+import game.GameMap;
+import game.Player;
 
 import java.util.*;
 
@@ -11,12 +12,12 @@ public class Game {
 
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
-    private GameMap map;
+    private GameMap gameMap;
 
     /**
      * In the constructor, the first input is the number of players.
-     * The second input is the file name of .txt file which contains the information of a map
-     * After the initialization of player and map, the next process is assign countries to players.
+     * The second input is the file name of .txt file which contains the information of a gameMap
+     * After the initialization of player and gameMap, the next process is assign countries to players.
      * After the initial assignment of countries, the main gamecomponents, roundRobinPlay begins.
      */
     Game() {
@@ -27,10 +28,10 @@ public class Game {
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
             players.add(new Player(playerNum * 2));
-        System.out.println("please input the map name");
+        System.out.println("please input the gameMap name");
         if (readInput.hasNext()) {
             String mapName = readInput.next();
-            map = new GameMap(mapName);
+            gameMap = new GameMap(mapName);
         }
         assignCountryToPlayers();
         getArmy();
@@ -58,7 +59,7 @@ public class Game {
 				}
 				int m = rand.nextInt(attackingCountry.getAdjacentCountry().size());
 				String defendingCountryName = attackingCountry.getAdjacentCountry().get(m);
-			//	Territory defendingCountry = map.searchCountry(defendingCountryName);
+			//	Territory defendingCountry = gameMap.searchCountry(defendingCountryName);
 			//	Player defender = searchPlayerByCountryName(defendingCountry.getCountryName());
 				if (defendingCountry.getArmyNum() == 0) {
 					//which means the defending country has 0 army, bound to lose
@@ -86,11 +87,11 @@ public class Game {
     private void assignCountryToPlayers() {
         int playerSelect;
         Random rand = new Random();
-        for (int i = 0; i < map.countryMap.size(); i++) {
+        for (int i = 0; i < gameMap.countryMap.size(); i++) {
             playerSelect = rand.nextInt(playerNum) + 1;
-            map.countryMap.get(i).setPlayer(playerSelect);
+            gameMap.countryMap.get(i).setPlayer(playerSelect);
             players.get(playerSelect - 1).increaseCountryNum();
-            players.get(playerSelect - 1).addCountry(map.countryMap.get(i));
+            players.get(playerSelect - 1).addCountry(gameMap.countryMap.get(i));
         }
         for (int j = 0; j < players.size(); j++) {
             System.out.println("the player" + players.get(j).getCountryNum());
@@ -118,9 +119,9 @@ public class Game {
                 }
             }
             if (flag) {
-                if (ownedCountrySize == map.searchContinent(continentName).getcountryMap().size())
-                    armyNum = map.searchContinent(continentName).getMaximumArmy();
-                armyNum = armyNum + (players.get(i).getCountry().size() - map.searchContinent(continentName).getMaximumArmy()) / 3;
+                if (ownedCountrySize == gameMap.searchContinent(continentName).getcountryMap().size())
+                    armyNum = gameMap.searchContinent(continentName).getMaximumArmy();
+                armyNum = armyNum + (players.get(i).getCountry().size() - gameMap.searchContinent(continentName).getMaximumArmy()) / 3;
 
             } else {
                 armyNum = players.get(i).getCountry().size() / 3;
@@ -232,12 +233,12 @@ public class Game {
             defender.removeCountry(defendingCountry);
         }
 
-        for (int i = 0; i < map.continentMap.size(); i++) {
-			/*int firstPlayerID = map.continentMap.get(i).countryMap.get(0).getPlayerID();
+        for (int i = 0; i < gameMap.continentMap.size(); i++) {
+			/*int firstPlayerID = gameMap.continentMap.get(i).countryMap.get(0).getPlayerID();
 			int otherPlayerID; 
 			boolean flag = true;
-			for (int j = 1; j < map.continentMap.get(i).countryMap.size(); j++) {
-				otherPlayerID = map.continentMap.get(i).countryMap.get(j).getPlayerID();
+			for (int j = 1; j < gameMap.continentMap.get(i).countryMap.size(); j++) {
+				otherPlayerID = gameMap.continentMap.get(i).countryMap.get(j).getPlayerID();
 				if (firstPlayerID != otherPlayerID) {
 					flag = false;
 				}
@@ -247,7 +248,7 @@ public class Game {
 				while(players.get(k).getPlayerID() != firstPlayerID)
 					k++;
 			}*/
-            //players.get(i).updateArmyNum(map.continentMap.get(i).maximumArmy);
+            //players.get(i).updateArmyNum(gameMap.continentMap.get(i).maximumArmy);
         }
 
     }

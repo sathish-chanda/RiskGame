@@ -17,8 +17,8 @@ import java.util.Scanner;
  */
 public class GameMap {
 
-    ArrayList<Territory> countryMap;//the elements in the countryMap is examples of Territory class
-    ArrayList<Continent> continentMap;//the element in the continentMap is examples of Continent class
+    public ArrayList<Territory> countryMap;//the elements in the countryMap is examples of Territory class
+    public ArrayList<Continent> continentMap;//the element in the continentMap is examples of Continent class
 
     public GameMap(String mapName) {
         // ToDo the input of constructor is the name of the .txt
