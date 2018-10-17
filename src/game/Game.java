@@ -2,9 +2,7 @@ package game;
 
 import game.model.Country;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * This class implements all the game components logics
@@ -28,7 +26,7 @@ public class Game {
             playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
-            players.add(new Player());
+            players.add(new Player(playerNum * 2));
         System.out.println("please input the map name");
         if (readInput.hasNext()) {
             String mapName = readInput.next();
@@ -129,7 +127,7 @@ public class Game {
             }
             if (armyNum < 3)
                 armyNum = 3;
-            players.get(i).setArmyNum(armyNum);
+            players.get(i).updateArmyNum(armyNum);
             System.out.println("Player" + players.get(i).getPlayerID() + " has " + armyNum + " armies.");
         }
     }
@@ -253,6 +251,8 @@ public class Game {
         }
 
     }
+
+
 
     public static void main(String[] args) {
         Game game = new Game();
