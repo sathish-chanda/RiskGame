@@ -28,7 +28,7 @@ public class Game {
             playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
-            players.add(new Player(playerNum * 2));
+            players.add(new Player());
         System.out.println("please input the map name");
         if (readInput.hasNext()) {
             String mapName = readInput.next();
@@ -129,7 +129,7 @@ public class Game {
             }
             if (armyNum < 3)
                 armyNum = 3;
-            players.get(i).updateArmyNum(armyNum);
+            players.get(i).setArmyNum(armyNum);
             System.out.println("Player" + players.get(i).getPlayerID() + " has " + armyNum + " armies.");
         }
     }
