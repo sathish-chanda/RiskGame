@@ -1,47 +1,144 @@
 package game;
 
+import game.listeners.GameListener;
 import game.model.Continent;
 import game.model.Territory;
+import game.utils.LogHelper;
+import game.utils.MapFileHelper;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.Map;
+
+import java.util.*;
 
 /**
  * This class implements the idea of a map.
- * It contains two variables, countryMap and countinentMap.
- * The countryMap is an ArrayList which contains all the countries.
- * The continentMao is an ArrayList which contains several sub-maps as continents.
+ * It contains two variables, territoryList and countinentMap.
+ * The territoryList is an ArrayList which contains all the countries.
+ * The continentListMap is an ArrayList which contains several sub-maps as continents.
  * This class also contains two methods to verify the correctness of input maps.
  */
 public class GameMap {
 
-    public ArrayList<Territory> countryMap;//the elements in the countryMap is examples of Territory class
-    public ArrayList<Continent> continentMap;//the element in the continentMap is examples of Continent class
+    private GameListener gameListener;
+    public List<Territory> territoryList = new ArrayList<>();
+    private List<Continent> continentList = new ArrayList<>();
+    public List<Continent> continentListMap;
+    public List<Territory> territoryListMap;
+    private MapFileHelper mapFileHelper;
+    public Map<String, Integer> continentsHashMap;
 
     public GameMap(String mapName) {
         // ToDo the input of constructor is the name of the .txt
         // file some code for reading the file should be applied here
     }
 
+    public GameMap(GameListener gameListener) {
+        this.gameListener = gameListener;
+        // ToDo the input of constructor is the name of the .txt
+        // file some code for reading the file should be applied here
+        // insert countries in counrty map
+        // insert all continents in continnent map
+        // insert all countries in repective continent
+    }
+
+    /**
+     * This method is used to load map data from file
+     */
+    public void loadMap() {
+        mapFileHelper = MapFileHelper.getInstance();
+        mapFileHelper.readMapFile();
+        onMapLoaded();
+    }
+
+    /**
+     * This method validates if mad is valid or not
+     */
+    private void onMapLoaded() {
+        if (mapFileHelper.isMapValid()) {
+            gameListener.onMapLoadSuccess();
+        } else {
+            gameListener.onMapLoadFailure(mapFileHelper.getErrorMessage());
+        }
+    }
+
+    /**
+     * This method load territories from mapFileHelper class
+     * This also sets adjacent countries of a country
+     * This also sets a continent of a country
+     */
+    public void loadTerritories() {
+        List<String> territoryComponentList = mapFileHelper.getTerritoriesComponentList();
+        List<String> territorySplitList;
+        for (int i = 0; i < territoryComponentList.size(); i++) {
+            territorySplitList = Arrays.asList(territoryComponentList.get(i).split(","));
+            if (!territorySplitList.get(0).isEmpty()) {
+                ArrayList<String> adjacentCountryList = new ArrayList<>();
+                for (int j = 4; j < territorySplitList.size(); j++) {
+                    adjacentCountryList.add(territorySplitList.get(j));
+                }
+                Territory territory = new Territory(territorySplitList.get(0), territorySplitList.get(1),
+                        territorySplitList.get(2), territorySplitList.get(3), adjacentCountryList);
+                territoryList.add(territory);
+            }
+        }
+        LogHelper.printMessage("territory List = " + territoryList);
+    }
+
+    /**
+     * This method load continents from mapFileHelper class
+     */
+    public void loadContinents() {
+        List<String> continentComponentList = mapFileHelper.getContinentsComponentList();
+        List<String> continentSplitList;
+        continentsHashMap = new HashMap<>();
+        for (int i = 0; i < continentComponentList.size(); i++) {
+            continentSplitList = Arrays.asList(continentComponentList.get(i).split("="));
+            if (continentSplitList.size() == 2) {
+                continentsHashMap.put(continentSplitList.get(0),
+                        Integer.parseInt(continentSplitList.get(1)));
+            }
+        }
+        for (Map.Entry<String, Integer> mapKeyValue : continentsHashMap.entrySet()) {
+            Continent continent = new Continent(mapKeyValue.getKey(), mapKeyValue.getValue());
+            continentList.add(continent);
+        }
+    }
+
+    /**
+     * This method assigns/synchronizes territories to their respective continents
+     */
+    public void syncContinentsAndTerritories() {
+        continentListMap = new ArrayList<>();
+        for (int i = 0; i < continentList.size(); i++) {
+            territoryListMap = new ArrayList<>();
+            for (int j = 0; j < territoryList.size(); j++) {
+                if (continentList.get(i).getContinentName().equals(territoryList.get(j).getContinentName())) {
+                    territoryListMap.add(territoryList.get(j));
+                }
+            }
+            Continent continent = new Continent(continentList.get(i).getContinentName(), continentList.get(i).getMaximumArmy(), territoryListMap);
+            continentListMap.add(continent);
+        }
+        LogHelper.printMessage("continent map == " + continentListMap);
+    }
+
     public Territory searchCountry(String countryName) {
-        for (int i = 0; i < countryMap.size(); i++)
-            if (countryMap.get(i).getCountryName() == countryName)
-                return countryMap.get(i);
+        for (int i = 0; i < territoryList.size(); i++)
+            if (territoryList.get(i).getTerritoryName() == countryName)
+                return territoryList.get(i);
         return null;
     }
 
     public Continent searchContinent(String continentName) {
-        for (int i = 0; i < continentMap.size(); i++)
-            if (continentMap.get(i).getContinentName() == continentName)
-                return continentMap.get(i);
+        for (int i = 0; i < continentListMap.size(); i++)
+            if (continentListMap.get(i).getContinentName() == continentName)
+                return continentListMap.get(i);
         return null;
     }
 
     /**
      * The verifyContinentMap method verify if all the country in a continent is connected.
-     * First it traverse the ArrayList continentMap.
+     * First it traverse the ArrayList continentListMap.
      * Then for each continent, the method traverse all the country in that continent.
      * if one country in the continent is in the adjacentCountryList of another country,
      * it means these two countries are connected.
@@ -49,108 +146,115 @@ public class GameMap {
      * @return boolean
      */
     private boolean verifyContinentMap() {
-        int continentMapSize = continentMap.size();
+        int continentMapSize = continentListMap.size();
         for (int i = 0; i < continentMapSize; i++) {
-            int countryMapSize = continentMap.get(i).getcountryMap().size();
+            int countryMapSize = continentListMap.get(i).getcountryMap().size();
             if ((countryMapSize == 1) || (countryMapSize == 0)) {
                 return true;
             } else {
-                ArrayList<Territory> countryList = continentMap.get(i).getcountryMap();
+                List<Territory> countryList = continentListMap.get(i).getcountryMap();
                 for (int j = 0; j < countryMapSize; j++) {
-                    String countryName = countryList.get(j).getCountryName();
+                    String countryName = countryList.get(j).getTerritoryName();
                     for (int k = 0; k < countryMapSize; k++) {
                         if (countryList.get(k).getAdjacentCountry().contains(countryName))
                             break;
                         else {
                             System.out.println("the input map is invalid");
-                            System.out.println("the problem is in the country" + countryMap.get(k).getCountryName());
+                            System.out.println("the problem is in the country" + this.territoryList.get(k).getTerritoryName());
                             return false;
                         }
                     }
                 }
             }
-
-
             Queue<Territory> q = new LinkedList<Territory>();
             int totalVisitedCountry = 0;
-            Territory startCountry = continentMap.get(i).getcountryMap().get(0);
-            totalVisitedCountry++;
-            startCountry.visitedContinentMap = true;
-            q.offer(startCountry);
-            while (!q.isEmpty()) {
-                Territory c = q.poll();
-                for (int y = 0; y < c.getAdjacentCountry().size(); y++) {
-                    Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(y));
-                    if ((adjacentCountry.visitedContinentMap == false) && (adjacentCountry.getContinentName() == continentMap.get(i).getContinentName())) {
-                        totalVisitedCountry++;
-                        adjacentCountry.visitedWholeMap = true;
-                        q.offer(adjacentCountry);
+            for (int x = 0; x < countryMapSize; x++) {
+                Territory c = continentListMap.get(i).getcountryMap().get(x);
+                if (c.visitedContinentMap == false) {
+                    q.offer(c);
+                    totalVisitedCountry++;
+                    c.visitedContinentMap = true;
+                    while (!q.isEmpty()) {
+                        Territory d = q.element();
+                        q.poll();
+                        for (int y = 0; y < d.getAdjacentCountry().size(); y++) {
+                            Territory adjacentCountry = searchCountry(territoryList.get(x).getAdjacentCountry().get(y));
+                            if (adjacentCountry.visitedContinentMap == false && adjacentCountry.getContinentName() == continentListMap.get(i).getContinentName()) {
+                                q.offer(adjacentCountry);
+                                totalVisitedCountry++;
+                                adjacentCountry.visitedContinentMap = true;
+                            }
+                        }
                     }
                 }
             }
-            if (totalVisitedCountry != continentMap.get(i).getcountryMap().size()) {
+            if (totalVisitedCountry != territoryList.size()) {
                 System.out.println("the input map is invalid");
-                System.out.println("the problem is in the continent" + continentMap.get(i).getContinentName());
+                System.out.println("the problem is in the continent" + continentListMap.get(i).getContinentName());
                 return false;
             } else {
-                System.out.println("the continent" + continentMap.get(i).getContinentName() + " map is valid");
+                System.out.println("the continent" + continentListMap.get(i).getContinentName() + " map is valid");
             }
         }
         return true;
     }
 
-
     /**
      * The verifyCountryMap method verify if all the country of the whole map is connected.
-     * The method traverse the ArrayList countryMap.
-     * For every country in the countryMap, its adjacent countries(in the adjacentCountry), must also be in the countryMap.
+     * The method traverse the ArrayList territoryList.
+     * For every country in the territoryList, its adjacent countries(in the adjacentCountry), must also be in the territoryList.
      *
      * @return boolean
      */
     private boolean verifyCountryMap() {
-        int countryMapSize = countryMap.size();
+        int countryMapSize = territoryList.size();
         for (int i = 0; i < countryMapSize; i++) {
-            ArrayList<String> adjacentCountryNameList = countryMap.get(i).getAdjacentCountry();
+            ArrayList<String> adjacentCountryNameList = territoryList.get(i).getAdjacentCountry();
             for (int j = 0; j < adjacentCountryNameList.size(); j++) {
                 String adjacentCountryName = adjacentCountryNameList.get(j);
                 boolean flag = false;
                 for (int k = 0; k < countryMapSize; k++) {
-                    if (countryMap.get(k).getCountryName() == adjacentCountryName) {
+                    if (territoryList.get(k).getTerritoryName() == adjacentCountryName) {
                         flag = true;
                         break;
                     }
                 }
                 if (!flag) {
-                    System.out.println("the input map is invalid");
-                    System.out.println("the problem is in the country" + countryMap.get(i).getCountryName());
+                    LogHelper.printMessage("the input map is invalid");
+                    LogHelper.printMessage("the problem is in the country" + territoryList.get(i).getTerritoryName());
                     return false;
                 }
             }
         }
         Queue<Territory> q = new LinkedList<Territory>();
         int totalVisitedCountry = 0;
-        countryMap.get(0).visitedWholeMap = true;
-        q.offer(countryMap.get(0));
-        totalVisitedCountry++;
-        while (!q.isEmpty()) {
-            Territory c = q.poll();
-            for (int j = 0; j < c.getAdjacentCountry().size(); j++) {
-                Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(j));
-                if (adjacentCountry.visitedWholeMap == false) {
-                    totalVisitedCountry++;
-                    adjacentCountry.visitedWholeMap = true;
-                    q.offer(adjacentCountry);
+        for (int i = 0; i < territoryList.size(); i++) {
+            if (territoryList.get(i).visitedWholeMap == false) {
+                q.offer(territoryList.get(i));
+                totalVisitedCountry++;
+                territoryList.get(i).visitedWholeMap = true;
+                while (!q.isEmpty()) {
+                    Territory c = q.element();
+                    q.poll();
+                    for (int j = 0; j < c.getAdjacentCountry().size(); j++) {
+                        Territory adjacentCountry = searchCountry(territoryList.get(i).getAdjacentCountry().get(j));
+                        if (adjacentCountry.visitedWholeMap == false) {
+                            q.offer(adjacentCountry);
+                            totalVisitedCountry++;
+                            adjacentCountry.visitedWholeMap = true;
+                        }
+                    }
                 }
             }
         }
-        if (totalVisitedCountry != countryMapSize) {
-            System.out.println("the input map is invalid");
+        if (totalVisitedCountry != territoryList.size()) {
+            LogHelper.printMessage("the input map is invalid");
             return false;
-        } else {
-            System.out.println("the input map is valid");
-            return true;
         }
+        LogHelper.printMessage("the input map is valid");
+        return true;
     }
+
 
     void fortification(String countryName1, String countryName2, int playerID) {
         Queue<Territory> q = new LinkedList<Territory>();
@@ -162,7 +266,7 @@ public class GameMap {
             Territory c = q.poll();
             for (int i = 0; i < c.getAdjacentCountry().size(); i++) {
                 Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(i));
-                if (adjacentCountry.getCountryName() == countryName2) {
+                if (adjacentCountry.getTerritoryName() == countryName2) {
                     flag = true;
                 } else if (adjacentCountry.getPlayerID() == playerID) {
                     q.offer(adjacentCountry);
@@ -184,11 +288,10 @@ public class GameMap {
                 if (readInput.hasNextInt())
                     moveArmyNum = readInput.nextInt();
             }
-            searchCountry(countryName1).updateArmyNum(0-moveArmyNum);
+            searchCountry(countryName1).updateArmyNum(0 - moveArmyNum);
             searchCountry(countryName2).updateArmyNum(moveArmyNum);
 
-        }
-        else
+        } else
             return;
     }
 }

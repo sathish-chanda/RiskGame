@@ -1,22 +1,34 @@
 package game.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a continent in a map, it's a sub-graph of a map.
- * It has an ArrayList variable called countryMap which represents countries in a continent.
- * The elements in countryMap are exmples of Territory class.
+ * It has an ArrayList variable called territoryList which represents countries in a continent.
+ * The elements in territoryList are exmples of Territory class.
  */
 public class Continent {
 
-    private ArrayList<Territory> countryMap;// all the countries in a continent
+    private List<Territory> territoryList;// all the countries in a continent
     private int maximumArmy = 0;//army number on a continent if the continent is owned by one player
     private String continentName;//name of continent
     private int countryNum;
+    private int continentStrength;
 
-    Continent(String continentName, int maximumArmy) {
+    public Continent() {
+        //Empty constructor required
+    }
+
+
+    public Continent(String continentName, int maximumArmy) {
         this.continentName = continentName;
         this.maximumArmy = maximumArmy;
+    }
+
+    public Continent(String continentName, int maximumArmy, List<Territory> countries) {
+        this.continentName = continentName;
+        this.maximumArmy = maximumArmy;
+        this.territoryList = countries;
     }
 
     /**
@@ -24,8 +36,8 @@ public class Continent {
      *
      * @return
      */
-    public ArrayList<Territory> getcountryMap() {
-        return countryMap;
+    public List<Territory> getcountryMap() {
+        return territoryList;
     }
 
     public String getContinentName() {
@@ -39,5 +51,6 @@ public class Continent {
     public void setCountryNum(int countryNum) {
         this.countryNum = countryNum;
     }
+
 
 }
