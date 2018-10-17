@@ -3,10 +3,10 @@ package game.model;
 import java.util.ArrayList;
 
 /**
- * This class called Country is the smallest element in a map.
+ * This class called Territory is the smallest element in a map.
  * the adjacentCountry variable is an ArrayList that countries' names which this country is adjacent to.
  */
-public class Country {
+public class Territory {
 
     private String countryName;//name of the country
     private String continentName;//the continent that the country belongs to
@@ -17,7 +17,7 @@ public class Country {
     public boolean visitedContinentMap = false;
 
 
-    Country() {
+    Territory() {
         armyNum = 0;
     }
 

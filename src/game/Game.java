@@ -1,6 +1,6 @@
 package game;
 
-import game.model.Country;
+import game.model.Territory;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class Game {
 
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
-    private Map map;
+    private GameMap map;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -30,7 +30,7 @@ public class Game {
         System.out.println("please input the map name");
         if (readInput.hasNext()) {
             String mapName = readInput.next();
-            map = new Map(mapName);
+            map = new GameMap(mapName);
         }
         assignCountryToPlayers();
         getArmy();
@@ -47,7 +47,7 @@ public class Game {
 			placeArmyOnCountry();//one country must have 2 or more than 2 army
 			for (int i = 0; i < players.size(); i++) {
 				Player attacker = players.get(i);
-				Country attackingCountry;
+				Territory attackingCountry;
 				Random rand = new Random();
 				while (true) {
 					int k = rand.nextInt(attacker.getCountry().size());
@@ -58,7 +58,7 @@ public class Game {
 				}
 				int m = rand.nextInt(attackingCountry.getAdjacentCountry().size());
 				String defendingCountryName = attackingCountry.getAdjacentCountry().get(m);
-			//	Country defendingCountry = map.searchCountry(defendingCountryName);
+			//	Territory defendingCountry = map.searchCountry(defendingCountryName);
 			//	Player defender = searchPlayerByCountryName(defendingCountry.getCountryName());
 				if (defendingCountry.getArmyNum() == 0) {
 					//which means the defending country has 0 army, bound to lose
@@ -158,7 +158,7 @@ public class Game {
             Player player = players.get(j);
             System.out.print("player" + player.getPlayerID() + " have");
             for (int k = 0; k < player.getCountry().size(); k++) {
-                Country country = player.getCountry().get(k);
+                Territory country = player.getCountry().get(k);
                 System.out.print(country.getArmyNum() + " on country " + country.getCountryName() + ", ");
             }
             System.out.println(" ");
@@ -178,7 +178,7 @@ public class Game {
      * @param defendingCountry
      * @return
      */
-    int rollingDice(Country attackingCountry, Country defendingCountry) {
+    int rollingDice(Territory attackingCountry, Territory defendingCountry) {
         Scanner readInput = new Scanner(System.in);
         System.out.println("attacker choose how many dice you want to roll");
         int attackerDice = 1;
@@ -222,7 +222,7 @@ public class Game {
      * @param attacker
      * @param defender
      */
-    void battleResult(Country attackingCountry, Country defendingCountry, Player attacker, Player defender) {
+    void battleResult(Territory attackingCountry, Territory defendingCountry, Player attacker, Player defender) {
         if (attackingCountry.getArmyNum() <= 0) {
             attackingCountry.setPlayer(defendingCountry.getPlayerID());
             attacker.removeCountry(attackingCountry);
