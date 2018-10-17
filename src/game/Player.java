@@ -12,14 +12,16 @@ public class Player {
     private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
-    private int armyNum;//number of army owned by a player
+    private int armyNum = 0;//number of army owned by a player
     private ArrayList<Country> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
 
-    Player() {
+    Player(int initialArmyNum) {
         playerID = ++playerCounter;
+        armyNum = armyNum + initialArmyNum;
+
     }
 
-    void increaseCountryNum() {
+    public void increaseCountryNum() {
         countryNum = countryNum + 1;
     }
 
