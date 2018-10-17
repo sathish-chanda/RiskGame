@@ -1,9 +1,6 @@
-package game.model;
+package game;
 
-import game.GameMap;
-import game.Player;
-import game.listeners.GameListener;
-import game.utils.LogHelper;
+import game.model.Country;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,11 +9,11 @@ import java.util.Scanner;
 /**
  * This class implements all the game components logics
  */
-public class Game implements GameListener {
+public class Game {
 
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
-    private GameMap gameMap;
+    private Map map;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -24,40 +21,25 @@ public class Game implements GameListener {
      * After the initialization of player and map, the next process is assign countries to players.
      * After the initial assignment of countries, the main gamecomponents, roundRobinPlay begins.
      */
-    public Game() {
-        //Todo
-        /*System.out.println("please input the number of players");
+    Game() {
+        System.out.println("please input the number of players");
         Scanner readInput = new Scanner(System.in);
         if (readInput.hasNextInt())
             playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
-            players.add(new Player());*/
-
-
-        /*assignCountryToPlayers();
+            players.add(new Player());
+        System.out.println("please input the map name");
+        if (readInput.hasNext()) {
+            String mapName = readInput.next();
+            map = new Map(mapName);
+        }
+        assignCountryToPlayers();
         getArmy();
         placeArmyOnCountry();
-        */
         //roundRobinPlay();
     }
 
-    public void loadMapData() {
-        gameMap = new GameMap(this);
-        gameMap.loadMap();
-    }
-
-    @Override
-    public void onMapLoadSuccess() {
-        gameMap.loadContinents();
-        gameMap.loadTerritories();
-        gameMap.syncContinentsAndTerritories();
-    }
-
-    @Override
-    public void onMapLoadFailure(String message) {
-        LogHelper.printMessage(message);
-    }
 
     /**
      * The roundRobinPlay method realize the gamecomponents logic.
@@ -67,7 +49,7 @@ public class Game implements GameListener {
 			placeArmyOnCountry();//one country must have 2 or more than 2 army
 			for (int i = 0; i < players.size(); i++) {
 				Player attacker = players.get(i);
-				Territory attackingCountry;
+				Country attackingCountry;
 				Random rand = new Random();
 				while (true) {
 					int k = rand.nextInt(attacker.getCountry().size());
@@ -78,8 +60,8 @@ public class Game implements GameListener {
 				}
 				int m = rand.nextInt(attackingCountry.getAdjacentCountry().size());
 				String defendingCountryName = attackingCountry.getAdjacentCountry().get(m);
-			//	Territory defendingCountry = map.searchCountry(defendingCountryName);
-			//	Player defender = searchPlayerByCountryName(defendingCountry.getTerritoryName());
+			//	Country defendingCountry = map.searchCountry(defendingCountryName);
+			//	Player defender = searchPlayerByCountryName(defendingCountry.getCountryName());
 				if (defendingCountry.getArmyNum() == 0) {
 					//which means the defending country has 0 army, bound to lose
 					//battleResult(attackingCountry, defendingCountry, attacker, defender);
@@ -106,11 +88,11 @@ public class Game implements GameListener {
     private void assignCountryToPlayers() {
         int playerSelect;
         Random rand = new Random();
-        for (int i = 0; i < gameMap.territoryList.size(); i++) {
+        for (int i = 0; i < map.countryMap.size(); i++) {
             playerSelect = rand.nextInt(playerNum) + 1;
-            gameMap.territoryList.get(i).setPlayer(playerSelect);
+            map.countryMap.get(i).setPlayer(playerSelect);
             players.get(playerSelect - 1).increaseCountryNum();
-            players.get(playerSelect - 1).addCountry(gameMap.territoryList.get(i));
+            players.get(playerSelect - 1).addCountry(map.countryMap.get(i));
         }
         for (int j = 0; j < players.size(); j++) {
             System.out.println("the player" + players.get(j).getCountryNum());
@@ -126,7 +108,7 @@ public class Game implements GameListener {
 
         for (int i = 0; i < players.size(); i++) {
 
-            String continentName = players.get(i).getCountry().get(0).getTerritoryName();
+            String continentName = players.get(i).getCountry().get(0).getCountryName();
             boolean flag = true;
             int ownedCountrySize = players.get(i).getCountry().size();
             for (int j = 0; j < ownedCountrySize; j++) {
@@ -138,9 +120,9 @@ public class Game implements GameListener {
                 }
             }
             if (flag) {
-                if (ownedCountrySize == gameMap.searchContinent(continentName).getcountryMap().size())
-                    armyNum = gameMap.searchContinent(continentName).getMaximumArmy();
-                armyNum = armyNum + (players.get(i).getCountry().size() - gameMap.searchContinent(continentName).getMaximumArmy()) / 3;
+                if (ownedCountrySize == map.searchContinent(continentName).getcountryMap().size())
+                    armyNum = map.searchContinent(continentName).getMaximumArmy();
+                armyNum = armyNum + (players.get(i).getCountry().size() - map.searchContinent(continentName).getMaximumArmy()) / 3;
 
             } else {
                 armyNum = players.get(i).getCountry().size() / 3;
@@ -178,8 +160,8 @@ public class Game implements GameListener {
             Player player = players.get(j);
             System.out.print("player" + player.getPlayerID() + " have");
             for (int k = 0; k < player.getCountry().size(); k++) {
-                Territory country = player.getCountry().get(k);
-                System.out.print(country.getArmyNum() + " on country " + country.getTerritoryName() + ", ");
+                Country country = player.getCountry().get(k);
+                System.out.print(country.getArmyNum() + " on country " + country.getCountryName() + ", ");
             }
             System.out.println(" ");
         }
@@ -198,7 +180,7 @@ public class Game implements GameListener {
      * @param defendingCountry
      * @return
      */
-    int rollingDice(Territory attackingCountry, Territory defendingCountry) {
+    int rollingDice(Country attackingCountry, Country defendingCountry) {
         Scanner readInput = new Scanner(System.in);
         System.out.println("attacker choose how many dice you want to roll");
         int attackerDice = 1;
@@ -242,7 +224,7 @@ public class Game implements GameListener {
      * @param attacker
      * @param defender
      */
-    void battleResult(Territory attackingCountry, Territory defendingCountry, Player attacker, Player defender) {
+    void battleResult(Country attackingCountry, Country defendingCountry, Player attacker, Player defender) {
         if (attackingCountry.getArmyNum() <= 0) {
             attackingCountry.setPlayer(defendingCountry.getPlayerID());
             attacker.removeCountry(attackingCountry);
@@ -252,12 +234,12 @@ public class Game implements GameListener {
             defender.removeCountry(defendingCountry);
         }
 
-        for (int i = 0; i < gameMap.continentListMap.size(); i++) {
-			/*int firstPlayerID = map.continentListMap.get(i).territoryList.get(0).getPlayerID();
+        for (int i = 0; i < map.continentMap.size(); i++) {
+			/*int firstPlayerID = map.continentMap.get(i).countryMap.get(0).getPlayerID();
 			int otherPlayerID; 
 			boolean flag = true;
-			for (int j = 1; j < map.continentListMap.get(i).territoryList.size(); j++) {
-				otherPlayerID = map.continentListMap.get(i).territoryList.get(j).getPlayerID();
+			for (int j = 1; j < map.continentMap.get(i).countryMap.size(); j++) {
+				otherPlayerID = map.continentMap.get(i).countryMap.get(j).getPlayerID();
 				if (firstPlayerID != otherPlayerID) {
 					flag = false;
 				}
@@ -267,9 +249,13 @@ public class Game implements GameListener {
 				while(players.get(k).getPlayerID() != firstPlayerID)
 					k++;
 			}*/
-            //players.get(i).updateArmyNum(map.continentListMap.get(i).maximumArmy);
+            //players.get(i).updateArmyNum(map.continentMap.get(i).maximumArmy);
         }
 
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
     }
 }
 
