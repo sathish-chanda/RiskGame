@@ -15,7 +15,7 @@ public class Player {
     private int armyNum = 0;//number of army owned by a player
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
 
-    Player(int initialArmyNum) {
+    public Player(int initialArmyNum) {
         playerID = ++playerCounter;
         armyNum = armyNum + initialArmyNum;
 
