@@ -3,9 +3,11 @@ package game.model;
 import game.GameMap;
 import game.Player;
 import game.listeners.GameListener;
+import game.utils.Constants;
 import game.utils.LogHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -17,6 +19,7 @@ public class Game implements GameListener {
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
     private GameMap gameMap;
+    private String fileName;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -26,7 +29,101 @@ public class Game implements GameListener {
      */
     public Game() {
         gameMap = new GameMap(this);
-        loadMapData();
+        //
+    }
+
+    public void loadMapData(String fileName) {
+        setFileName(fileName);
+        gameMap.loadMap(fileName);
+    }
+
+    /**
+     * This method displays list of continents to user
+     */
+    private void displayListOfContinentsToUser() {
+        List<Continent> continentList = gameMap.getContinentListMap();
+        LogHelper.printMessage("\nSelect Continents ");
+        for (int i = 0; i < continentList.size(); i++) {
+            LogHelper.printMessage(continentList.get(i).getContinentName() + " --- " + (i + 1));
+        }
+        displayListofTerrritoriesToUser();
+    }
+
+    private void displayListofTerrritoriesToUser() {
+        List<Continent> continentList = gameMap.getContinentListMap();
+        LogHelper.printMessage("\nSelect Territories ");
+        for (int i = 0; i < continentList.size(); i++) {
+            List<Territory> territoryList = continentList.get(i).getTerritoryList();
+            for (int j = 0; j < territoryList.size(); j++) {
+                LogHelper.printMessage(territoryList.get(j).getTerritoryName() + " --- " + (j + 1));
+            }
+        }
+    }
+
+    public void saveMapData() {
+        gameMap.saveMap();
+    }
+
+    @Override
+    public void onMapLoadSuccess() {
+        gameMap.loadContinents();
+        gameMap.loadTerritories();
+        gameMap.syncContinentsAndTerritories();
+        gameMap.verifyTerritoryMap();
+    }
+
+    @Override
+    public void onMapLoadFailure(String message) {
+        LogHelper.printMessage(message);
+    }
+
+    @Override
+    public void onTerritoryMapValid() {
+        gameMap.verifyContinentMap();
+    }
+
+    @Override
+    public void onTerritoryMapInvalid(String message) {
+        LogHelper.printMessage(message);
+    }
+
+    @Override
+    public void onContinentMapValid() {
+        if (getFileName().equals(Constants.MAP_FILE_NAME)) {
+            LogHelper.printMessage("Do you want to edit map? y/n");
+            editMapFileChoice();
+        } else {
+            selectNumberOfPlayers();
+        }
+    }
+
+    private void editMapFileChoice() {
+        Scanner scanner = new Scanner(System.in);
+        String feedback = scanner.next();
+        switch (feedback) {
+            case "y":
+                break;
+            case "n":
+                saveMapData();
+                break;
+            default:
+                LogHelper.printMessage("please select y or n");
+                editMapFileChoice();
+                break;
+        }
+    }
+
+    @Override
+    public void onContinentMapInvalid(String message) {
+        LogHelper.printMessage(message);
+    }
+
+    @Override
+    public void onUserMapSaveSuccess() {
+        loadMapData(Constants.USER_MAP_FILE_NAME);
+    }
+
+    private void selectNumberOfPlayers() {
         System.out.println("please input the number of players");
         Scanner readInput = new Scanner(System.in);
         if (readInput.hasNextInt()) {
@@ -52,68 +149,6 @@ public class Game implements GameListener {
 
         gameMap.fortification(countrySourceName, countryDestinationName, players.get(0).getPlayerID());
     }
-
-    public void loadMapData() {
-        gameMap.loadMap();
-    }
-
-    public void saveMapData() {
-        gameMap.saveMap();
-    }
-
-    @Override
-    public void onMapLoadSuccess() {
-        gameMap.loadContinents();
-        gameMap.loadTerritories();
-        gameMap.syncContinentsAndTerritories();
-        gameMap.verifyTerritoryMap();
-        gameMap.verifyContinentMap();
-    }
-
-    @Override
-    public void onMapLoadFailure(String message) {
-        LogHelper.printMessage(message);
-    }
-
-    /**
-     * The roundRobinPlay method realize the gamecomponents logic.
-     */
-/*	void roundRobinPlay() {
-		while (players.size() > 1) {
-			placeArmyOnCountry();//one country must have 2 or more than 2 army
-			for (int i = 0; i < players.size(); i++) {
-				Player attacker = players.get(i);
-				Territory attackingCountry;
-				Random rand = new Random();
-				while (true) {
-					int k = rand.nextInt(attacker.getCountry().size());
-					if (attacker.getCountry().get(k).getArmyNum() >= 2) {
-						attackingCountry = attacker.getCountry().get(k);
-						break;
-					}
-				}
-				int m = rand.nextInt(attackingCountry.getAdjacentCountryList().size());
-				String defendingCountryName = attackingCountry.getAdjacentCountryList().get(m);
-			//	Territory defendingCountry = map.searchCountry(defendingCountryName);
-			//	Player defender = searchPlayerByCountryName(defendingCountry.getTerritoryName());
-				if (defendingCountry.getArmyNum() == 0) {
-					//which means the defending country has 0 army, bound to lose
-					//battleResult(attackingCountry, defendingCountry, attacker, defender);
-				}
-				else {
-					while ((attackingCountry.getArmyNum()>0) && (defendingCountry.getArmyNum()>0)) {
-						int result = rollingDice(attackingCountry, defendingCountry);
-						if (result > 0) //attacker wins
-							defendingCountry.updateArmyNum(0 - result);
-						else 
-							attackingCountry.updateArmyNum(result);
-					}
-					//battleResult(attackingCountry, defendingCountry, attacker, defender);
-				}
-			}
-		}
-	}
-	*/
 
     /**
      * The assignCountrytoPlayers method is used in the constructor.
@@ -243,42 +278,12 @@ public class Game implements GameListener {
         else return -1;
     }
 
-    /**
-     * The battleResult method check the result of each battle between two players.
-     *
-     * @param attackingCountry
-     * @param defendingCountry
-     * @param attacker
-     * @param defender
-     */
-    private void battleResult(Territory attackingCountry, Territory defendingCountry, Player attacker, Player defender) {
-        if (attackingCountry.getArmyNum() <= 0) {
-            attackingCountry.setPlayer(defendingCountry.getPlayerID());
-            attacker.removeCountry(attackingCountry);
+    public String getFileName() {
+        return fileName;
+    }
 
-        } else if (defendingCountry.getArmyNum() <= 0) {
-            defendingCountry.setPlayer(attackingCountry.getPlayerID());
-            defender.removeCountry(defendingCountry);
-        }
-
-        for (int i = 0; i < gameMap.getContinentListMap().size(); i++) {
-			/*int firstPlayerID = map.continentListMap.get(i).territoryList.get(0).getPlayerID();
-			int otherPlayerID; 
-			boolean flag = true;
-			for (int j = 1; j < map.continentListMap.get(i).territoryList.size(); j++) {
-				otherPlayerID = map.continentListMap.get(i).territoryList.get(j).getPlayerID();
-				if (firstPlayerID != otherPlayerID) {
-					flag = false;
-				}
-			}
-			if (flag) {
-				int k = 0;
-				while(players.get(k).getPlayerID() != firstPlayerID)
-					k++;
-			}*/
-            //players.get(i).updateArmyNum(map.continentListMap.get(i).maximumArmy);
-        }
-
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
 
