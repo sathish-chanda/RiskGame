@@ -34,6 +34,8 @@ public class GameMap {
 
     public GameMap(GameListener gameListener) {
         this.gameListener = gameListener;
+        mapFileHelper = MapFileHelper.getInstance();
+
         // ToDo the input of constructor is the name of the .txt
         // file some code for reading the file should be applied here
         // insert countries in counrty map
@@ -45,9 +47,12 @@ public class GameMap {
      * This method is used to load map data from file
      */
     public void loadMap() {
-        mapFileHelper = MapFileHelper.getInstance();
         mapFileHelper.readMapFile();
         onMapLoaded();
+    }
+
+    public void saveMap() {
+        mapFileHelper.saveMapFile();
     }
 
     /**

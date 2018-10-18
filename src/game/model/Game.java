@@ -25,6 +25,7 @@ public class Game implements GameListener {
      * After the initial assignment of countries, the main gamecomponents, roundRobinPlay begins.
      */
     public Game() {
+        gameMap = new GameMap(this);
         //Todo
         /*System.out.println("please input the number of players");
         Scanner readInput = new Scanner(System.in);
@@ -43,8 +44,11 @@ public class Game implements GameListener {
     }
 
     public void loadMapData() {
-        gameMap = new GameMap(this);
         gameMap.loadMap();
+    }
+
+    public void saveMapData() {
+        gameMap.saveMap();
     }
 
     @Override
@@ -52,6 +56,8 @@ public class Game implements GameListener {
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();
+
+        saveMapData();
     }
 
     @Override
