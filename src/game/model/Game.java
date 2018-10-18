@@ -26,21 +26,31 @@ public class Game implements GameListener {
      */
     public Game() {
         gameMap = new GameMap(this);
-        //Todo
-        /*System.out.println("please input the number of players");
+        loadMapData();
+        System.out.println("please input the number of players");
         Scanner readInput = new Scanner(System.in);
-        if (readInput.hasNextInt())
+        if (readInput.hasNextInt()) {
             playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
+        }
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
-            players.add(new Player());*/
+            players.add(new Player(playerNum * 40));
 
-
-        /*assignCountryToPlayers();
+        assignCountryToPlayers();
         getArmy();
         placeArmyOnCountry();
-        */
-        //roundRobinPlay();
+
+        Scanner scanner = new Scanner(System.in);
+
+        LogHelper.printMessage("Select source country");
+        String countrySourceName = scanner.nextLine();
+        LogHelper.printMessage("Selected source country = " + countrySourceName);
+
+        LogHelper.printMessage("Select destination country");
+        String countryDestinationName = scanner.nextLine();
+        LogHelper.printMessage("Selected destination country = " + countryDestinationName);
+
+        gameMap.fortification(countrySourceName, countryDestinationName, players.get(0).getPlayerID());
     }
 
     public void loadMapData() {
@@ -56,6 +66,8 @@ public class Game implements GameListener {
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();
+        gameMap.verifyTerritoryMap();
+        gameMap.verifyContinentMap();
     }
 
     @Override
@@ -80,8 +92,8 @@ public class Game implements GameListener {
 						break;
 					}
 				}
-				int m = rand.nextInt(attackingCountry.getAdjacentCountry().size());
-				String defendingCountryName = attackingCountry.getAdjacentCountry().get(m);
+				int m = rand.nextInt(attackingCountry.getAdjacentCountryList().size());
+				String defendingCountryName = attackingCountry.getAdjacentCountryList().get(m);
 			//	Territory defendingCountry = map.searchCountry(defendingCountryName);
 			//	Player defender = searchPlayerByCountryName(defendingCountry.getTerritoryName());
 				if (defendingCountry.getArmyNum() == 0) {
@@ -117,14 +129,14 @@ public class Game implements GameListener {
             players.get(playerSelect - 1).addCountry(gameMap.getTerritoryList().get(i));
         }
         for (int j = 0; j < players.size(); j++) {
-            System.out.println("the player" + players.get(j).getCountryNum());
+            System.out.println("the player" + players.get(j).getPlayerID() + " has " + players.get(j).getCountryNum() + " countries");
         }
     }
 
     /**
      * The getArmy method print out in the console how many armies are owned by players.
      */
-    void getArmy() {
+    private void getArmy() {
 
         int armyNum = 0;
 
@@ -134,7 +146,7 @@ public class Game implements GameListener {
             boolean flag = true;
             int ownedCountrySize = players.get(i).getCountry().size();
             for (int j = 0; j < ownedCountrySize; j++) {
-                if (continentName == players.get(i).getCountry().get(i).getContinentName())
+                if (continentName.matches(players.get(i).getCountry().get(j).getContinentName()))
                     continue;
                 else {
                     flag = false;
@@ -151,8 +163,8 @@ public class Game implements GameListener {
             }
             if (armyNum < 3)
                 armyNum = 3;
-            players.get(i).setArmyNum(armyNum);
-            System.out.println("Player" + players.get(i).getPlayerID() + " has " + armyNum + " armies.");
+            players.get(i).updateArmyNum(armyNum);
+            System.out.println("Player" + players.get(i).getPlayerID() + " has " + players.get(i).getArmyNum() + " armies.");
         }
     }
 
@@ -165,22 +177,15 @@ public class Game implements GameListener {
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             int armyNum = players.get(i).getArmyNum();
-            int allocatedArmyNum = 0;
-            for (int j = 0; j < player.getCountry().size(); j++) {
-                if (armyNum == 0) {
-                    allocatedArmyNum = 0;
-                } else if (armyNum == 1) {
-                    allocatedArmyNum = 1;
-                } else {
-                    allocatedArmyNum = rand.nextInt(armyNum);
-                }
-                player.getCountry().get(j).updateArmyNum(allocatedArmyNum);
-                armyNum = armyNum - allocatedArmyNum;
+            int TerritoryNum = players.get(i).getCountryNum();
+            for (int j = 0; j < armyNum; j++) {
+                int randomChooseCountry = rand.nextInt(TerritoryNum);
+                players.get(i).getCountry().get(randomChooseCountry).updateArmyNum(1);
             }
         }
         for (int j = 0; j < players.size(); j++) {
             Player player = players.get(j);
-            System.out.print("player" + player.getPlayerID() + " have");
+            System.out.print("player" + player.getPlayerID() + " have ");
             for (int k = 0; k < player.getCountry().size(); k++) {
                 Territory country = player.getCountry().get(k);
                 System.out.print(country.getArmyNum() + " on country " + country.getTerritoryName() + ", ");
@@ -202,7 +207,7 @@ public class Game implements GameListener {
      * @param defendingCountry
      * @return
      */
-    int rollingDice(Territory attackingCountry, Territory defendingCountry) {
+    private int rollingDice(Territory attackingCountry, Territory defendingCountry) {
         Scanner readInput = new Scanner(System.in);
         System.out.println("attacker choose how many dice you want to roll");
         int attackerDice = 1;
@@ -246,7 +251,7 @@ public class Game implements GameListener {
      * @param attacker
      * @param defender
      */
-    void battleResult(Territory attackingCountry, Territory defendingCountry, Player attacker, Player defender) {
+    private void battleResult(Territory attackingCountry, Territory defendingCountry, Player attacker, Player defender) {
         if (attackingCountry.getArmyNum() <= 0) {
             attackingCountry.setPlayer(defendingCountry.getPlayerID());
             attacker.removeCountry(attackingCountry);

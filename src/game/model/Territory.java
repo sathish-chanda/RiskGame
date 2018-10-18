@@ -53,7 +53,7 @@ public class Territory {
      *
      * @return
      */
-    public ArrayList<String> getAdjacentCountry() {
+    public ArrayList<String> getAdjacentCountryList() {
         return adjacentCountryList;
     }
 
@@ -104,15 +104,6 @@ public class Territory {
      */
     public void setContinentName(String continentName) {
         this.continentName = continentName;
-    }
-
-    /**
-     * This method gets adjacent territories list
-     *
-     * @return
-     */
-    public ArrayList<String> getAdjacentCountryList() {
-        return adjacentCountryList;
     }
 
     /**
