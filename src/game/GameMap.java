@@ -20,12 +20,12 @@ import java.util.*;
 public class GameMap {
 
     private GameListener gameListener;
-    public List<Territory> territoryList = new ArrayList<>();
+    private List<Territory> territoryList = new ArrayList<>();
     private List<Continent> continentList = new ArrayList<>();
-    public List<Continent> continentListMap;
-    public List<Territory> territoryListMap;
+    private List<Continent> continentListMap;
+    private List<Territory> territoryListMap;
     private MapFileHelper mapFileHelper;
-    public Map<String, Integer> continentsHashMap;
+    private Map<String, Integer> continentsHashMap;
 
     public GameMap(String mapName) {
         // ToDo the input of constructor is the name of the .txt
@@ -298,5 +298,26 @@ public class GameMap {
 
         } else
             return;
+    }
+
+
+    public List<Territory> getTerritoryList() {
+        return territoryList;
+    }
+
+    public List<Continent> getContinentList() {
+        return continentList;
+    }
+
+    public List<Continent> getContinentListMap() {
+        return continentListMap;
+    }
+
+    public List<Territory> getTerritoryListMap() {
+        return territoryListMap;
+    }
+
+    public MapFileHelper getMapFileHelper() {
+        return mapFileHelper;
     }
 }
