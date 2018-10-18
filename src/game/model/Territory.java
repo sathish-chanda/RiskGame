@@ -18,7 +18,6 @@ public class Territory {
     public boolean visitedWholeMap = false;
     public boolean visitedContinentMap = false;
 
-
     public Territory() {
         armyNum = 0;
     }
@@ -123,5 +122,13 @@ public class Territory {
      */
     public void setAdjacentCountryList(ArrayList<String> adjacentCountryList) {
         this.adjacentCountryList = adjacentCountryList;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
     }
 }

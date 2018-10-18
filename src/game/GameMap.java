@@ -153,11 +153,11 @@ public class GameMap {
     private boolean verifyContinentMap() {
         int continentMapSize = continentListMap.size();
         for (int i = 0; i < continentMapSize; i++) {
-            int countryMapSize = continentListMap.get(i).getcountryMap().size();
+            int countryMapSize = continentListMap.get(i).getTerritoryList().size();
             if ((countryMapSize == 1) || (countryMapSize == 0)) {
                 return true;
             } else {
-                List<Territory> countryList = continentListMap.get(i).getcountryMap();
+                List<Territory> countryList = continentListMap.get(i).getTerritoryList();
                 for (int j = 0; j < countryMapSize; j++) {
                     String countryName = countryList.get(j).getTerritoryName();
                     for (int k = 0; k < countryMapSize; k++) {
@@ -174,7 +174,7 @@ public class GameMap {
             Queue<Territory> q = new LinkedList<Territory>();
             int totalVisitedCountry = 0;
             for (int x = 0; x < countryMapSize; x++) {
-                Territory c = continentListMap.get(i).getcountryMap().get(x);
+                Territory c = continentListMap.get(i).getTerritoryList().get(x);
                 if (c.visitedContinentMap == false) {
                     q.offer(c);
                     totalVisitedCountry++;

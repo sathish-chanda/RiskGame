@@ -144,7 +144,7 @@ public class Game implements GameListener {
                 }
             }
             if (flag) {
-                if (ownedCountrySize == gameMap.searchContinent(continentName).getcountryMap().size())
+                if (ownedCountrySize == gameMap.searchContinent(continentName).getTerritoryList().size())
                     armyNum = gameMap.searchContinent(continentName).getMaximumArmy();
                 armyNum = armyNum + (players.get(i).getCountry().size() - gameMap.searchContinent(continentName).getMaximumArmy()) / 3;
 
