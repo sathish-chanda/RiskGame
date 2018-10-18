@@ -3,6 +3,7 @@ package game;
 import game.listeners.GameListener;
 import game.model.Continent;
 import game.model.Territory;
+import game.utils.Constants;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 
@@ -46,13 +47,15 @@ public class GameMap {
     /**
      * This method is used to load map data from file
      */
-    public void loadMap() {
-        mapFileHelper.readMapFile();
+    public void loadMap(String mapFileName) {
+        mapFileHelper.readMapFile(mapFileName);
         onMapLoaded();
     }
 
     public void saveMap() {
         mapFileHelper.saveMapFile();
+        LogHelper.printMessage("User map file is saved");
+        gameListener.onUserMapSaveSuccess();
     }
 
     /**
@@ -64,6 +67,10 @@ public class GameMap {
         } else {
             gameListener.onMapLoadFailure(mapFileHelper.getErrorMessage());
         }
+    }
+
+    private void onMapSaved() {
+
     }
 
     /**
@@ -155,12 +162,9 @@ public class GameMap {
      * Then for each continent, the method traverse all the country in that continent.
      * if one country in the continent is in the adjacentCountryList of another country,
      * it means these two countries are connected.
-     *
-     * @return boolean
      */
-
     public void verifyContinentMap() {
-
+        boolean isMapValid = false;
         int continentMapSize = continentListMap.size();
         for (int i = 0; i < continentMapSize; i++) {
             Queue<Territory> q = new LinkedList<Territory>();
@@ -174,7 +178,8 @@ public class GameMap {
                 for (int y = 0; y < c.getAdjacentCountryList().size(); y++) {
                     Territory adjacentCountry = searchCountry(c.getAdjacentCountryList().get(y));
                     if (adjacentCountry == null) {
-                        System.out.println("the input map is invalid");
+                        isMapValid = false;
+                        LogHelper.printMessage("the input map is invalid");
                         return;
                     }
                     if ((adjacentCountry.visitedContinentMap == false) && (adjacentCountry.getContinentName().matches(continentList.get(i).getContinentName()))) {
@@ -185,12 +190,17 @@ public class GameMap {
                 }
             }
             if (totalVisitedCountry != continentListMap.get(i).getTerritoryList().size()) {
+                isMapValid = false;
                 System.out.println("the input map is invalid");
                 System.out.println("the problem is in the continent" + continentListMap.get(i).getContinentName());
                 return;
             } else {
+                isMapValid = true;
                 System.out.println("the continent" + continentListMap.get(i).getContinentName() + " map is valid");
             }
+        } //end of for loop
+        if (isMapValid) {
+            gameListener.onContinentMapValid();
         }
         return;
     }
@@ -204,10 +214,7 @@ public class GameMap {
      * @return boolean
      */
     public void verifyTerritoryMap() {
-
-
-
-
+        boolean isMapValid = false;
         int territoryListSize = territoryList.size();
         Queue<Territory> q = new LinkedList<Territory>();
         int totalVisitedTerritory = 0;
@@ -231,10 +238,11 @@ public class GameMap {
         }
         if (totalVisitedTerritory != territoryListSize) {
             System.out.println("the input map is invalid");
-            return ;
+            return;
         } else {
             System.out.println("the input map is valid");
-            return ;
+            gameListener.onTerritoryMapValid();
+            return;
         }
     }
 
@@ -283,7 +291,7 @@ public class GameMap {
 
         } else
             System.out.println("cant move army");
-            return;
+        return;
     }
 
 

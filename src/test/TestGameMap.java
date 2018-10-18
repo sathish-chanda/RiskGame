@@ -2,6 +2,7 @@ package test;
 
 import game.GameMap;
 import game.model.Game;
+import game.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class TestGameMap {
      */
     @Test
     public void testLoadContinents() {
-        gameMap.loadMap();
+        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
         gameMap.loadContinents();
         assertEquals(getContinentComponentList().size(),
                 gameMap.getContinentList().size());
@@ -44,7 +45,7 @@ public class TestGameMap {
      */
     @Test
     public void testLoadTerritories() {
-        gameMap.loadMap();
+        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
         gameMap.loadContinents();
         gameMap.loadTerritories();
         assertEquals(getTerritoryComponentList().size(),
@@ -56,7 +57,7 @@ public class TestGameMap {
      */
     @Test
     public void testSyncContinentsAndTerritories() {
-        gameMap.loadMap();
+        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();

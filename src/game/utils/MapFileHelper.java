@@ -36,9 +36,9 @@ public class MapFileHelper {
     /**
      * This method is used to read data from the map file.
      */
-    public void readMapFile() {
+    public void readMapFile(String fileName) {
         try {
-            FileReader fileReader = new FileReader(Constants.FILE_DOMAIN_PATH + Constants.MAP_FILE_NAME);
+            FileReader fileReader = new FileReader(Constants.FILE_DOMAIN_PATH + fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             mapValidator = new MapValidator();
             mapValidator.setCurrentKey(Constants.MAP_KEY);

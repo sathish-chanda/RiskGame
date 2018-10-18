@@ -1,5 +1,6 @@
 package test.utils;
 
+import game.utils.Constants;
 import game.utils.MapFileHelper;
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +29,7 @@ public class TestMapFileHelper {
      */
     @Test
     public void testReadMapFile() {
-        mapFileHelper.readMapFile();
+        mapFileHelper.readMapFile(Constants.MAP_FILE_NAME);
         assertTrue(mapFileHelper.isMapValid());
     }
 
