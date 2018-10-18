@@ -1,11 +1,14 @@
 package game.utils;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import game.model.MapValidator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -52,13 +55,6 @@ public class MapFileHelper {
             LogHelper.printMessage("File not found");
             e.printStackTrace();
         }
-    }
-
-    /**
-     * This method is used to save the map file
-     */
-    public void saveMapFile() {
-        //TODO save map file functionality
     }
 
     /**
@@ -136,8 +132,91 @@ public class MapFileHelper {
         }
     }
 
-    private void validateMapPattern(String pattern, String line) {
+    /**
+     * This method is used to save the map file
+     */
+    public void saveMapFile() {
+        try {
+            FileWriter fileWriter = new FileWriter(Constants.FILE_DOMAIN_PATH + Constants.USER_MAP_FILE_NAME);
+            mapValidator = new MapValidator();
+            mapValidator.setCurrentKey(Constants.MAP_KEY);
+            saveUserMapFileComponents(fileWriter);
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            LogHelper.printMessage("File not created");
+            e.printStackTrace();
+        }
 
+    }
+
+    /**
+     * Method to start saving user map file components
+     *
+     * @param fileWriter
+     * @throws IOException
+     */
+    private void saveUserMapFileComponents(FileWriter fileWriter) throws IOException {
+        switch (mapValidator.getCurrentKey()) {
+            case Constants.MAP_KEY:
+                saveMapComponents(fileWriter);
+                break;
+            case Constants.CONTINENTS_KEY:
+                saveContinentComponents(fileWriter);
+                break;
+            case Constants.TERRITORIES_KEY:
+                saveTerritoryComponents(fileWriter);
+                break;
+            default:
+                LogHelper.printMessage("Saving File Error");
+                break;
+        }
+    }
+
+    /**
+     * Method to save map components
+     *
+     * @param fileWriter
+     * @throws IOException
+     */
+    private void saveMapComponents(FileWriter fileWriter) throws IOException {
+        fileWriter.write(Constants.MAP_KEY + Constants.NEXT_LINE);
+        Iterator<String> iterator = mapComponentList.iterator();
+        while (iterator.hasNext()) {
+            fileWriter.write(iterator.next() + Constants.NEXT_LINE);
+        }
+        mapValidator.setCurrentKey(Constants.CONTINENTS_KEY);
+        saveUserMapFileComponents(fileWriter);
+    }
+
+    /**
+     * Method to save continent components
+     *
+     * @param fileWriter
+     * @throws IOException
+     */
+    private void saveContinentComponents(FileWriter fileWriter) throws IOException {
+        fileWriter.write(Constants.CONTINENTS_KEY + Constants.NEXT_LINE);
+        Iterator<String> iterator = continentsComponentList.iterator();
+        while (iterator.hasNext()) {
+            fileWriter.write(iterator.next() + Constants.NEXT_LINE);
+        }
+        mapValidator.setCurrentKey(Constants.TERRITORIES_KEY);
+        saveUserMapFileComponents(fileWriter);
+    }
+
+    /**
+     * Method to save territory components
+     *
+     * @param fileWriter
+     * @throws IOException
+     */
+    private void saveTerritoryComponents(FileWriter fileWriter) throws IOException {
+        fileWriter.write(Constants.TERRITORIES_KEY + Constants.NEXT_LINE);
+        Iterator<String> iterator = territoriesComponentList.iterator();
+        while (iterator.hasNext()) {
+            fileWriter.write(iterator.next() + Constants.NEXT_LINE);
+        }
     }
 
     private boolean isPatternMatches(String pattern, String line) {
