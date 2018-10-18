@@ -56,8 +56,6 @@ public class Game implements GameListener {
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();
-
-        saveMapData();
     }
 
     @Override
@@ -112,11 +110,11 @@ public class Game implements GameListener {
     private void assignCountryToPlayers() {
         int playerSelect;
         Random rand = new Random();
-        for (int i = 0; i < gameMap.territoryList.size(); i++) {
+        for (int i = 0; i < gameMap.getTerritoryList().size(); i++) {
             playerSelect = rand.nextInt(playerNum) + 1;
-            gameMap.territoryList.get(i).setPlayer(playerSelect);
+            gameMap.getTerritoryList().get(i).setPlayer(playerSelect);
             players.get(playerSelect - 1).increaseCountryNum();
-            players.get(playerSelect - 1).addCountry(gameMap.territoryList.get(i));
+            players.get(playerSelect - 1).addCountry(gameMap.getTerritoryList().get(i));
         }
         for (int j = 0; j < players.size(); j++) {
             System.out.println("the player" + players.get(j).getCountryNum());
@@ -258,7 +256,7 @@ public class Game implements GameListener {
             defender.removeCountry(defendingCountry);
         }
 
-        for (int i = 0; i < gameMap.continentListMap.size(); i++) {
+        for (int i = 0; i < gameMap.getContinentListMap().size(); i++) {
 			/*int firstPlayerID = map.continentListMap.get(i).territoryList.get(0).getPlayerID();
 			int otherPlayerID; 
 			boolean flag = true;

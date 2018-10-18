@@ -36,13 +36,12 @@ public class TestTerritory {
         String latitude = "160";
         String longitude = "150";
         String continentName = "North America";
-        ArrayList<String> adjacentTerritoryList = prepareAdjacentTerritoryList();
-        territory = new Territory(territoryName, latitude, longitude, continentName, adjacentTerritoryList);
+        territory = new Territory(territoryName, latitude, longitude, continentName, adjacentTerritoryList());
         assertEquals(territoryName, territory.getTerritoryName());
         assertEquals(latitude, territory.getLatitude());
         assertEquals(longitude, territory.getLongitude());
         assertEquals(continentName, territory.getContinentName());
-        assertEquals(adjacentTerritoryList, territory.getAdjacentCountryList());
+        assertEquals(adjacentTerritoryList(), territory.getAdjacentCountryList());
     }
 
     /**
@@ -50,7 +49,7 @@ public class TestTerritory {
      *
      * @return
      */
-    private ArrayList<String> prepareAdjacentTerritoryList() {
+    private ArrayList<String> adjacentTerritoryList() {
         ArrayList<String> adjacentTerritoryList = new ArrayList<>();
         String canada = "Canada";
         String usa = "USA";
