@@ -36,7 +36,7 @@ public class Continent {
      *
      * @return
      */
-    public List<Territory> getcountryMap() {
+    public List<Territory> getTerritoryList() {
         return territoryList;
     }
 
