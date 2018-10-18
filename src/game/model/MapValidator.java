@@ -6,6 +6,7 @@ public class MapValidator {
     private boolean isContinentKeyValid;
     private boolean isTerrtitoryKeyValid;
     private String currentKey;
+    private boolean fileSaveSuccess;
 
     public boolean isMapKeyValid() {
         return isMapKeyValid;
@@ -37,5 +38,13 @@ public class MapValidator {
 
     public void setCurrentKey(String currentKey) {
         this.currentKey = currentKey;
+    }
+
+    public boolean isFileSaveSuccess() {
+        return fileSaveSuccess;
+    }
+
+    public void setFileSaveSuccess(boolean fileSaveSuccess) {
+        this.fileSaveSuccess = fileSaveSuccess;
     }
 }

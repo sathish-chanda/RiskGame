@@ -1,6 +1,5 @@
 package game.utils;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import game.model.MapValidator;
 
 import java.io.BufferedReader;
@@ -143,7 +142,9 @@ public class MapFileHelper {
             saveUserMapFileComponents(fileWriter);
             fileWriter.flush();
             fileWriter.close();
+            mapValidator.setFileSaveSuccess(true);
         } catch (IOException e) {
+            mapValidator.setFileSaveSuccess(false);
             LogHelper.printMessage("File not created");
             e.printStackTrace();
         }
@@ -237,6 +238,10 @@ public class MapFileHelper {
 
     public boolean isMapValid() {
         return !isMapInvalid;
+    }
+
+    public boolean isFileSaveSuccess() {
+        return mapValidator.isFileSaveSuccess();
     }
 
     public List<String> getMapComponentList() {
