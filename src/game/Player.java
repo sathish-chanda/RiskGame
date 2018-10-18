@@ -18,6 +18,8 @@ public class Player {
     public Player(int initialArmyNum) {
         playerID = ++playerCounter;
         armyNum = armyNum + initialArmyNum;
+        ownedCountry = new ArrayList<Territory>();
+        System.out.println(armyNum);
 
     }
 
@@ -51,10 +53,6 @@ public class Player {
 
     public int getArmyNum() {
         return armyNum;
-    }
-
-    public void setArmyNum(int armyNum) {
-        this.armyNum = armyNum;
     }
 
     public void updateArmyNum(int armyNumber) {

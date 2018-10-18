@@ -7,7 +7,6 @@ public class RiskModel {
 
     public void loadGame() {
         game = new Game();
-        game.loadMapData();
     }
 
 }

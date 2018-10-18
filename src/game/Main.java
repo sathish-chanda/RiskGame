@@ -15,10 +15,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /*Parent root = FXMLLoader.load(getClass().getResource("/game/main.fxml"));
-        primaryStage.setTitle(Constants.RISK_GAME_NAME);
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();*/
         initGameComponents();
     }
 

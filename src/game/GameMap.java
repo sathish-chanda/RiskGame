@@ -128,17 +128,25 @@ public class GameMap {
     }
 
     public Territory searchCountry(String countryName) {
-        for (int i = 0; i < territoryList.size(); i++)
-            if (territoryList.get(i).getTerritoryName() == countryName)
-                return territoryList.get(i);
-        return null;
+        Territory t = null;
+        for (int i = 0; i < territoryList.size(); i++) {
+            String s = territoryList.get(i).getTerritoryName();
+            if (s.matches(countryName)) {
+                t = territoryList.get(i);
+            }
+        }
+        return t;
     }
 
     public Continent searchContinent(String continentName) {
-        for (int i = 0; i < continentListMap.size(); i++)
-            if (continentListMap.get(i).getContinentName() == continentName)
-                return continentListMap.get(i);
-        return null;
+        Continent t = null;
+        for (int i = 0; i < continentListMap.size(); i++) {
+            String s = continentListMap.get(i).getContinentName();
+            if (s.matches(continentName)) {
+                t = continentListMap.get(i);
+            }
+        }
+        return t;
     }
 
     /**
@@ -150,59 +158,43 @@ public class GameMap {
      *
      * @return boolean
      */
-    private boolean verifyContinentMap() {
+
+    public void verifyContinentMap() {
+
         int continentMapSize = continentListMap.size();
         for (int i = 0; i < continentMapSize; i++) {
-            int countryMapSize = continentListMap.get(i).getTerritoryList().size();
-            if ((countryMapSize == 1) || (countryMapSize == 0)) {
-                return true;
-            } else {
-                List<Territory> countryList = continentListMap.get(i).getTerritoryList();
-                for (int j = 0; j < countryMapSize; j++) {
-                    String countryName = countryList.get(j).getTerritoryName();
-                    for (int k = 0; k < countryMapSize; k++) {
-                        if (countryList.get(k).getAdjacentCountry().contains(countryName))
-                            break;
-                        else {
-                            System.out.println("the input map is invalid");
-                            System.out.println("the problem is in the country" + this.territoryList.get(k).getTerritoryName());
-                            return false;
-                        }
-                    }
-                }
-            }
             Queue<Territory> q = new LinkedList<Territory>();
             int totalVisitedCountry = 0;
-            for (int x = 0; x < countryMapSize; x++) {
-                Territory c = continentListMap.get(i).getTerritoryList().get(x);
-                if (c.visitedContinentMap == false) {
-                    q.offer(c);
-                    totalVisitedCountry++;
-                    c.visitedContinentMap = true;
-                    while (!q.isEmpty()) {
-                        Territory d = q.element();
-                        q.poll();
-                        for (int y = 0; y < d.getAdjacentCountry().size(); y++) {
-                            Territory adjacentCountry = searchCountry(territoryList.get(x).getAdjacentCountry().get(y));
-                            if (adjacentCountry.visitedContinentMap == false && adjacentCountry.getContinentName() == continentListMap.get(i).getContinentName()) {
-                                q.offer(adjacentCountry);
-                                totalVisitedCountry++;
-                                adjacentCountry.visitedContinentMap = true;
-                            }
-                        }
+            Territory startCountry = continentListMap.get(i).getTerritoryList().get(0);
+            totalVisitedCountry++;
+            startCountry.visitedContinentMap = true;
+            q.offer(startCountry);
+            while (!q.isEmpty()) {
+                Territory c = q.poll();
+                for (int y = 0; y < c.getAdjacentCountryList().size(); y++) {
+                    Territory adjacentCountry = searchCountry(c.getAdjacentCountryList().get(y));
+                    if (adjacentCountry == null) {
+                        System.out.println("the input map is invalid");
+                        return;
+                    }
+                    if ((adjacentCountry.visitedContinentMap == false) && (adjacentCountry.getContinentName().matches(continentList.get(i).getContinentName()))) {
+                        totalVisitedCountry++;
+                        adjacentCountry.visitedContinentMap = true;
+                        q.offer(adjacentCountry);
                     }
                 }
             }
-            if (totalVisitedCountry != territoryList.size()) {
+            if (totalVisitedCountry != continentListMap.get(i).getTerritoryList().size()) {
                 System.out.println("the input map is invalid");
                 System.out.println("the problem is in the continent" + continentListMap.get(i).getContinentName());
-                return false;
+                return;
             } else {
                 System.out.println("the continent" + continentListMap.get(i).getContinentName() + " map is valid");
             }
         }
-        return true;
+        return;
     }
+
 
     /**
      * The verifyCountryMap method verify if all the country of the whole map is connected.
@@ -211,69 +203,60 @@ public class GameMap {
      *
      * @return boolean
      */
-    private boolean verifyCountryMap() {
-        int countryMapSize = territoryList.size();
-        for (int i = 0; i < countryMapSize; i++) {
-            ArrayList<String> adjacentCountryNameList = territoryList.get(i).getAdjacentCountry();
-            for (int j = 0; j < adjacentCountryNameList.size(); j++) {
-                String adjacentCountryName = adjacentCountryNameList.get(j);
-                boolean flag = false;
-                for (int k = 0; k < countryMapSize; k++) {
-                    if (territoryList.get(k).getTerritoryName() == adjacentCountryName) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    LogHelper.printMessage("the input map is invalid");
-                    LogHelper.printMessage("the problem is in the country" + territoryList.get(i).getTerritoryName());
-                    return false;
-                }
-            }
-        }
+    public void verifyTerritoryMap() {
+
+
+
+
+        int territoryListSize = territoryList.size();
         Queue<Territory> q = new LinkedList<Territory>();
-        int totalVisitedCountry = 0;
-        for (int i = 0; i < territoryList.size(); i++) {
-            if (territoryList.get(i).visitedWholeMap == false) {
-                q.offer(territoryList.get(i));
-                totalVisitedCountry++;
-                territoryList.get(i).visitedWholeMap = true;
-                while (!q.isEmpty()) {
-                    Territory c = q.element();
-                    q.poll();
-                    for (int j = 0; j < c.getAdjacentCountry().size(); j++) {
-                        Territory adjacentCountry = searchCountry(territoryList.get(i).getAdjacentCountry().get(j));
-                        if (adjacentCountry.visitedWholeMap == false) {
-                            q.offer(adjacentCountry);
-                            totalVisitedCountry++;
-                            adjacentCountry.visitedWholeMap = true;
-                        }
-                    }
+        int totalVisitedTerritory = 0;
+        territoryList.get(0).visitedWholeMap = true;
+        q.offer(territoryList.get(0));
+        totalVisitedTerritory++;
+        while (!q.isEmpty()) {
+            Territory c = q.poll();
+            for (int j = 0; j < c.getAdjacentCountryList().size(); j++) {
+                Territory adjacentTerritory = searchCountry(c.getAdjacentCountryList().get(j));
+                if (adjacentTerritory == null) {
+                    System.out.println("the input map is invalid");
+                    return;
+                }
+                if (adjacentTerritory.visitedWholeMap == false) {
+                    totalVisitedTerritory++;
+                    adjacentTerritory.visitedWholeMap = true;
+                    q.offer(adjacentTerritory);
                 }
             }
         }
-        if (totalVisitedCountry != territoryList.size()) {
-            LogHelper.printMessage("the input map is invalid");
-            return false;
+        if (totalVisitedTerritory != territoryListSize) {
+            System.out.println("the input map is invalid");
+            return ;
+        } else {
+            System.out.println("the input map is valid");
+            return ;
         }
-        LogHelper.printMessage("the input map is valid");
-        return true;
     }
 
 
-    void fortification(String countryName1, String countryName2, int playerID) {
+    public void fortification(String countrySourceName, String countryDestinationName, int playerID) {
+        Territory t1 = searchCountry(countrySourceName);
+        Territory t2 = searchCountry(countryDestinationName);
         Queue<Territory> q = new LinkedList<Territory>();
         boolean flag = false;
-        Territory startCountry = searchCountry(countryName1);
+        Territory startCountry = t1;
         q.offer(startCountry);
+        ArrayList<Territory> searchedTerritory = new ArrayList<Territory>();
 
         while (!q.isEmpty()) {
             Territory c = q.poll();
-            for (int i = 0; i < c.getAdjacentCountry().size(); i++) {
-                Territory adjacentCountry = searchCountry(c.getAdjacentCountry().get(i));
-                if (adjacentCountry.getTerritoryName() == countryName2) {
+            searchedTerritory.add(c);
+            for (int i = 0; i < c.getAdjacentCountryList().size(); i++) {
+                Territory adjacentCountry = searchCountry(c.getAdjacentCountryList().get(i));
+                if (adjacentCountry.getTerritoryName().matches(countryDestinationName) && (adjacentCountry.getPlayerID() == playerID)) {
                     flag = true;
-                } else if (adjacentCountry.getPlayerID() == playerID) {
+                    break;
+                } else if ((adjacentCountry.getPlayerID() == playerID) && !searchedTerritory.contains(adjacentCountry)) {
                     q.offer(adjacentCountry);
                 } else
                     continue;
@@ -282,21 +265,24 @@ public class GameMap {
         if (flag) {
             int moveArmyNum = 0;
             System.out.println("please input the number of armys you want to move");
-            System.out.println("you can move up to " + searchCountry(countryName1).getArmyNum() + " armies");
+            System.out.println("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
             Scanner readInput = new Scanner(System.in);
             if (readInput.hasNextInt())
                 moveArmyNum = readInput.nextInt();
-            while (moveArmyNum > searchCountry(countryName1).getArmyNum()) {
+            while (moveArmyNum > searchCountry(countrySourceName).getArmyNum()) {
                 System.out.println("exceed maximum number you can move");
                 System.out.println("please input the number of armys you want to move");
-                System.out.println("you can move up to " + searchCountry(countryName1).getArmyNum() + " armies");
+                System.out.println("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
                 if (readInput.hasNextInt())
                     moveArmyNum = readInput.nextInt();
             }
-            searchCountry(countryName1).updateArmyNum(0 - moveArmyNum);
-            searchCountry(countryName2).updateArmyNum(moveArmyNum);
+            t1.updateArmyNum(0 - moveArmyNum);
+            System.out.println("now " + countrySourceName + " has " + t1.getArmyNum() + " armies");
+            t2.updateArmyNum(moveArmyNum);
+            System.out.println("now " + countryDestinationName + " has " + t2.getArmyNum() + " armies");
 
         } else
+            System.out.println("cant move army");
             return;
     }
 
