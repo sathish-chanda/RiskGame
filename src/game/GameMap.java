@@ -67,22 +67,11 @@ public class GameMap {
         choiceToAddOrDeleteContinent(choice);
     }
 
-    private void showContinentsToBeEdited() {
-        for (int i = 0; i < continentListMap.size(); i++) {
-            String continentName = continentListMap.get(i).getContinentName();
-            LogHelper.printMessage(continentName + " - " + (i + 1));
-        }
-
-    }
-
-    private void showTerritoriesToBeEditied() {
-        for (int i = 0; i < continentListMap.size(); i++) {
-            String continentName = continentListMap.get(i).getContinentName();
-            LogHelper.printMessage(continentName + " - " + (i + 1));
-        }
-
-    }
-
+    /**
+     * User choice for adding and deleting a continent
+     *
+     * @param choice
+     */
     private void choiceToAddOrDeleteContinent(int choice) {
         switch (choice) {
             case 1:
@@ -91,23 +80,6 @@ public class GameMap {
             case 2:
                 showEditedList();
                 deleteContinent();
-                break;
-            default:
-                LogHelper.printMessage("Invalid Input");
-        }
-    }
-
-    private void choiceToAddOrDeleteTerritory(int choice) {
-        switch (choice) {
-            case 1:
-                LogHelper.printMessage("Please select the continent of the territory");
-                Scanner scanner = new Scanner(System.in);
-                //get continent here and
-                //addTerritory();
-                break;
-            case 2:
-                LogHelper.printMessage("Please select the continent of the territory");
-                deleteTerritory();
                 break;
             default:
                 LogHelper.printMessage("Invalid Input");
@@ -238,21 +210,16 @@ public class GameMap {
         continentListMap.add(continent);
     }
 
+    /**
+     * Method to add adjacent territory
+     */
     private void addAdjacentTerritory(String territoryName, List<String> adjacentTerritoryList, int position) {
-        LogHelper.printMessage("Please enter " + (position + 1) + " adjacent territory name for country " + territoryName);
+        LogHelper.printMessage("Please enter postion " + (position + 1) + " adjacent territory name for country " + territoryName);
         Scanner scanner = new Scanner(System.in);
         String adjacentTerritory = scanner.next();
         adjacentTerritoryList.add(adjacentTerritory);
     }
 
-    /**
-     * Method to delete territory
-     *
-     * @param
-     */
-    private void deleteTerritory() {
-
-    }
 
     /**
      * This method validates if mad is valid or not
