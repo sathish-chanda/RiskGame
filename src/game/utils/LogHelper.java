@@ -5,12 +5,15 @@ package game.utils;
  */
 public class LogHelper {
 
+    private static String printedMessage;
+
     /**
      * This method is used to print Log messages.
      *
      * @param message of type String
      */
     public static void printMessage(String message) {
+        printedMessage = message;
         System.out.println(message);
     }
 
@@ -21,7 +24,15 @@ public class LogHelper {
      * @param appendedMessage
      */
     public static void printMessage(String message, String appendedMessage) {
+        printedMessage = message+appendedMessage;
         System.out.println(appendedMessage + message);
     }
 
+    /**
+     * Re
+     * @return
+     */
+    public static String getPrintedMessage() {
+        return printedMessage;
+    }
 }

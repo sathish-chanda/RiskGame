@@ -306,4 +306,13 @@ public class MapFileHelper {
     public List<String> getTerritoriesComponentList() {
         return territoriesComponentList;
     }
+
+    /**
+     * Method to clear  stored values
+     */
+    public void cleanUp() {
+        mapComponentList.clear();
+        continentsComponentList.clear();
+        territoriesComponentList.clear();
+    }
 }
