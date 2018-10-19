@@ -30,7 +30,6 @@ public class Player {
     /**
      * The getArmy method returns the number of armies controled by a player
      */
-
     public int getPlayerID() {
         return playerID;
     }

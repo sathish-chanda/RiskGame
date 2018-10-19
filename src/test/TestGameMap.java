@@ -30,17 +30,6 @@ public class TestGameMap {
     }
 
     /**
-     * perform load continents test
-     */
-    @Test
-    public void testLoadContinents() {
-        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
-        gameMap.loadContinents();
-        assertEquals(getContinentComponentList().size(),
-                gameMap.getContinentList().size());
-    }
-
-    /**
      * perform load territories test
      */
     @Test

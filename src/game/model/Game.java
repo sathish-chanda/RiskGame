@@ -122,6 +122,7 @@ public class Game implements GameListener {
 
     @Override
     public void onUserMapSaveSuccess() {
+        gameMap.cleanUp();
         loadMapData(Constants.USER_MAP_FILE_NAME);
     }
 

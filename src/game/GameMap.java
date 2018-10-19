@@ -36,12 +36,6 @@ public class GameMap {
     public GameMap(GameListener gameListener) {
         this.gameListener = gameListener;
         mapFileHelper = MapFileHelper.getInstance();
-
-        // ToDo the input of constructor is the name of the .txt
-        // file some code for reading the file should be applied here
-        // insert countries in counrty map
-        // insert all continents in continnent map
-        // insert all countries in repective continent
     }
 
     /**
@@ -101,12 +95,14 @@ public class GameMap {
             }
         }
         LogHelper.printMessage("territory List = " + territoryList);
+        LogHelper.printMessage("territory List = " + territoryList.size());
     }
 
     /**
      * This method load continents from mapFileHelper class
      */
     public void loadContinents() {
+        LogHelper.printMessage(" "+mapFileHelper.getContinentsComponentList().size());
         List<String> continentComponentList = mapFileHelper.getContinentsComponentList();
         List<String> continentSplitList;
         continentsHashMap = new HashMap<>();
@@ -139,6 +135,7 @@ public class GameMap {
             continentListMap.add(continent);
         }
         LogHelper.printMessage("continent map == " + continentListMap);
+        LogHelper.printMessage("continent map == " + continentListMap.size());
     }
 
     public Territory searchCountry(String countryName) {
@@ -320,5 +317,16 @@ public class GameMap {
 
     public MapFileHelper getMapFileHelper() {
         return mapFileHelper;
+    }
+
+    /**
+     * Method to clear  stored values
+     */
+    public void cleanUp() {
+        territoryList.clear();
+        continentList.clear();
+        continentListMap.clear();
+        territoryListMap.clear();
+        mapFileHelper.cleanUp();
     }
 }
