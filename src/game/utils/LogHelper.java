@@ -24,12 +24,13 @@ public class LogHelper {
      * @param appendedMessage
      */
     public static void printMessage(String message, String appendedMessage) {
-        printedMessage = message+appendedMessage;
+        printedMessage = message + appendedMessage;
         System.out.println(appendedMessage + message);
     }
 
     /**
-     * Re
+     * Returns current message
+     *
      * @return
      */
     public static String getPrintedMessage() {
