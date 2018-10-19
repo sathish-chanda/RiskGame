@@ -19,12 +19,23 @@ public class Continent {
         //Empty constructor required
     }
 
-
+    /**
+     * In the constructor, the first input is the continent name.
+     * The second input is the maximum value assigned to the continent
+     * After the initialization of continent and  value, the next process is assign respective territories to the continent.
+     */
     public Continent(String continentName, int maximumArmy) {
         this.continentName = continentName;
         this.maximumArmy = maximumArmy;
     }
 
+    /**
+     * In the overloading constructor, adding list of countries to the existing constructor
+     *
+     * @param continentName
+     * @param maximumArmy
+     * @param countries
+     */
     public Continent(String continentName, int maximumArmy, List<Territory> countries) {
         this.continentName = continentName;
         this.maximumArmy = maximumArmy;
@@ -34,23 +45,33 @@ public class Continent {
     /**
      * This method return an ArrayList containing all the countries in a continent.
      *
-     * @return
+     * @return list of territories
      */
     public List<Territory> getTerritoryList() {
         return territoryList;
     }
 
+    /**
+     * This method returns the continent name in the map
+     *
+     * @return continent list
+     */
     public String getContinentName() {
         return continentName;
     }
 
+    /**
+     * This method returns maximum number of armies for each continent
+     *
+     * @return the maximum Army value
+     */
     public int getMaximumArmy() {
         return maximumArmy;
     }
 
-    public void setCountryNum(int countryNum) {
-        this.countryNum = countryNum;
-    }
 
+//    public void setCountryNum(int countryNum) {
+//        this.countryNum = countryNum;
+//    }
 
 }

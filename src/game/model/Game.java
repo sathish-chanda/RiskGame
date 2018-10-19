@@ -32,6 +32,10 @@ public class Game implements GameListener {
         gameMap = new GameMap(this);
     }
 
+    /**
+     * This method set and load the map file
+     * @param fileName, send map file name.
+     */
     public void loadMapData(String fileName) {
         setFileName(fileName);
         gameMap.loadMap(fileName);
