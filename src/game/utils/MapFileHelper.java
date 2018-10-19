@@ -295,6 +295,10 @@ public class MapFileHelper {
         return !isMapInvalid;
     }
 
+    public void resetMapValidity() {
+        isMapInvalid = false;
+    }
+
     public boolean isFileSaveSuccess() {
         return mapValidator.isFileSaveSuccess();
     }

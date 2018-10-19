@@ -10,8 +10,8 @@ public class Constants {
     public static final String TERRITORIES_KEY = "[Territories]";
     public static final String MAP_KEY_PATTERN = "^[a-zA-Z]+=[a-zA-Z.-]+.[a-zA-Z]$";
     public static final String CONTINENTS_KEY_PATTERN = "^[a-zA-Z ]+=[0-9]$";
-    public static final String TERRITORIES_KEY_PATTERN = "";
     public static final String USER_MAP_FILE_NAME = "usermap.map";
     public static final String NEXT_LINE = "\n";
-
+    public static final String YES = "y";
+    public static final String NO = "n";
 }
