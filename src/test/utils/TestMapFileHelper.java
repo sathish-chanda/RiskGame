@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 /**
@@ -40,6 +41,15 @@ public class TestMapFileHelper {
     public void testSaveMapFile() {
         mapFileHelper.saveMapFile();
         assertTrue(mapFileHelper.isFileSaveSuccess());
+    }
+
+    /**
+     * perform reading the invalid map file test
+     */
+    @Test
+    public void testReadInValideMapFile() {
+        mapFileHelper.readMapFile("InvalidMap");
+        assertFalse(mapFileHelper.isMapValid());
     }
 
     /**

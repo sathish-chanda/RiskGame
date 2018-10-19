@@ -52,6 +52,7 @@ public class MapFileHelper {
                 }
             }
         } catch (IOException e) {
+            isMapInvalid = true;
             LogHelper.printMessage("File not found");
             e.printStackTrace();
         }
@@ -142,7 +143,10 @@ public class MapFileHelper {
         int addContinent = 0;
 
         do {
-            LogHelper.printMessage("Do you Add/Delete any continent?\n 1.Add\n2.Delete 3.0.B No Delete");
+            LogHelper.printMessage("Do you Add/Delete any continent?");
+            LogHelper.printMessage("1 - Add");
+            LogHelper.printMessage("2 - Delete");
+            LogHelper.printMessage("3 - Continue");
             addContinent = readData.nextInt();
 
             if (addContinent == 1) { // add continent
