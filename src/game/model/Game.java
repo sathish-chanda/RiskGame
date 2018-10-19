@@ -105,10 +105,10 @@ public class Game implements GameListener {
         Scanner scanner = new Scanner(System.in);
         String feedback = scanner.next();
         switch (feedback) {
-            case "y":
+            case Constants.YES:
                 gameMap.editMap();
                 break;
-            case "n":
+            case Constants.NO:
                 saveMapData();
                 break;
             default:
