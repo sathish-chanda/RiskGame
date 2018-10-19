@@ -1,14 +1,15 @@
 package game.utils;
 
+import game.GameMap;
+import game.model.Game;
 import game.model.MapValidator;
+import sun.rmi.runtime.Log;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class MapFileHelper {
@@ -129,6 +130,56 @@ public class MapFileHelper {
         } else {
             territoriesComponentList.add(line);
         }
+    }
+
+    /**
+     * Editing the Map file
+     * add or delete continent, territories and adjacent nodes
+     */
+    public void editMapFile() {
+
+        Scanner readData = new Scanner(System.in);
+        int addContinent = 0;
+
+        do {
+            LogHelper.printMessage("Do you Add/Delete any continent?\n 1.Add\n2.Delete 3.0.B No Delete");
+            addContinent = readData.nextInt();
+
+            if (addContinent == 1) { // add continent
+                LogHelper.printMessage("Enter the Continent");
+                String newContinent;
+                Random randomNumber = new Random();
+                int newNumber = randomNumber.nextInt(10);
+
+                newContinent = readData.next();
+                if (newContinent.length() != 0) {
+                    String newCont = newContinent + "=" + newNumber;
+                    continentsComponentList.add(newCont);
+                    LogHelper.printMessage("added continent");
+                }
+            } else if (addContinent == 2) { //remove continent
+
+                for (int i = 0; i < continentsComponentList.size(); i++) {
+                    LogHelper.printMessage(continentsComponentList.get(i) + "---" + i);
+                }
+                LogHelper.printMessage("Delete the continent");
+                int deleteContinent;
+                deleteContinent = readData.nextInt();
+
+                if (deleteContinent < continentsComponentList.size()) {
+                    for (int i = 0; i < continentsComponentList.size(); i++) {
+                        if (deleteContinent == i) {
+                            continentsComponentList.remove(continentsComponentList.get(i));
+                        }
+                    }
+                }
+            } else {
+                LogHelper.printMessage("Select the continent from the list");
+                break;
+            }
+
+        } while (addContinent != 0);
+
     }
 
     /**
