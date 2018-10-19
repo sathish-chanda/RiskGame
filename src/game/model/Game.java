@@ -5,7 +5,6 @@ import game.Player;
 import game.listeners.GameListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
-import game.utils.MapFileHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +33,7 @@ public class Game implements GameListener {
 
     /**
      * This method set and load the map file
+     *
      * @param fileName, send map file name.
      */
     public void loadMapData(String fileName) {
@@ -64,8 +64,18 @@ public class Game implements GameListener {
         }
     }
 
+    /**
+     * Method to save map data
+     */
     public void saveMapData() {
         gameMap.saveMap();
+    }
+
+    /**
+     * Method to save map data
+     */
+    public void editMapData() {
+        gameMap.initEditMap();
     }
 
     @Override
@@ -106,7 +116,7 @@ public class Game implements GameListener {
         String feedback = scanner.next();
         switch (feedback) {
             case Constants.YES:
-                gameMap.editMap();
+                editMapData();
                 break;
             case Constants.NO:
                 saveMapData();
@@ -127,6 +137,11 @@ public class Game implements GameListener {
     public void onUserMapSaveSuccess() {
         gameMap.cleanUp();
         loadMapData(Constants.USER_MAP_FILE_NAME);
+    }
+
+    @Override
+    public void onUserMapEditSuccess() {
+        saveMapData();
     }
 
     private void selectNumberOfPlayers() {

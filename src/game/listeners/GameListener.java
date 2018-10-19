@@ -44,4 +44,9 @@ public interface GameListener {
      */
     void onUserMapSaveSuccess();
 
+    /**
+     * Listen when map is edited successfully
+     */
+    void onUserMapEditSuccess();
+
 }
