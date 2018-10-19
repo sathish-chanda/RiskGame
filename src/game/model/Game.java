@@ -137,10 +137,10 @@ public class Game implements GameListener {
         }
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
-            players.add(new Player(playerNum * 10));
+            players.add(new Player(playerNum));
 
         assignCountryToPlayers();
-        getArmy();
+        reinforcement();
         placeArmyOnCountry();
         initFortification();
     }
@@ -150,15 +150,19 @@ public class Game implements GameListener {
      */
     private void initFortification() {
         Scanner scanner = new Scanner(System.in);
-        LogHelper.printMessage("Select source country");
-        String countrySourceName = scanner.nextLine();
-        LogHelper.printMessage("Selected source country = " + countrySourceName);
+        for(int j = 0; j < playerNum; j++) {
 
-        LogHelper.printMessage("Select destination country");
-        String countryDestinationName = scanner.nextLine();
-        LogHelper.printMessage("Selected destination country = " + countryDestinationName);
+            LogHelper.printMessage("now it's the player" + players.get(j).getPlayerID() + " term to do fortification");
+            LogHelper.printMessage("Select source country");
+            String countrySourceName = scanner.nextLine();
+            LogHelper.printMessage("Selected source country = " + countrySourceName);
 
-        gameMap.fortification(countrySourceName, countryDestinationName, players.get(0).getPlayerID());
+            LogHelper.printMessage("Select destination country");
+            String countryDestinationName = scanner.nextLine();
+            LogHelper.printMessage("Selected destination country = " + countryDestinationName);
+
+            gameMap.fortification(countrySourceName, countryDestinationName, players.get(j).getPlayerID());
+        }
     }
 
     /**
@@ -182,37 +186,35 @@ public class Game implements GameListener {
     /**
      * The getArmy method print out in the console how many armies are owned by players.
      */
-    private void getArmy() {
+    private void reinforcement() {
 
         int armyNum = 0;
-
+        int deleteTerritoryNum = 0;
         for (int i = 0; i < players.size(); i++) {
-
-            String continentName = players.get(i).getCountry().get(0).getTerritoryName();
-            boolean flag = true;
-            int ownedCountrySize = players.get(i).getCountry().size();
-            for (int j = 0; j < ownedCountrySize; j++) {
-                if (continentName.matches(players.get(i).getCountry().get(j).getContinentName()))
-                    continue;
-                else {
-                    flag = false;
-                    break;
+            for (int j = 0; j < gameMap.getContinentListMap().size(); j++) {
+                Continent c = gameMap.getContinentListMap().get(j);
+                int playerID = players.get(i).getPlayerID();
+                boolean flag = true;
+                for (int k = 0; k < c.getTerritoryList().size(); k++) {
+                    Territory t = c.getTerritoryList().get(k);
+                    if (t.getPlayerID() == playerID)
+                        continue;
+                    else
+                        flag = false;
+                }
+                if (flag) {
+                    armyNum = armyNum + c.getMaximumArmy();
+                    deleteTerritoryNum = deleteTerritoryNum + c.getTerritoryList().size();
                 }
             }
-            if (flag) {
-                if (ownedCountrySize == gameMap.searchContinent(continentName).getTerritoryList().size())
-                    armyNum = gameMap.searchContinent(continentName).getMaximumArmy();
-                armyNum = armyNum + (players.get(i).getCountry().size() - gameMap.searchContinent(continentName).getMaximumArmy()) / 3;
-
-            } else {
-                armyNum = players.get(i).getCountry().size() / 3;
-            }
+            armyNum = armyNum + (players.get(i).getCountry().size() - deleteTerritoryNum) / 3;
             if (armyNum < 3)
                 armyNum = 3;
             players.get(i).updateArmyNum(armyNum);
             LogHelper.printMessage("Player" + players.get(i).getPlayerID() + " has " + players.get(i).getArmyNum() + " armies.");
         }
     }
+
 
     /**
      * The placeArmynonCountry method is used at the beginning of each round of play.
