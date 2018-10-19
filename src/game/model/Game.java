@@ -30,7 +30,6 @@ public class Game implements GameListener {
      */
     public Game() {
         gameMap = new GameMap(this);
-        //
     }
 
     public void loadMapData(String fileName) {
@@ -127,21 +126,26 @@ public class Game implements GameListener {
     }
 
     private void selectNumberOfPlayers() {
-        System.out.println("please input the number of players");
+        LogHelper.printMessage("please input the number of players");
         Scanner readInput = new Scanner(System.in);
         if (readInput.hasNextInt()) {
             playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
         }
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
-            players.add(new Player(playerNum * 40));
+            players.add(new Player(playerNum * 10));
 
         assignCountryToPlayers();
         getArmy();
         placeArmyOnCountry();
+        initFortification();
+    }
 
+    /**
+     * Method to inititalize fortification process
+     */
+    private void initFortification() {
         Scanner scanner = new Scanner(System.in);
-
         LogHelper.printMessage("Select source country");
         String countrySourceName = scanner.nextLine();
         LogHelper.printMessage("Selected source country = " + countrySourceName);
@@ -167,7 +171,7 @@ public class Game implements GameListener {
             players.get(playerSelect - 1).addCountry(gameMap.getTerritoryList().get(i));
         }
         for (int j = 0; j < players.size(); j++) {
-            System.out.println("the player" + players.get(j).getPlayerID() + " has " + players.get(j).getCountryNum() + " countries");
+            LogHelper.printMessage("the player" + players.get(j).getPlayerID() + " has " + players.get(j).getCountryNum() + " countries");
         }
     }
 
@@ -202,7 +206,7 @@ public class Game implements GameListener {
             if (armyNum < 3)
                 armyNum = 3;
             players.get(i).updateArmyNum(armyNum);
-            System.out.println("Player" + players.get(i).getPlayerID() + " has " + players.get(i).getArmyNum() + " armies.");
+            LogHelper.printMessage("Player" + players.get(i).getPlayerID() + " has " + players.get(i).getArmyNum() + " armies.");
         }
     }
 
@@ -223,62 +227,13 @@ public class Game implements GameListener {
         }
         for (int j = 0; j < players.size(); j++) {
             Player player = players.get(j);
-            System.out.print("player" + player.getPlayerID() + " have ");
+            LogHelper.printMessage("player" + player.getPlayerID() + " have ");
             for (int k = 0; k < player.getCountry().size(); k++) {
                 Territory country = player.getCountry().get(k);
-                System.out.print(country.getArmyNum() + " on country " + country.getTerritoryName() + ", ");
+                LogHelper.printMessage(country.getArmyNum() + " on country " + country.getTerritoryName() + ", ");
             }
-            System.out.println(" ");
+            LogHelper.printMessage(" ");
         }
-    }
-
-    /**
-     * The searchPlayerByCountryName use a
-     * }
-     * return null;
-     * }
-     * <p>
-     * /**
-     * This method is an imitation of rolling dice.
-     *
-     * @param attackingCountry
-     * @param defendingCountry
-     * @return
-     */
-    private int rollingDice(Territory attackingCountry, Territory defendingCountry) {
-        Scanner readInput = new Scanner(System.in);
-        System.out.println("attacker choose how many dice you want to roll");
-        int attackerDice = 1;
-        if (readInput.hasNext()) {
-            attackerDice = readInput.nextInt();
-        }
-        System.out.println("defender choose how many dice you want to roll");
-        int defenderDice = 1;
-        if (readInput.hasNext()) {
-            defenderDice = readInput.nextInt();
-        }
-
-        Random rand = new Random();
-        int dice;
-        int attackerBestDice = 0;
-        int attackerSecondBestDice = 0;
-        for (int i = 0; i < attackerDice; i++) {
-            dice = rand.nextInt(6) + 1;
-            if (attackerBestDice < dice)
-                attackerBestDice = dice;
-        }
-
-        int defenderBestDice = 0;
-        int defenderSecondBestDice = 0;
-        for (int i = 0; i < defenderDice; i++) {
-            dice = rand.nextInt(6) + 1;
-            if (defenderBestDice < dice)
-                defenderBestDice = dice;
-        }
-
-        if (attackerBestDice > defenderBestDice)//if positive attacker wins, if negative defender wins
-            return 1;
-        else return -1;
     }
 
     public String getFileName() {

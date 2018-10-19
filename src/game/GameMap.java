@@ -94,15 +94,13 @@ public class GameMap {
                 territoryList.add(territory);
             }
         }
-        LogHelper.printMessage("territory List = " + territoryList);
-        LogHelper.printMessage("territory List = " + territoryList.size());
     }
 
     /**
      * This method load continents from mapFileHelper class
      */
     public void loadContinents() {
-        LogHelper.printMessage(" "+mapFileHelper.getContinentsComponentList().size());
+        LogHelper.printMessage(" " + mapFileHelper.getContinentsComponentList().size());
         List<String> continentComponentList = mapFileHelper.getContinentsComponentList();
         List<String> continentSplitList;
         continentsHashMap = new HashMap<>();
@@ -134,8 +132,6 @@ public class GameMap {
             Continent continent = new Continent(continentList.get(i).getContinentName(), continentList.get(i).getMaximumArmy(), territoryListMap);
             continentListMap.add(continent);
         }
-        LogHelper.printMessage("continent map == " + continentListMap);
-        LogHelper.printMessage("continent map == " + continentListMap.size());
     }
 
     public Territory searchCountry(String countryName) {
@@ -195,12 +191,12 @@ public class GameMap {
             }
             if (totalVisitedCountry != continentListMap.get(i).getTerritoryList().size()) {
                 isMapValid = false;
-                System.out.println("the input map is invalid");
-                System.out.println("the problem is in the continent" + continentListMap.get(i).getContinentName());
+                LogHelper.printMessage("the input map is invalid");
+                LogHelper.printMessage("the problem is in the continent " + continentListMap.get(i).getContinentName());
                 return;
             } else {
                 isMapValid = true;
-                System.out.println("the continent" + continentListMap.get(i).getContinentName() + " map is valid");
+                LogHelper.printMessage("the continent " + continentListMap.get(i).getContinentName() + " map is valid");
             }
         } //end of for loop
         if (isMapValid) {
@@ -230,7 +226,7 @@ public class GameMap {
             for (int j = 0; j < c.getAdjacentCountryList().size(); j++) {
                 Territory adjacentTerritory = searchCountry(c.getAdjacentCountryList().get(j));
                 if (adjacentTerritory == null) {
-                    System.out.println("the input map is invalid");
+                    LogHelper.printMessage("the input map is invalid");
                     return;
                 }
                 if (adjacentTerritory.visitedWholeMap == false) {
@@ -241,10 +237,10 @@ public class GameMap {
             }
         }
         if (totalVisitedTerritory != territoryListSize) {
-            System.out.println("the input map is invalid");
+            LogHelper.printMessage("the input map is invalid");
             return;
         } else {
-            System.out.println("the input map is valid");
+            LogHelper.printMessage("the input map is valid");
             gameListener.onTerritoryMapValid();
             return;
         }
@@ -276,25 +272,25 @@ public class GameMap {
         }
         if (flag) {
             int moveArmyNum = 0;
-            System.out.println("please input the number of armys you want to move");
-            System.out.println("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
+            LogHelper.printMessage("please input the number of armys you want to move");
+            LogHelper.printMessage("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
             Scanner readInput = new Scanner(System.in);
             if (readInput.hasNextInt())
                 moveArmyNum = readInput.nextInt();
             while (moveArmyNum > searchCountry(countrySourceName).getArmyNum()) {
-                System.out.println("exceed maximum number you can move");
-                System.out.println("please input the number of armys you want to move");
-                System.out.println("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
+                LogHelper.printMessage("exceed maximum number you can move");
+                LogHelper.printMessage("please input the number of armys you want to move");
+                LogHelper.printMessage("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
                 if (readInput.hasNextInt())
                     moveArmyNum = readInput.nextInt();
             }
             t1.updateArmyNum(0 - moveArmyNum);
-            System.out.println("now " + countrySourceName + " has " + t1.getArmyNum() + " armies");
+            LogHelper.printMessage("now " + countrySourceName + " has " + t1.getArmyNum() + " armies");
             t2.updateArmyNum(moveArmyNum);
-            System.out.println("now " + countryDestinationName + " has " + t2.getArmyNum() + " armies");
+            LogHelper.printMessage("now " + countryDestinationName + " has " + t2.getArmyNum() + " armies");
 
         } else
-            System.out.println("cant move army");
+            LogHelper.printMessage("cant move army");
         return;
     }
 

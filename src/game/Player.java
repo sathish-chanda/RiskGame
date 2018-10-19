@@ -1,6 +1,7 @@
 package game;
 
 import game.model.Territory;
+import game.utils.LogHelper;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class Player {
         playerID = ++playerCounter;
         armyNum = armyNum + initialArmyNum;
         ownedCountry = new ArrayList<Territory>();
-        System.out.println(armyNum);
+        LogHelper.printMessage("" + armyNum);
 
     }
 
