@@ -1,6 +1,7 @@
 package game.utils;
 
 import game.GameMap;
+import game.model.Continent;
 import game.model.Game;
 import game.model.MapValidator;
 import sun.rmi.runtime.Log;
@@ -136,10 +137,19 @@ public class MapFileHelper {
     /**
      * Editing the Map file
      * add or delete continent, territories and adjacent nodes
+     *
+     * @param continentListMap
      */
-    public void editMapFile() {
+    public void editMapFile(List<Continent> continentListMap) {
 
-        Scanner readData = new Scanner(System.in);
+        // for (int i = )
+
+        //open continenet map list
+        // do simply deleting one continent
+
+
+
+        /*Scanner readData = new Scanner(System.in);
         int addContinent = 0;
 
         do {
@@ -183,7 +193,7 @@ public class MapFileHelper {
             }
 
         } while (addContinent != 0);
-
+*/
     }
 
     /**
@@ -309,6 +319,14 @@ public class MapFileHelper {
 
     public List<String> getContinentsComponentList() {
         return continentsComponentList;
+    }
+
+    public void setContinentsComponentList(List<String> continentsComponentList) {
+        this.continentsComponentList = continentsComponentList;
+    }
+
+    public void setTerritoriesComponentList(List<String> territoriesComponentList) {
+        this.territoriesComponentList = territoriesComponentList;
     }
 
     public List<String> getTerritoriesComponentList() {

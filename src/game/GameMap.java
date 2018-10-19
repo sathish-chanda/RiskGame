@@ -3,7 +3,6 @@ package game;
 import game.listeners.GameListener;
 import game.model.Continent;
 import game.model.Territory;
-import game.utils.Constants;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 
@@ -46,16 +45,213 @@ public class GameMap {
         onMapLoaded();
     }
 
+    /**
+     * This method is used to save map data to file
+     */
     public void saveMap() {
         mapFileHelper.saveMapFile();
         LogHelper.printMessage("User map file is saved");
         gameListener.onUserMapSaveSuccess();
     }
 
-    public void editMap() {
-        mapFileHelper.editMapFile();
+    /**
+     * This method is used to inititalize editing of map data to file
+     */
+    public void initEditMap() {
+        /*mapFileHelper.editMapFile(getContinentListMap());
         LogHelper.printMessage("User map file is saved");
-        gameListener.onUserMapSaveSuccess();
+        gameListener.onUserMapSaveSuccess();*/
+        LogHelper.printMessage("Insert 1 to add continent and 2 to Delete continent");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        choiceToAddOrDeleteContinent(choice);
+    }
+
+    private void showContinentsToBeEdited() {
+        for (int i = 0; i < continentListMap.size(); i++) {
+            String continentName = continentListMap.get(i).getContinentName();
+            LogHelper.printMessage(continentName + " - " + (i + 1));
+        }
+
+    }
+
+    private void showTerritoriesToBeEditied() {
+        for (int i = 0; i < continentListMap.size(); i++) {
+            String continentName = continentListMap.get(i).getContinentName();
+            LogHelper.printMessage(continentName + " - " + (i + 1));
+        }
+
+    }
+
+    private void choiceToAddOrDeleteContinent(int choice) {
+        switch (choice) {
+            case 1:
+                addContinent();
+                break;
+            case 2:
+                showEditedList();
+                deleteContinent();
+                break;
+            default:
+                LogHelper.printMessage("Invalid Input");
+        }
+    }
+
+    private void choiceToAddOrDeleteTerritory(int choice) {
+        switch (choice) {
+            case 1:
+                LogHelper.printMessage("Please select the continent of the territory");
+                Scanner scanner = new Scanner(System.in);
+                //get continent here and
+                //addTerritory();
+                break;
+            case 2:
+                LogHelper.printMessage("Please select the continent of the territory");
+                deleteTerritory();
+                break;
+            default:
+                LogHelper.printMessage("Invalid Input");
+        }
+    }
+
+    /**
+     * Method to delete continent
+     */
+    private void deleteContinent() {
+        LogHelper.printMessage("Select Continent to be deleted");
+        Scanner scanner = new Scanner(System.in);
+        int position = scanner.nextInt();
+        if (position <= 0 && position > continentListMap.size()) {
+            LogHelper.printMessage("invalid input");
+        } else {
+            continentListMap.remove(position - 1);
+        }
+        showEditedList();
+        reCreateContinentComponentData();
+        reCreateTerritoryMapData();
+        gameListener.onUserMapEditSuccess();
+    }
+
+    //private void
+
+    /**
+     * Method to show edited list of continents
+     */
+    private void showEditedList() {
+        for (int i = 0; i < continentListMap.size(); i++) {
+            String continentName = continentListMap.get(i).getContinentName();
+            LogHelper.printMessage(continentName + " - " + (i + 1));
+        }
+    }
+
+    /**
+     * Method to add continent
+     */
+    private void addContinent() {
+        Scanner scanner = new Scanner(System.in);
+        LogHelper.printMessage("Please enter continent name");
+        String continetName = scanner.next();
+        LogHelper.printMessage("Select army value of the continent");
+        int maxArmy = scanner.nextInt();
+        Continent continent = new Continent(continetName, maxArmy);
+        addTerritory(continent);
+        reCreateContinentComponentData();
+        reCreateTerritoryMapData();
+        gameListener.onUserMapEditSuccess();
+    }
+
+    /**
+     * Method used to recreate continent map data
+     */
+    private void reCreateContinentComponentData() {
+        List<String> continentsComponentList = new ArrayList<>();
+        for (int i = 0; i < continentListMap.size(); i++) {
+            String continentComponentName = continentListMap.get(i).getContinentName()
+                    + "=" + continentListMap.get(i).getMaximumArmy();
+            continentsComponentList.add(continentComponentName);
+        }
+        mapFileHelper.setContinentsComponentList(continentsComponentList);
+        LogHelper.printMessage("" + continentsComponentList);
+    }
+
+    /**
+     * Method used to recreate territory map data
+     */
+    private void reCreateTerritoryMapData() {
+        String territoryComponentName;
+        List<String> territoryComponentList = new ArrayList<>();
+        for (int i = 0; i < continentListMap.size(); i++) {
+            for (int j = 0; j < continentListMap.get(i).getTerritoryList().size(); j++) {
+                String territoryName = continentListMap.get(i).getTerritoryList().get(j).getTerritoryName();
+                String lat = continentListMap.get(i).getTerritoryList().get(j).getLatitude();
+                String lon = continentListMap.get(i).getTerritoryList().get(j).getLongitude();
+                String continentName = continentListMap.get(i).getTerritoryList().get(j).getContinentName();
+                String adjacentCountryList = getAdjacentCountryList(continentListMap.get(i).getTerritoryList().get(j));
+                territoryComponentName = territoryName + "," + lat + "," + lon + "," + continentName + "," + adjacentCountryList;
+                territoryComponentList.add(territoryComponentName);
+            }
+        }
+        LogHelper.printMessage("territory component list " + territoryComponentList);
+        mapFileHelper.setTerritoriesComponentList(territoryComponentList);
+    }
+
+    /**
+     * Method to get adjacent country List
+     *
+     * @param territory
+     * @return
+     */
+    private String getAdjacentCountryList(Territory territory) {
+        String territoryListValue = "";
+        for (int i = 0; i < territory.getAdjacentCountryList().size(); i++) {
+            if (i == 0) {
+                territoryListValue = territory.getAdjacentCountryList().get(i);
+            } else {
+                territoryListValue = territoryListValue + "," + territory.getAdjacentCountryList().get(i);
+            }
+        }
+        LogHelper.printMessage(territoryListValue);
+        return territoryListValue;
+    }
+
+    /**
+     * Method to add territory
+     */
+    private void addTerritory(Continent continent) {
+        Scanner scanner = new Scanner(System.in);
+        LogHelper.printMessage("Please enter territory name");
+        String territoryName = scanner.next();
+        LogHelper.printMessage("Please enter latitude value");
+        String latitude = scanner.next();
+        LogHelper.printMessage("Please enter longitude value");
+        String longitiude = scanner.next();
+        LogHelper.printMessage("Please enter total number of adjacent countries you want to add");
+        int totalAdjacentCountries = scanner.nextInt();
+        ArrayList<String> adjacentTerritoryList = new ArrayList<>();
+        for (int i = 0; i < totalAdjacentCountries; i++) {
+            addAdjacentTerritory(territoryName, adjacentTerritoryList, i);
+        }
+        Territory territory = new Territory(territoryName, latitude, longitiude, continent.getContinentName(), adjacentTerritoryList);
+        List<Territory> territoryList = new ArrayList<>();
+        territoryList.add(territory);
+        continent = new Continent(continent.getContinentName(), continent.getMaximumArmy(), territoryList);
+        continentListMap.add(continent);
+    }
+
+    private void addAdjacentTerritory(String territoryName, List<String> adjacentTerritoryList, int position) {
+        LogHelper.printMessage("Please enter " + (position + 1) + " adjacent territory name for country " + territoryName);
+        Scanner scanner = new Scanner(System.in);
+        String adjacentTerritory = scanner.next();
+        adjacentTerritoryList.add(adjacentTerritory);
+    }
+
+    /**
+     * Method to delete territory
+     *
+     * @param
+     */
+    private void deleteTerritory() {
+
     }
 
     /**
@@ -68,10 +264,6 @@ public class GameMap {
         } else {
             gameListener.onMapLoadFailure(mapFileHelper.getErrorMessage());
         }
-    }
-
-    private void onMapSaved() {
-
     }
 
     /**
