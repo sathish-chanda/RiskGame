@@ -58,12 +58,19 @@ public class GameMap {
         gameListener.onUserMapSaveSuccess();
     }
 
+    public void editMap() {
+        mapFileHelper.editMapFile();
+        LogHelper.printMessage("User map file is saved");
+        gameListener.onUserMapSaveSuccess();
+    }
+
     /**
      * This method validates if mad is valid or not
      */
     private void onMapLoaded() {
         if (mapFileHelper.isMapValid()) {
             gameListener.onMapLoadSuccess();
+
         } else {
             gameListener.onMapLoadFailure(mapFileHelper.getErrorMessage());
         }

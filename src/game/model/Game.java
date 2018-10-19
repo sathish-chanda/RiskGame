@@ -5,6 +5,7 @@ import game.Player;
 import game.listeners.GameListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
+import game.utils.MapFileHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,7 @@ public class Game implements GameListener {
         String feedback = scanner.next();
         switch (feedback) {
             case "y":
+                gameMap.editMap();
                 break;
             case "n":
                 saveMapData();
