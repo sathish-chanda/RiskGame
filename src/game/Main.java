@@ -11,6 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Main class Starts the game play
+ * It initialise the game model and controller
+ */
 public class Main extends Application {
 
     @Override
@@ -18,6 +22,9 @@ public class Main extends Application {
         initGameComponents();
     }
 
+    /**
+     * Method initialise game model
+     */
     private void initGameComponents() {
         RiskModel riskModel = new RiskModel();
         RiskController riskController = new RiskController(riskModel);

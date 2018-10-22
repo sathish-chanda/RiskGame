@@ -22,6 +22,14 @@ public class Territory {
         armyNum = 0;
     }
 
+    /**
+     * This is the constructor method used to initialize various attributes of map file.
+     * @param countryName refers primary country of the continent
+     * @param latitude refers co-ordinate of country located in the map
+     * @param longitude refers co-ordinate of country located in the map
+     * @param continentName refers continent name
+     * @param adjacentCountryList refers list of adjacent countries connected to primary country
+     */
     public Territory(String countryName, String latitude, String longitude, String continentName, ArrayList<String> adjacentCountryList) {
         this.territoryName = countryName;
         this.continentName = continentName;
@@ -84,6 +92,10 @@ public class Territory {
         armyNum = armyNum + armyNumber;
     }
 
+    /**
+     * This method is used to get continent name
+     * @return continent name
+     */
     public String getContinentName() {
         return continentName;
     }
@@ -107,7 +119,7 @@ public class Territory {
     }
 
     /**
-     * This method sets adajacent countries of a
+     * This method sets adajacent countries
      *
      * @param adjacentCountryList
      */
@@ -115,10 +127,18 @@ public class Territory {
         this.adjacentCountryList = adjacentCountryList;
     }
 
+    /**
+     *  get latitude position of countries in the map
+     * @return latitude point
+     */
     public String getLatitude() {
         return latitude;
     }
 
+    /**
+     *  get longitude position of countries in the map
+     * @return longitude point
+     */
     public String getLongitude() {
         return longitude;
     }

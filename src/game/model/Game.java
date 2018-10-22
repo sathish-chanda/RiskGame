@@ -53,6 +53,9 @@ public class Game implements GameListener {
         displayListofTerrritoriesToUser();
     }
 
+    /**
+     * This method displays list of the territories to  user
+     */
     private void displayListofTerrritoriesToUser() {
         List<Continent> continentList = gameMap.getContinentListMap();
         LogHelper.printMessage("\nSelect Territories ");
@@ -111,6 +114,9 @@ public class Game implements GameListener {
         }
     }
 
+    /**
+     * This method allows user to edit the map
+     */
     private void editMapFileChoice() {
         Scanner scanner = new Scanner(System.in);
         String feedback = scanner.next();
@@ -144,6 +150,10 @@ public class Game implements GameListener {
         saveMapData();
     }
 
+
+    /**
+     * This method allows users to select the number of players
+     */
     private void selectNumberOfPlayers() {
         LogHelper.printMessage("please input the number of players");
         Scanner readInput = new Scanner(System.in);
@@ -257,10 +267,19 @@ public class Game implements GameListener {
         }
     }
 
+    /**
+     * This method is used to get Map file name
+     * @return filename
+     */
     public String getFileName() {
         return fileName;
     }
 
+
+    /**
+     * This method is used set file name
+     * @param fileName
+     */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }

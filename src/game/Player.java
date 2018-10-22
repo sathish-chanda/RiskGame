@@ -16,6 +16,11 @@ public class Player {
     private int armyNum = 0;//number of army owned by a player
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
 
+    /**
+     * Method used to setup player description
+     * Assigning of Id, initial armies and owned countries
+     * @param playerNum, no of players in the game
+     */
     public Player(int playerNum) {
         playerID = ++playerCounter;
         int initialArmyNum = 40 - 5 * (playerNum - 2);
@@ -25,37 +30,65 @@ public class Player {
 
     }
 
+    /**
+     * method to increase country number depends on players count
+     */
     public void increaseCountryNum() {
         countryNum = countryNum + 1;
     }
 
     /**
-     * The getArmy method returns the number of armies controled by a player
+     * method get player unique Id
+     * @return player Id
      */
     public int getPlayerID() {
         return playerID;
     }
 
+    /**
+     * Method to add player owned territory to the list
+     * @param country
+     */
     public void addCountry(Territory country) {
         ownedCountry.add(country);
     }
 
+    /**
+     * Method to remove player loosed territory from the list
+     * @param country
+     */
     public void removeCountry(Territory country) {
         ownedCountry.remove(country);
     }
 
+    /**
+     * Method to get owned territories list
+     * @return list of territories
+     */
     public ArrayList<Territory> getCountry() {
         return ownedCountry;
     }
 
+    /**
+     * Method to get number of countries a player owned
+     * @return total country number
+     */
     public int getCountryNum() {
         return countryNum;
     }
 
+    /**
+     * Method to get total number of armies a player owned
+     * @return total armies count
+     */
     public int getArmyNum() {
         return armyNum;
     }
 
+    /**
+     * Method to update new army count, result from reinforcement phase
+     * @param armyNumber
+     */
     public void updateArmyNum(int armyNumber) {
         armyNum = armyNum + armyNumber;
     }
