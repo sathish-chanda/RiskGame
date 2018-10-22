@@ -55,7 +55,7 @@ public class GameMap {
     }
 
     /**
-     * This method is used to inititalize editing of map data to file
+     * This method is used to initialize editing of map data to file
      */
     public void initEditMap() {
         /*mapFileHelper.editMapFile(getContinentListMap());
@@ -293,6 +293,11 @@ public class GameMap {
         }
     }
 
+    /**
+     * Method to search territory name in the territory list
+     * @param countryName, territory to be searched
+     * @return territory found in the list
+     */
     public Territory searchCountry(String countryName) {
         Territory t = null;
         for (int i = 0; i < territoryList.size(); i++) {
@@ -304,6 +309,11 @@ public class GameMap {
         return t;
     }
 
+    /**
+     * Method to search continent name in the continent list
+     * @param continentName, continent to be searched
+     * @return continent found in the list
+     */
     public Continent searchContinent(String continentName) {
         Continent t = null;
         for (int i = 0; i < continentListMap.size(); i++) {
@@ -369,7 +379,6 @@ public class GameMap {
      * The verifyCountryMap method verify if all the country of the whole map is connected.
      * The method traverse the ArrayList territoryList.
      * For every country in the territoryList, its adjacent countries(in the adjacentCountry), must also be in the territoryList.
-     *
      * @return boolean
      */
     public void verifyTerritoryMap() {
@@ -406,6 +415,13 @@ public class GameMap {
     }
 
 
+    /**
+     * This method setup fortification phase for the game
+     * In fortification phase, sharing armies between adjacent territories will happen.
+     * @param countrySourceName, territory going to share army
+     * @param countryDestinationName, adjacent territory going to accept army
+     * @param playerID, player unique Id
+     */
     public void fortification(String countrySourceName, String countryDestinationName, int playerID) {
         Territory t1 = searchCountry(countrySourceName);
         Territory t2 = searchCountry(countryDestinationName);
@@ -453,23 +469,42 @@ public class GameMap {
         return;
     }
 
-
+    /**
+     * method to get territory list
+     * @return territory list
+     */
     public List<Territory> getTerritoryList() {
         return territoryList;
     }
 
+    /**
+     * method to get continent list
+     * @return continent list
+     */
     public List<Continent> getContinentList() {
         return continentList;
     }
 
+    /**
+     * method to get continent list from the map
+     * @return continent list
+     */
     public List<Continent> getContinentListMap() {
         return continentListMap;
     }
 
+    /**
+     * method to get territory list from the map
+     * @return territory list
+     */
     public List<Territory> getTerritoryListMap() {
         return territoryListMap;
     }
 
+    /**
+     * method to get map file helper class components
+     * @return map file component
+     */
     public MapFileHelper getMapFileHelper() {
         return mapFileHelper;
     }

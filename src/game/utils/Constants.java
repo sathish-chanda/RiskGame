@@ -1,5 +1,8 @@
 package game.utils;
 
+/**
+ * Constant class defining static names in the game.
+ */
 public class Constants {
 
     public static final String RISK_GAME_NAME = "Risk Game";

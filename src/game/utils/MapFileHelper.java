@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * MapFileHelper class used to store map file data
+ */
 public class MapFileHelper {
 
     private static MapFileHelper instance = null;
@@ -79,6 +82,11 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * This method checks validity of map components
+     * @param line refers line of data from the map file
+     */
+
     private void validateMapComponents(String line) {
         if (line.equals(Constants.MAP_KEY) || isPatternMatches(Constants.MAP_KEY_PATTERN, line) || mapValidator.isMapKeyValid()) {
             addMapComponents();
@@ -87,6 +95,10 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * This method checks validity of continents from the map file
+     * @param line refers line of data from the map file
+     */
     private void validateContinentComponents(String line) {
         if (line.equals(Constants.CONTINENTS_KEY) || isPatternMatches(Constants.CONTINENTS_KEY_PATTERN, line)
                 || mapValidator.isContinentKeyValid()) {
@@ -96,6 +108,10 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * This method checks validity of territory from the map file
+     * @param line refers line of data from the map file
+     */
     private void validateTerritoriesComponent(String line) {
         if (line.equals(Constants.TERRITORIES_KEY) || mapValidator.isTerrtitoryKeyValid()) {
             addTerritoryComponents();
@@ -104,6 +120,9 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * Method used to add map validity key components
+     */
     private void addMapComponents() {
         if (line.equals(Constants.MAP_KEY)) {
             mapValidator.setMapKeyValid(true);
@@ -115,6 +134,9 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * method used to save continent data from the map
+     */
     private void addContinentComponents() {
         if (line.equals(Constants.CONTINENTS_KEY)) {
             mapValidator.setContinentKeyValid(true);
@@ -126,6 +148,9 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * Method used to save territory data from the map
+     */
     private void addTerritoryComponents() {
         if (line.equals(Constants.TERRITORIES_KEY)) {
             mapValidator.setTerrtitoryKeyValid(true);
@@ -285,6 +310,12 @@ public class MapFileHelper {
         }
     }
 
+    /**
+     * Method checks pattern matches in the map file
+     * @param pattern
+     * @param line
+     * @return  pattern and line
+     */
     private boolean isPatternMatches(String pattern, String line) {
         return Pattern.matches(pattern, line);
     }
@@ -297,38 +328,73 @@ public class MapFileHelper {
         this.errorMessage = errorMessage;
     }
 
+    /**
+     * method to get error message
+     * @return eroor messag
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * method go get map valid status
+     * @return boolean
+     */
     public boolean isMapValid() {
         return !isMapInvalid;
     }
 
+    /**
+     * method to reset the validity status of map
+     */
     public void resetMapValidity() {
         isMapInvalid = false;
     }
 
+    /**
+     * Method to check the map file saved successfully.
+     * @return boolean
+     */
     public boolean isFileSaveSuccess() {
         return mapValidator.isFileSaveSuccess();
     }
 
+    /**
+     * Method to get all components list of map
+     * @return map component list
+     */
     public List<String> getMapComponentList() {
         return mapComponentList;
     }
 
+    /**
+     * method to get continent list from the map file
+     * @return list of continent
+     */
     public List<String> getContinentsComponentList() {
         return continentsComponentList;
     }
 
+    /**
+     * method to set continent list
+     * @param continentsComponentList
+     */
     public void setContinentsComponentList(List<String> continentsComponentList) {
         this.continentsComponentList = continentsComponentList;
     }
 
+    /**
+     * method to set territory component list
+     * @param territoriesComponentList
+     */
     public void setTerritoriesComponentList(List<String> territoriesComponentList) {
         this.territoriesComponentList = territoriesComponentList;
     }
 
+    /**
+     * method to get territory component list
+     * @return territory component list
+     */
     public List<String> getTerritoriesComponentList() {
         return territoriesComponentList;
     }
