@@ -58,9 +58,6 @@ public class GameMap {
      * This method is used to initialize editing of map data to file
      */
     public void initEditMap() {
-        /*mapFileHelper.editMapFile(getContinentListMap());
-        LogHelper.printMessage("User map file is saved");
-        gameListener.onUserMapSaveSuccess();*/
         LogHelper.printMessage("Insert 1 to add continent and 2 to Delete continent");
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
@@ -104,8 +101,6 @@ public class GameMap {
         gameListener.onUserMapEditSuccess();
     }
 
-    //private void
-
     /**
      * Method to show edited list of continents
      */
@@ -122,14 +117,50 @@ public class GameMap {
     private void addContinent() {
         Scanner scanner = new Scanner(System.in);
         LogHelper.printMessage("Please enter continent name");
-        String continetName = scanner.next();
+        String continentName = scanner.next();
         LogHelper.printMessage("Select army value of the continent");
         int maxArmy = scanner.nextInt();
-        Continent continent = new Continent(continetName, maxArmy);
-        addTerritory(continent);
+        Continent continent = new Continent(continentName, maxArmy);
+        initTerritoryList(continent);
         reCreateContinentComponentData();
         reCreateTerritoryMapData();
         gameListener.onUserMapEditSuccess();
+    }
+
+    /**
+     * Method to initialize list of territories
+     */
+    private void initTerritoryList(Continent continent) {
+        Scanner scanner = new Scanner(System.in);
+        List<Territory> territoryList = new ArrayList<>();
+        LogHelper.printMessage("Please enter total number of territories you want to add");
+        int totalNumberOfTerritories = scanner.nextInt();
+        for (int i = 0; i < totalNumberOfTerritories; i++) {
+            addTerritory(continent, i, territoryList);
+        }
+    }
+
+    /**
+     * Method to add territory
+     */
+    private void addTerritory(Continent continent, int position, List<Territory> territoryList) {
+        Scanner scanner = new Scanner(System.in);
+        LogHelper.printMessage("Please enter " + position + " territory name");
+        String territoryName = scanner.next();
+        LogHelper.printMessage("Please enter latitude value");
+        String latitude = scanner.next();
+        LogHelper.printMessage("Please enter longitude value");
+        String longitiude = scanner.next();
+        LogHelper.printMessage("Please enter total number of adjacent countries you want to add");
+        int totalAdjacentCountries = scanner.nextInt();
+        ArrayList<String> adjacentTerritoryList = new ArrayList<>();
+        for (int i = 0; i < totalAdjacentCountries; i++) {
+            addAdjacentTerritory(territoryName, adjacentTerritoryList, i);
+        }
+        Territory territory = new Territory(territoryName, latitude, longitiude, continent.getContinentName(), adjacentTerritoryList);
+        territoryList.add(territory);
+        continent = new Continent(continent.getContinentName(), continent.getMaximumArmy(), territoryList);
+        continentListMap.add(continent);
     }
 
     /**
@@ -184,30 +215,6 @@ public class GameMap {
         }
         LogHelper.printMessage(territoryListValue);
         return territoryListValue;
-    }
-
-    /**
-     * Method to add territory
-     */
-    private void addTerritory(Continent continent) {
-        Scanner scanner = new Scanner(System.in);
-        LogHelper.printMessage("Please enter territory name");
-        String territoryName = scanner.next();
-        LogHelper.printMessage("Please enter latitude value");
-        String latitude = scanner.next();
-        LogHelper.printMessage("Please enter longitude value");
-        String longitiude = scanner.next();
-        LogHelper.printMessage("Please enter total number of adjacent countries you want to add");
-        int totalAdjacentCountries = scanner.nextInt();
-        ArrayList<String> adjacentTerritoryList = new ArrayList<>();
-        for (int i = 0; i < totalAdjacentCountries; i++) {
-            addAdjacentTerritory(territoryName, adjacentTerritoryList, i);
-        }
-        Territory territory = new Territory(territoryName, latitude, longitiude, continent.getContinentName(), adjacentTerritoryList);
-        List<Territory> territoryList = new ArrayList<>();
-        territoryList.add(territory);
-        continent = new Continent(continent.getContinentName(), continent.getMaximumArmy(), territoryList);
-        continentListMap.add(continent);
     }
 
     /**
@@ -295,6 +302,7 @@ public class GameMap {
 
     /**
      * Method to search territory name in the territory list
+     *
      * @param countryName, territory to be searched
      * @return territory found in the list
      */
@@ -311,6 +319,7 @@ public class GameMap {
 
     /**
      * Method to search continent name in the continent list
+     *
      * @param continentName, continent to be searched
      * @return continent found in the list
      */
@@ -379,6 +388,7 @@ public class GameMap {
      * The verifyCountryMap method verify if all the country of the whole map is connected.
      * The method traverse the ArrayList territoryList.
      * For every country in the territoryList, its adjacent countries(in the adjacentCountry), must also be in the territoryList.
+     *
      * @return boolean
      */
     public void verifyTerritoryMap() {
@@ -418,9 +428,10 @@ public class GameMap {
     /**
      * This method setup fortification phase for the game
      * In fortification phase, sharing armies between adjacent territories will happen.
-     * @param countrySourceName, territory going to share army
+     *
+     * @param countrySourceName,      territory going to share army
      * @param countryDestinationName, adjacent territory going to accept army
-     * @param playerID, player unique Id
+     * @param playerID,               player unique Id
      */
     public void fortification(String countrySourceName, String countryDestinationName, int playerID) {
         Territory t1 = searchCountry(countrySourceName);
@@ -471,6 +482,7 @@ public class GameMap {
 
     /**
      * method to get territory list
+     *
      * @return territory list
      */
     public List<Territory> getTerritoryList() {
@@ -479,6 +491,7 @@ public class GameMap {
 
     /**
      * method to get continent list
+     *
      * @return continent list
      */
     public List<Continent> getContinentList() {
@@ -487,6 +500,7 @@ public class GameMap {
 
     /**
      * method to get continent list from the map
+     *
      * @return continent list
      */
     public List<Continent> getContinentListMap() {
@@ -495,6 +509,7 @@ public class GameMap {
 
     /**
      * method to get territory list from the map
+     *
      * @return territory list
      */
     public List<Territory> getTerritoryListMap() {
@@ -503,6 +518,7 @@ public class GameMap {
 
     /**
      * method to get map file helper class components
+     *
      * @return map file component
      */
     public MapFileHelper getMapFileHelper() {
