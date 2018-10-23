@@ -50,13 +50,13 @@ public class Game implements GameListener {
         for (int i = 0; i < continentList.size(); i++) {
             LogHelper.printMessage(continentList.get(i).getContinentName() + " --- " + (i + 1));
         }
-        displayListofTerrritoriesToUser();
+        displayListOfTerrritoriesToUser();
     }
 
     /**
      * This method displays list of the territories to  user
      */
-    private void displayListofTerrritoriesToUser() {
+    private void displayListOfTerrritoriesToUser() {
         List<Continent> continentList = gameMap.getContinentListMap();
         LogHelper.printMessage("\nSelect Territories ");
         for (int i = 0; i < continentList.size(); i++) {
