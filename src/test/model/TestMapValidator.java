@@ -8,6 +8,10 @@ import org.junit.experimental.theories.suppliers.TestedOn;
 
 import static org.junit.Assert.*;
 
+/**
+ * The class <code>{@Link TestMapValidator}</code> contains test cases
+ * for the class <code>{@Link MapValidator}</code>
+ */
 public class TestMapValidator {
     private MapValidator mapValidator;
 
