@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import test.TestGameMap;
 import test.model.TestContinent;
+import test.model.TestMapValidator;
 import test.model.TestTerritory;
 import test.utils.TestLogHelper;
 import test.utils.TestMapFileHelper;
@@ -13,7 +14,8 @@ import test.utils.TestMapFileHelper;
         TestContinent.class,
         TestTerritory.class,
         TestGameMap.class,
-        TestLogHelper.class})
+        TestLogHelper.class,
+        TestMapValidator.class})
 public class TestSuiteRunner {
 
 }
