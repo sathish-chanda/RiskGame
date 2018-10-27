@@ -16,6 +16,17 @@ public class Player {
     private int armyNum = 0;//number of army owned by a player
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
 
+
+    public int getReinforcementArmyNum() {
+        return reinforcementArmyNum;
+    }
+
+    public void setReinforcementArmyNum(int reinforcementArmyNum) {
+        this.reinforcementArmyNum = reinforcementArmyNum;
+    }
+
+    private int reinforcementArmyNum = 0;
+
     /**
      * Method used to setup player description
      * Assigning of Id, initial armies and owned countries
@@ -26,8 +37,7 @@ public class Player {
         int initialArmyNum = 40 - 5 * (playerNum - 2);
         armyNum = armyNum + initialArmyNum;
         ownedCountry = new ArrayList<Territory>();
-        LogHelper.printMessage("" + armyNum);
-
+        //LogHelper.printMessage("" + armyNum);
     }
 
     /**
@@ -74,7 +84,7 @@ public class Player {
      * @return total country number
      */
     public int getCountryNum() {
-        return countryNum;
+        return ownedCountry.size();
     }
 
     /**
