@@ -1,13 +1,12 @@
-package test;
+package test.model;
 
-import game.GameMap;
+import game.model.GameMap;
 import game.model.Game;
 import game.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 

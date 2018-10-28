@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 import game.listeners.GameListener;
 import game.model.Continent;
