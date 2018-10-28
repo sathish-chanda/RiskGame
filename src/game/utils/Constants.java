@@ -17,4 +17,9 @@ public class Constants {
     public static final String NEXT_LINE = "\n";
     public static final String YES = "y";
     public static final String NO = "n";
+    public static final String NEW_GAME_BUTTON_LABEL = "New Game";
+    public static final String LOAD_GAME_BUTTON_LABEL = "Load Game";
+    public static final String QUIT_GAME_BUTTON_LABEL = "Quit Game";
+
+
 }

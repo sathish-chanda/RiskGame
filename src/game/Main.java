@@ -5,6 +5,7 @@ import game.model.Game;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.MapFileHelper;
+import game.view.RiskView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,24 +16,21 @@ import javafx.stage.Stage;
  * Main class Starts the game play
  * It initialise the game model and controller
  */
-public class Main extends Application {
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        initGameComponents();
-    }
+public class Main {
 
     /**
-     * Method initialise game model
+     * Method initialize game components
+     *
      */
-    private void initGameComponents() {
+    public static void  initGameComponents() {
         RiskModel riskModel = new RiskModel();
-        RiskController riskController = new RiskController(riskModel);
+        RiskView riskView = new RiskView();
+        RiskController riskController = new RiskController(riskModel, riskView);
         riskController.initializeRiskGame();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        initGameComponents();
     }
 
 }

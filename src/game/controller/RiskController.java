@@ -1,38 +1,85 @@
 package game.controller;
 
-import game.model.Game;
 import game.model.RiskModel;
-import game.utils.MapFileHelper;
+import game.utils.Constants;
+import game.utils.LogHelper;
+import game.view.RiskView;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 /**
  * This controller class maps the user's actions to both RiskView and RiskModel
  * to handle data
  */
-public class RiskController {
+public class RiskController implements ActionListener {
 
     private RiskModel riskModel;
-
-    /**
-     * Constructor of RiskController Class
-     */
-    public RiskController() {
-        //Empty RiskController Constructor needed for java fx application
-    }
+    private RiskView riskView;
 
     /**
      * Constructor of RiskController class
      *
      * @param riskModel
+     * @param riskView
      */
-    public RiskController(RiskModel riskModel) {
+    public RiskController(RiskModel riskModel, RiskView riskView) {
         this.riskModel = riskModel;
+        this.riskView = riskView;
+        addRiskViewListeners();
     }
 
     /**
-     * Constructor of RiskController Class
+     * Method to add risk view listeners
      */
-    public void initializeRiskGame() {
-        riskModel.loadGame();
+    private void addRiskViewListeners() {
+        riskView.initActionListeners(this);
     }
 
+    /**
+     * Method to initialize Risk Game
+     */
+    public void initializeRiskGame() {
+        riskView.createMainMenu();
+    }
+
+    /**
+     * Method used to create map
+     */
+    public void createMap() {
+        LogHelper.printMessage("Creating Map");
+        riskModel.createMap();
+    }
+
+    /**
+     * Method to load map
+     */
+    public void loadMap() {
+        LogHelper.printMessage("loading map file");
+        riskModel.loadGame(riskView);
+    }
+
+    /**
+     * Method used to quit game
+     */
+    public void quitGame() {
+        LogHelper.printMessage("Quitting Game");
+        riskModel.quitGame();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        switch (event.getActionCommand()) {
+            case Constants.NEW_GAME_BUTTON_LABEL:
+                createMap();
+                break;
+            case Constants.LOAD_GAME_BUTTON_LABEL:
+                loadMap();
+                break;
+            case Constants.QUIT_GAME_BUTTON_LABEL:
+                quitGame();
+                break;
+        }
+    }
 }

@@ -5,6 +5,8 @@ import game.Player;
 import game.listeners.GameListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
+import game.view.RiskView;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,13 @@ public class Game implements GameListener {
     public void loadMapData(String fileName) {
         setFileName(fileName);
         gameMap.loadMap(fileName);
+    }
+
+    /**
+     * Method to open file chooser
+     */
+    public void chooseFile(RiskView view) {
+        gameMap.chooseFile(view);
     }
 
     /**
@@ -175,7 +184,7 @@ public class Game implements GameListener {
      */
     private void initFortification() {
         Scanner scanner = new Scanner(System.in);
-        for(int j = 0; j < playerNum; j++) {
+        for (int j = 0; j < playerNum; j++) {
 
             LogHelper.printMessage("now it's the player" + players.get(j).getPlayerID() + " term to do fortification");
             LogHelper.printMessage("Select source country");
@@ -269,6 +278,7 @@ public class Game implements GameListener {
 
     /**
      * This method is used to get Map file name
+     *
      * @return filename
      */
     public String getFileName() {
@@ -278,6 +288,7 @@ public class Game implements GameListener {
 
     /**
      * This method is used set file name
+     *
      * @param fileName
      */
     public void setFileName(String fileName) {
