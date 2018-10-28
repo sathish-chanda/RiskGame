@@ -31,7 +31,7 @@ public class TestMapFileHelper {
     @Test
     public void testReadMapFile() {
         mapFileHelper.resetMapValidity();
-        mapFileHelper.readMapFile(Constants.MAP_FILE_NAME);
+        mapFileHelper.readMapFile(Constants.FILE_DOMAIN_PATH + Constants.MAP_FILE_NAME);
         assertTrue(mapFileHelper.isMapValid());
     }
 

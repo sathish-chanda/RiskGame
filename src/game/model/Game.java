@@ -109,15 +109,19 @@ public class Game implements GameListener {
 
     @Override
     public void onContinentMapValid() {
-        if (getFileName().equals(Constants.MAP_FILE_NAME)) {
+        //ToDo modify this part as per GUI feature
+        /*if (getFileName().equals(Constants.MAP_FILE_NAME)) {
             LogHelper.printMessage("Do you want to edit map? y/n");
             editMapFileChoice();
         } else {
-            selectNumberOfPlayers();
-            assignCountryToPlayers();
-            randomPlaceArmyOnCountry();
-            roundRobinPlay();
-        }
+
+        }*/
+
+        selectNumberOfPlayers();
+        assignCountryToPlayers();
+        randomPlaceArmyOnCountry();
+        roundRobinPlay();
+
     }
 
     /**

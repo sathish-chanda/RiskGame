@@ -29,11 +29,11 @@ public class GameMap {
     private MapFileHelper mapFileHelper;
     private Map<String, Integer> continentsHashMap;
 
-    public GameMap(String mapName) {
-        // ToDo the input of constructor is the name of the .txt
-        // file some code for reading the file should be applied here
-    }
-
+    /**
+     * Constructor of class GameMap
+     *
+     * @param gameListener
+     */
     public GameMap(GameListener gameListener) {
         this.gameListener = gameListener;
         mapFileHelper = MapFileHelper.getInstance();
@@ -47,8 +47,14 @@ public class GameMap {
         onMapLoaded();
     }
 
+    /**
+     * Method to choose  risk game  file
+     *
+     * @param view
+     */
     public void chooseFile(RiskView view) {
         mapFileHelper.fileChooser(view);
+        onMapLoaded();
     }
 
     /**

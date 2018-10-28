@@ -5,7 +5,6 @@ package game.utils;
  */
 public class Constants {
 
-    public static final String RISK_GAME_NAME = "Risk Game";
     public static final String FILE_DOMAIN_PATH = "src/resources/";
     public static final String MAP_FILE_NAME = "world.map";
     public static final String MAP_KEY = "[Map]";
@@ -20,6 +19,7 @@ public class Constants {
     public static final String NEW_GAME_BUTTON_LABEL = "New Game";
     public static final String LOAD_GAME_BUTTON_LABEL = "Load Game";
     public static final String QUIT_GAME_BUTTON_LABEL = "Quit Game";
-
+    public static final String SELECT_PLAYER_NEXT_BUTTON_lABEL = "Select player Next";
+    public static final String SELECT_PLAYER_BACK_BUTTON_lABEL = "Select player Back";
 
 }
