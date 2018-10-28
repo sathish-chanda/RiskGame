@@ -41,7 +41,22 @@ public class RiskController implements ActionListener {
      * Method to initialize Risk Game
      */
     public void initializeRiskGame() {
+        openMainMenu();
+    }
+
+
+    /**
+     *
+     */
+    private void openMainMenu() {
         riskView.createMainMenu();
+    }
+
+    /**
+     * Method to show dialog of number of players
+     */
+    private void openSelectPlayersDialog() {
+        riskView.createSelectPlayerMenu();
     }
 
     /**
@@ -72,7 +87,7 @@ public class RiskController implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
             case Constants.NEW_GAME_BUTTON_LABEL:
-                createMap();
+                openSelectPlayersDialog();
                 break;
             case Constants.LOAD_GAME_BUTTON_LABEL:
                 loadMap();
@@ -80,6 +95,14 @@ public class RiskController implements ActionListener {
             case Constants.QUIT_GAME_BUTTON_LABEL:
                 quitGame();
                 break;
+            case Constants.SELECT_PLAYER_NEXT_BUTTON_lABEL:
+
+                break;
+            case Constants.SELECT_PLAYER_BACK_BUTTON_lABEL:
+                openMainMenu();
+                break;
         }
     }
+
+
 }

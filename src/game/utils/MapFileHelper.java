@@ -39,7 +39,7 @@ public class MapFileHelper {
      */
     public void readMapFile(String fileName) {
         try {
-            FileReader fileReader = new FileReader(Constants.FILE_DOMAIN_PATH + fileName);
+            FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             mapValidator = new MapValidator();
             mapValidator.setCurrentKey(Constants.MAP_KEY);
@@ -59,22 +59,22 @@ public class MapFileHelper {
     }
 
     /**
-     * Metod used to choose file
+     * Method used to choose file
      */
     public void fileChooser(RiskView view) {
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Load Risk Game file", "map");
         fileChooser.setFileFilter(filter);
-        fileChooser.showOpenDialog(view);
-       /*if (fileChooser.showDialog()){
-           File file = fileChooser.getSelectedFile();
-           if (file != null) {
-
-           } else {
-               LogHelper.printMessage("Invalid file");
-           }
-       }*/
-
+        if (fileChooser.showOpenDialog(view) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (file != null) {
+                readMapFile(file.getPath());
+            } else {
+                LogHelper.printMessage("File not found");
+            }
+        } else {
+            LogHelper.printMessage("Invalid file");
+        }
     }
 
     /**
