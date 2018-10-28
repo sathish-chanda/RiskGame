@@ -2,7 +2,7 @@ package test.suiterunner;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import test.TestGameMap;
+import test.model.TestGameMap;
 import test.model.TestContinent;
 import test.model.TestMapValidator;
 import test.model.TestTerritory;

@@ -1,17 +1,10 @@
 package game.utils;
 
-import game.GameMap;
-import game.model.Continent;
-import game.model.Game;
 import game.model.MapValidator;
 import game.view.RiskView;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.View;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;

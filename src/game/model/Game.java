@@ -1,16 +1,11 @@
 package game.model;
 
-import game.GameMap;
-import game.Player;
 import game.listeners.GameListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.RiskView;
-import javafx.stage.Stage;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.*;
-import java.math.*;
 
 /**
  * This class implements all the game components logics
