@@ -4,12 +4,15 @@ import game.GameMap;
 import game.model.Continent;
 import game.model.Game;
 import game.model.MapValidator;
+import game.view.RiskView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import sun.rmi.runtime.Log;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.View;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -63,6 +66,25 @@ public class MapFileHelper {
     }
 
     /**
+     * Metod used to choose file
+     */
+    public void fileChooser(RiskView view) {
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Load Risk Game file", "map");
+        fileChooser.setFileFilter(filter);
+        fileChooser.showOpenDialog(view);
+       /*if (fileChooser.showDialog()){
+           File file = fileChooser.getSelectedFile();
+           if (file != null) {
+
+           } else {
+               LogHelper.printMessage("Invalid file");
+           }
+       }*/
+
+    }
+
+    /**
      * This method is used to validate map file
      */
     private void validateMapFile() {
@@ -84,6 +106,7 @@ public class MapFileHelper {
 
     /**
      * This method checks validity of map components
+     *
      * @param line refers line of data from the map file
      */
 
@@ -97,6 +120,7 @@ public class MapFileHelper {
 
     /**
      * This method checks validity of continents from the map file
+     *
      * @param line refers line of data from the map file
      */
     private void validateContinentComponents(String line) {
@@ -110,6 +134,7 @@ public class MapFileHelper {
 
     /**
      * This method checks validity of territory from the map file
+     *
      * @param line refers line of data from the map file
      */
     private void validateTerritoriesComponent(String line) {
@@ -157,68 +182,6 @@ public class MapFileHelper {
         } else {
             territoriesComponentList.add(line);
         }
-    }
-
-    /**
-     * Editing the Map file
-     * add or delete continent, territories and adjacent nodes
-     *
-     * @param continentListMap
-     */
-    public void editMapFile(List<Continent> continentListMap) {
-
-        // for (int i = )
-
-        //open continenet map list
-        // do simply deleting one continent
-
-
-
-        /*Scanner readData = new Scanner(System.in);
-        int addContinent = 0;
-
-        do {
-            LogHelper.printMessage("Do you Add/Delete any continent?");
-            LogHelper.printMessage("1 - Add");
-            LogHelper.printMessage("2 - Delete");
-            LogHelper.printMessage("3 - Continue");
-            addContinent = readData.nextInt();
-
-            if (addContinent == 1) { // add continent
-                LogHelper.printMessage("Enter the Continent");
-                String newContinent;
-                Random randomNumber = new Random();
-                int newNumber = randomNumber.nextInt(10);
-
-                newContinent = readData.next();
-                if (newContinent.length() != 0) {
-                    String newCont = newContinent + "=" + newNumber;
-                    continentsComponentList.add(newCont);
-                    LogHelper.printMessage("added continent");
-                }
-            } else if (addContinent == 2) { //remove continent
-
-                for (int i = 0; i < continentsComponentList.size(); i++) {
-                    LogHelper.printMessage(continentsComponentList.get(i) + "---" + i);
-                }
-                LogHelper.printMessage("Delete the continent");
-                int deleteContinent;
-                deleteContinent = readData.nextInt();
-
-                if (deleteContinent < continentsComponentList.size()) {
-                    for (int i = 0; i < continentsComponentList.size(); i++) {
-                        if (deleteContinent == i) {
-                            continentsComponentList.remove(continentsComponentList.get(i));
-                        }
-                    }
-                }
-            } else {
-                LogHelper.printMessage("Select the continent from the list");
-                break;
-            }
-
-        } while (addContinent != 0);
-*/
     }
 
     /**
@@ -312,9 +275,10 @@ public class MapFileHelper {
 
     /**
      * Method checks pattern matches in the map file
+     *
      * @param pattern
      * @param line
-     * @return  pattern and line
+     * @return pattern and line
      */
     private boolean isPatternMatches(String pattern, String line) {
         return Pattern.matches(pattern, line);
@@ -330,6 +294,7 @@ public class MapFileHelper {
 
     /**
      * method to get error message
+     *
      * @return eroor messag
      */
     public String getErrorMessage() {
@@ -338,6 +303,7 @@ public class MapFileHelper {
 
     /**
      * method go get map valid status
+     *
      * @return boolean
      */
     public boolean isMapValid() {
@@ -353,6 +319,7 @@ public class MapFileHelper {
 
     /**
      * Method to check the map file saved successfully.
+     *
      * @return boolean
      */
     public boolean isFileSaveSuccess() {
@@ -361,6 +328,7 @@ public class MapFileHelper {
 
     /**
      * Method to get all components list of map
+     *
      * @return map component list
      */
     public List<String> getMapComponentList() {
@@ -369,6 +337,7 @@ public class MapFileHelper {
 
     /**
      * method to get continent list from the map file
+     *
      * @return list of continent
      */
     public List<String> getContinentsComponentList() {
@@ -377,6 +346,7 @@ public class MapFileHelper {
 
     /**
      * method to set continent list
+     *
      * @param continentsComponentList
      */
     public void setContinentsComponentList(List<String> continentsComponentList) {
@@ -385,6 +355,7 @@ public class MapFileHelper {
 
     /**
      * method to set territory component list
+     *
      * @param territoriesComponentList
      */
     public void setTerritoriesComponentList(List<String> territoriesComponentList) {
@@ -393,6 +364,7 @@ public class MapFileHelper {
 
     /**
      * method to get territory component list
+     *
      * @return territory component list
      */
     public List<String> getTerritoriesComponentList() {

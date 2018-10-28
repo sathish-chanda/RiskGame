@@ -5,6 +5,8 @@ import game.Player;
 import game.listeners.GameListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
+import game.view.RiskView;
+import javafx.stage.Stage;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.*;
@@ -38,6 +40,13 @@ public class Game implements GameListener {
     public void loadMapData(String fileName) {
         setFileName(fileName);
         gameMap.loadMap(fileName);
+    }
+
+    /**
+     * Method to open file chooser
+     */
+    public void chooseFile(RiskView view) {
+        gameMap.chooseFile(view);
     }
 
     /**

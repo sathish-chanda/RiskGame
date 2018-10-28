@@ -5,6 +5,8 @@ import game.model.Continent;
 import game.model.Territory;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
+import game.view.RiskView;
+import javafx.stage.Stage;
 
 import java.util.Map;
 
@@ -43,6 +45,10 @@ public class GameMap {
     public void loadMap(String mapFileName) {
         mapFileHelper.readMapFile(mapFileName);
         onMapLoaded();
+    }
+
+    public void chooseFile(RiskView view) {
+        mapFileHelper.fileChooser(view);
     }
 
     /**
