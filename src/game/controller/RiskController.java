@@ -56,7 +56,9 @@ public class RiskController implements ActionListener {
      * Method to show dialog of number of players
      */
     private void openSelectPlayersDialog() {
-        riskView.createSelectPlayerMenu();
+        PlayerSelectController playerSelectController = new PlayerSelectController(riskModel, riskView);
+        playerSelectController.openPlayerSelectDialog();
+
     }
 
     /**
