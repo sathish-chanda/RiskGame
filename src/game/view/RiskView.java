@@ -17,10 +17,6 @@ public class RiskView extends JFrame {
     private JButton loadGameButton;
     private JButton quitGameButton;
 
-    private JButton selectPlayerNextButton;
-    private JButton selectPlayerBackButton;
-
-    private JComboBox playerSelectComboBox;
 
     /**
      * Constructor of RiskView class
@@ -81,48 +77,5 @@ public class RiskView extends JFrame {
         return panel;
     }
 
-
-    /**
-     * Method to create select player menu
-     */
-    public void createSelectPlayerMenu() {
-        remove(panel);
-        setTitle("Select total number of players");
-        setPreferredSize(new Dimension(300, 150));
-        add(selectPlayerElements());
-        pack();
-        setVisible(true);
-        toFront();
-    }
-
-
-    /**
-     * Method to create select player elements
-     */
-    private JPanel selectPlayerElements() {
-        panel = new JPanel();
-        layout = new GridLayout(4, 1, 5, 5);
-        panel.setLayout(layout);
-
-        selectPlayerNextButton = new JButton("Next");
-        selectPlayerBackButton = new JButton("Back");
-
-        selectPlayerNextButton.setActionCommand(Constants.SELECT_PLAYER_NEXT_BUTTON_lABEL);
-        selectPlayerBackButton.setActionCommand(Constants.SELECT_PLAYER_BACK_BUTTON_lABEL);
-
-        selectPlayerNextButton.addActionListener(listener);
-        selectPlayerBackButton.addActionListener(listener);
-
-        String playerList[] = {"2", "3", "4", "5", "6"};
-        playerSelectComboBox = new JComboBox(playerList);
-        JLabel label = new JLabel("Please select number of players");
-
-        panel.add(label);
-        panel.add(playerSelectComboBox);
-        panel.add(selectPlayerNextButton);
-        panel.add(selectPlayerBackButton);
-
-        return panel;
-    }
 
 }
