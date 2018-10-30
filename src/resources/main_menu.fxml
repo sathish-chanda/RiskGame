@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-          xmlns:fx="http://javafx.com/fxml/1">
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.controller.RiskController">
     <columnConstraints>
         <ColumnConstraints/>
         <ColumnConstraints/>
@@ -27,6 +27,6 @@
         <Button fx:id="mapEditorButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Map Editor"
                 GridPane.columnIndex="1" GridPane.rowIndex="3"/>
         <Button fx:id="quitGameButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="Quit Game"
-                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#quitGame"/>
     </children>
 </GridPane>

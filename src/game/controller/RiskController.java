@@ -73,6 +73,16 @@ public class RiskController implements Initializable {
     }
 
     /**
+     * Method to open Map Editor page
+     */
+    private void openMapEditorDialog() {
+        LogHelper.printMessage("opening map file editor");
+        MapEditorController mapEditorController = new MapEditorController(riskModel, riskView);
+        mapEditorController.openMapEditorDialog();
+
+    }
+
+    /**
      * Method used to quit game
      */
     public void quitGame() {
