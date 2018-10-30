@@ -18,6 +18,7 @@ public class Constants {
     public static final String NO = "n";
     public static final String NEW_GAME_BUTTON_LABEL = "New Game";
     public static final String LOAD_GAME_BUTTON_LABEL = "Load Game";
+    public static final String MAP_EDITOR_BUTTON_LABEL = "Map Editor";
     public static final String QUIT_GAME_BUTTON_LABEL = "Quit Game";
     public static final String SELECT_PLAYER_NEXT_BUTTON_lABEL = "Select player Next";
     public static final String SELECT_PLAYER_BACK_BUTTON_lABEL = "Select player Back";
