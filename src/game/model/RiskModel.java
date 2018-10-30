@@ -12,6 +12,8 @@ public class RiskModel {
 
     private Game game;
 
+    private String message;
+
     /**
      * It is the constructor class, creating instance for game
      */
@@ -24,13 +26,6 @@ public class RiskModel {
      */
     public void loadGame(RiskView view) {
         game.chooseFile(view);
-    }
-
-    /**
-     * Method to create user defined map
-     */
-    public void createMap() {
-
     }
 
     /**
@@ -49,4 +44,11 @@ public class RiskModel {
         return game;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

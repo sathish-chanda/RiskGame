@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class PlayerSelectView extends JDialog {
 
-    ActionListener listener;
+    private ActionListener listener;
 
     private JPanel panel;
     private JButton selectPlayerNextButton;

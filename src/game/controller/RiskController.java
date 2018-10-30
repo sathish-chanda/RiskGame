@@ -4,19 +4,34 @@ import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.RiskView;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 /**
  * This controller class maps the user's actions to both RiskView and RiskModel
  * to handle data
  */
-public class RiskController implements ActionListener {
+public class RiskController implements Initializable {
 
     private RiskModel riskModel;
     private RiskView riskView;
+
+    @FXML
+    private Button newGameButton;
+
+    /**
+     * Constructor of class RiskController
+     */
+    public RiskController() {
+        //Empty constructor required
+    }
 
     /**
      * Constructor of RiskController class
@@ -34,22 +49,23 @@ public class RiskController implements ActionListener {
      * Method to add risk view listeners
      */
     private void addRiskViewListeners() {
-        riskView.initActionListeners(this);
+        //riskView.initActionListeners(this);
     }
 
     /**
      * Method to initialize Risk Game
      */
     public void initializeRiskGame() {
-        openMainMenu();
+
     }
 
 
     /**
      *
      */
+    @FXML
     private void openMainMenu() {
-        riskView.createMainMenu();
+        System.out.println("open main menu "+riskModel.getMessage());
     }
 
     /**
@@ -62,19 +78,21 @@ public class RiskController implements ActionListener {
     }
 
     /**
-     * Method used to create map
-     */
-    public void createMap() {
-        LogHelper.printMessage("Creating Map");
-        riskModel.createMap();
-    }
-
-    /**
      * Method to load map
      */
     public void loadMap() {
         LogHelper.printMessage("loading map file");
         riskModel.loadGame(riskView);
+    }
+
+    /**
+     * Method to open Map Editor page
+     */
+    private void openMapEditorDialog() {
+        LogHelper.printMessage("opening map file editor");
+        MapEditorController mapEditorController = new MapEditorController(riskModel, riskView);
+        mapEditorController.openMapEditorDialog();
+
     }
 
     /**
@@ -86,25 +104,9 @@ public class RiskController implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent event) {
-        switch (event.getActionCommand()) {
-            case Constants.NEW_GAME_BUTTON_LABEL:
-                openSelectPlayersDialog();
-                break;
-            case Constants.LOAD_GAME_BUTTON_LABEL:
-                loadMap();
-                break;
-            case Constants.QUIT_GAME_BUTTON_LABEL:
-                quitGame();
-                break;
-            case Constants.SELECT_PLAYER_NEXT_BUTTON_lABEL:
-
-                break;
-            case Constants.SELECT_PLAYER_BACK_BUTTON_lABEL:
-                openMainMenu();
-                break;
-        }
+    public void initialize(URL location, ResourceBundle resources) {
+        riskModel = new RiskModel();
+        riskModel.setMessage("message is set");
     }
-
 
 }
