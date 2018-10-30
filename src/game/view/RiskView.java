@@ -14,6 +14,7 @@ public class RiskView extends JFrame {
     private GridLayout layout;
 
     private JButton newGameButton;
+    private JButton mapEditorButton;
     private JButton loadGameButton;
     private JButton quitGameButton;
 
@@ -40,7 +41,7 @@ public class RiskView extends JFrame {
             remove(panel);
         }
         setTitle("Main Menu");
-        setPreferredSize(new Dimension(300, 150));
+        setPreferredSize(new Dimension(500, 250));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mainMenuElements());
         pack();
@@ -55,23 +56,27 @@ public class RiskView extends JFrame {
      */
     private JPanel mainMenuElements() {
         panel = new JPanel();
-        layout = new GridLayout(3, 1, 5, 5);
+        layout = new GridLayout(4, 1, 10, 10);
         panel.setLayout(layout);
 
         newGameButton = new JButton(Constants.NEW_GAME_BUTTON_LABEL);
         loadGameButton = new JButton(Constants.LOAD_GAME_BUTTON_LABEL);
+        mapEditorButton = new JButton(Constants.MAP_EDITOR_BUTTON_LABEL);
         quitGameButton = new JButton(Constants.QUIT_GAME_BUTTON_LABEL);
 
         newGameButton.setActionCommand(Constants.NEW_GAME_BUTTON_LABEL);
         loadGameButton.setActionCommand(Constants.LOAD_GAME_BUTTON_LABEL);
+        mapEditorButton.setActionCommand(Constants.MAP_EDITOR_BUTTON_LABEL);
         quitGameButton.setActionCommand(Constants.QUIT_GAME_BUTTON_LABEL);
 
         newGameButton.addActionListener(listener);
         loadGameButton.addActionListener(listener);
+        mapEditorButton.addActionListener(listener);
         quitGameButton.addActionListener(listener);
 
         panel.add(newGameButton);
         panel.add(loadGameButton);
+        panel.add(mapEditorButton);
         panel.add(quitGameButton);
 
         return panel;
