@@ -13,16 +13,16 @@ import javafx.stage.Stage;
 
 public class MapEditor implements EventHandler<ActionEvent> {
 
+    private boolean loadAndEditMapFile;
 
-    private RiskModel riskModel;
-
-    public MapEditor(RiskModel riskModel) {
-        this.riskModel = riskModel;
+    public MapEditor(boolean loadAndEditMapFile) {
+        this.loadAndEditMapFile = loadAndEditMapFile;
     }
 
     @Override
     public void handle(ActionEvent event) {
         System.out.println("Map editor running");
+        //To do get fle from file chooser
         try {
             createMapEditorLayout();
         } catch (Exception exception) {
@@ -34,7 +34,7 @@ public class MapEditor implements EventHandler<ActionEvent> {
         Stage mapEditorStage = new Stage();
         mapEditorStage.setTitle("Edit Map");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_viewer.fxml"));
-        MapEditorController mapEditorController = new MapEditorController(riskModel);
+        MapEditorController mapEditorController = new MapEditorController(null);
         fxmlLoader.setController(mapEditorController);
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 300, 275));

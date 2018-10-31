@@ -59,22 +59,12 @@ public class MapFileHelper {
     }
 
     /**
-     * Method used to choose file
+     * Method to get file from file chooser
+     *
+     * @return
      */
-    public void fileChooser(RiskView view) {
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Load Risk Game file", "map");
-        fileChooser.setFileFilter(filter);
-        if (fileChooser.showOpenDialog(view) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (file != null) {
-                readMapFile(file.getPath());
-            } else {
-                LogHelper.printMessage("File not found");
-            }
-        } else {
-            LogHelper.printMessage("Invalid file");
-        }
+    public static File getFileFromFileChooser() {
+        return null;
     }
 
     /**
