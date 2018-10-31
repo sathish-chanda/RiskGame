@@ -5,6 +5,7 @@ import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.RiskView;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -35,13 +36,6 @@ public class Game implements GameListener {
     public void loadMapData(String fileName) {
         setFileName(fileName);
         gameMap.loadMap(fileName);
-    }
-
-    /**
-     * Method to open file chooser
-     */
-    public void chooseFile(RiskView view) {
-        gameMap.chooseFile(view);
     }
 
     /**
@@ -253,9 +247,6 @@ public class Game implements GameListener {
             LogHelper.printMessage("--------------------------------------------------------------------------------");
         }
     }
-
-
-
 
 
     /**

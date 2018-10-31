@@ -4,14 +4,14 @@ package game.model;
 import game.utils.Constants;
 import game.view.RiskView;
 
+import java.io.File;
+
 /**
  * It loads map file into the game
  */
 public class RiskModel {
 
     private Game game;
-
-    private String message;
 
     /**
      * It is the constructor class, creating instance for game
@@ -25,13 +25,6 @@ public class RiskModel {
      */
     public void loadGame() {
         game.loadMapData(Constants.MAP_FILE_NAME);
-    }
-
-    /**
-     * It loading the map file into the game.
-     */
-    public void loadGame(RiskView view) {
-        game.chooseFile(view);
     }
 
     /**
@@ -50,11 +43,4 @@ public class RiskModel {
         return game;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -48,16 +48,6 @@ public class GameMap {
     }
 
     /**
-     * Method to choose  risk game  file
-     *
-     * @param view
-     */
-    public void chooseFile(RiskView view) {
-        mapFileHelper.fileChooser(view);
-        onMapLoaded();
-    }
-
-    /**
      * This method is used to save map data to file
      */
     public void saveMap() {

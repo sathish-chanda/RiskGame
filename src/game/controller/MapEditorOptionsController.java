@@ -2,6 +2,7 @@ package game.controller;
 
 import game.main.MapEditor;
 import game.model.RiskModel;
+import game.utils.Constants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,19 +40,27 @@ public class MapEditorOptionsController implements Initializable {
     }
 
     /**
-     * Method to initialize button  actions
+     * Method to initialize button actions
      */
     private void initButtonActions() {
-        createMapButton.setOnAction(null);
-        loadEditMapButton.setOnAction(openMapEditorDialog());
+        createMapButton.setOnAction(createMapFileDialog());
+        loadEditMapButton.setOnAction(loadAndEditMapFileDialog());
         backButton.setOnAction(event -> closeMapEditorOptionsWindow());
     }
 
     /**
      * Method to open map editor dialog
      */
-    private MapEditor openMapEditorDialog() {
-        MapEditor mapEditor = new MapEditor(riskModel);
+    private MapEditor loadAndEditMapFileDialog() {
+        MapEditor mapEditor = new MapEditor(true);
+        return mapEditor;
+    }
+
+    /**
+     *
+     */
+    private MapEditor createMapFileDialog() {
+        MapEditor mapEditor = new MapEditor(false);
         return mapEditor;
     }
 
