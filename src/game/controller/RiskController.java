@@ -1,15 +1,17 @@
 package game.controller;
 
-import game.model.Game;
+import game.main.MapEditor;
+import game.main.MapEditorOptions;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.RiskView;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,56 +28,40 @@ public class RiskController implements Initializable {
 
     @FXML
     private Button newGameButton;
+    @FXML
+    private Button mapEditorButton;
+    @FXML
+    private Button quitGameButton;
 
     /**
      * Constructor of class RiskController
-     */
-    public RiskController() {
-        //Empty constructor required
-    }
-
-    /**
-     * Constructor of RiskController class
      *
      * @param riskModel
-     * @param riskView
      */
-    public RiskController(RiskModel riskModel, RiskView riskView) {
+    public RiskController(RiskModel riskModel) {
         this.riskModel = riskModel;
-        this.riskView = riskView;
-        addRiskViewListeners();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initButtonActions();
     }
 
     /**
-     * Method to add risk view listeners
+     * Method to initialize button  actions
      */
-    private void addRiskViewListeners() {
-        //riskView.initActionListeners(this);
+    private void initButtonActions() {
+        newGameButton.setOnAction(null);
+        mapEditorButton.setOnAction(openMapEditorOptionsDialog());
+        quitGameButton.setOnAction(event -> quitGame());
     }
 
     /**
-     * Method to initialize Risk Game
+     * Method to open map editor options dialog
      */
-    public void initializeRiskGame() {
-
-    }
-
-
-    /**
-     *
-     */
-    @FXML
-    private void openMainMenu() {
-        System.out.println("open main menu "+riskModel.getMessage());
-    }
-
-    /**
-     * Method to show dialog of number of players
-     */
-    private void openSelectPlayersDialog() {
-        PlayerSelectController playerSelectController = new PlayerSelectController(riskModel, riskView);
-        playerSelectController.openPlayerSelectDialog();
-
+    private MapEditorOptions openMapEditorOptionsDialog() {
+        MapEditorOptions mapEditorOptions = new MapEditorOptions(riskModel);
+        return mapEditorOptions;
     }
 
     /**
@@ -87,16 +73,6 @@ public class RiskController implements Initializable {
     }
 
     /**
-     * Method to open Map Editor page
-     */
-    private void openMapEditorDialog() {
-        LogHelper.printMessage("opening map file editor");
-        MapEditorController mapEditorController = new MapEditorController(riskModel, riskView);
-        mapEditorController.openMapEditorDialog();
-
-    }
-
-    /**
      * Method used to quit game
      */
     public void quitGame() {
@@ -104,10 +80,5 @@ public class RiskController implements Initializable {
         riskModel.quitGame();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        riskModel = new RiskModel();
-        riskModel.setMessage("message is set");
-    }
 
 }
