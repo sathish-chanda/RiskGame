@@ -22,7 +22,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         RiskModel riskModel = new RiskModel();
-        riskModel.setMessage("main class");
         RiskController riskController = new RiskController(riskModel);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/main_menu.fxml"));
         fxmlLoader.setController(riskController);

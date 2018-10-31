@@ -31,11 +31,8 @@ public class MapEditorController implements EventHandler<ActionEvent> {
 
     /**
      * Constructor of class {@link MapEditorController}
-     *
-     * @param riskModel
      */
-    public MapEditorController(RiskModel riskModel) {
-        this.riskModel = riskModel;
+    public MapEditorController() {
     }
 
     @Override

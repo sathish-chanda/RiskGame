@@ -236,7 +236,6 @@ public class GameMap {
     private void onMapLoaded() {
         if (mapFileHelper.isMapValid()) {
             gameListener.onMapLoadSuccess();
-
         } else {
             gameListener.onMapLoadFailure(mapFileHelper.getErrorMessage());
         }

@@ -2,6 +2,7 @@ package game.utils;
 
 import game.model.MapValidator;
 import game.view.RiskView;
+import javafx.stage.FileChooser;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -64,7 +65,11 @@ public class MapFileHelper {
      * @return
      */
     public static File getFileFromFileChooser() {
-        return null;
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
+        fileChooser.getExtensionFilters().add(filter);
+        File file = fileChooser.showOpenDialog(null);
+        return file;
     }
 
     /**
