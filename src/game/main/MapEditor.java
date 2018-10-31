@@ -1,6 +1,7 @@
 package game.main;
 
 import game.controller.MapEditorController;
+import game.model.Continent;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;
@@ -13,14 +14,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 public class MapEditor implements EventHandler<ActionEvent> {
 
     private boolean loadAndEditMapFile;
-    private MapFileHelper mapFileHelper;
+    private RiskModel riskModel;
 
     public MapEditor(boolean loadAndEditMapFile) {
-        mapFileHelper = MapFileHelper.getInstance();
+        riskModel = new RiskModel();
         this.loadAndEditMapFile = loadAndEditMapFile;
     }
 
@@ -39,7 +42,7 @@ public class MapEditor implements EventHandler<ActionEvent> {
         Stage mapEditorStage = new Stage();
         mapEditorStage.setTitle("Edit Map");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_viewer.fxml"));
-        MapEditorController mapEditorController = new MapEditorController();
+        MapEditorController mapEditorController = new MapEditorController(riskModel);
         fxmlLoader.setController(mapEditorController);
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 950, 500));
@@ -60,8 +63,10 @@ public class MapEditor implements EventHandler<ActionEvent> {
     private void populateMapDataToMapEditor() {
         File file = MapFileHelper.getFileFromFileChooser();
         if (file != null) {
-            mapFileHelper.readMapFile(file.getPath());
-
+            riskModel.loadMapData(file.getPath());
+            Map<String, String> mapComponents = riskModel.getGame().getGameMap().getMapComponentsHashMap();
+            List<Continent> continents = riskModel.getGame().getGameMap().getContinentListMap();
+            openMapEditorLayout();
         } else {
             LogHelper.printMessage("Unable to read file or Invalid file");
         }

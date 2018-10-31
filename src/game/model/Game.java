@@ -38,6 +38,14 @@ public class Game implements GameListener {
         gameMap.loadMap(fileName);
     }
 
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
     /**
      * This method displays list of continents to user
      */
@@ -80,6 +88,7 @@ public class Game implements GameListener {
 
     @Override
     public void onMapLoadSuccess() {
+        gameMap.loadMapComponents();
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();
