@@ -1,5 +1,7 @@
 package game.main;
 
+import game.controller.RiskController;
+import game.model.RiskModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +21,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("resources/main_menu.fxml"));
+        RiskModel riskModel = new RiskModel();
+        riskModel.setMessage("main class");
+        RiskController riskController = new RiskController(riskModel);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/main_menu.fxml"));
+        fxmlLoader.setController(riskController);
+        Parent root = fxmlLoader.load();
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
