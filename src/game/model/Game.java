@@ -16,7 +16,6 @@ public class Game implements GameListener {
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
     private GameMap gameMap;
-    private String fileName;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -34,8 +33,15 @@ public class Game implements GameListener {
      * @param fileName, send map file name.
      */
     public void loadMapData(String fileName) {
-        setFileName(fileName);
         gameMap.loadMap(fileName);
+    }
+
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 
     /**
@@ -80,6 +86,7 @@ public class Game implements GameListener {
 
     @Override
     public void onMapLoadSuccess() {
+        gameMap.loadMapComponents();
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();
@@ -111,10 +118,10 @@ public class Game implements GameListener {
 
         }*/
 
-        selectNumberOfPlayers();
+        /*selectNumberOfPlayers();
         assignCountryToPlayers();
         randomPlaceArmyOnCountry();
-        roundRobinPlay();
+        roundRobinPlay();*/
 
     }
 
@@ -263,25 +270,6 @@ public class Game implements GameListener {
 
     }
 
-
-    /**
-     * This method is used to get Map file name
-     *
-     * @return filename
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-
-    /**
-     * This method is used set file name
-     *
-     * @param fileName
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 }
 
 

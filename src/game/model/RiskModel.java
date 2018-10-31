@@ -27,6 +27,10 @@ public class RiskModel {
         game.loadMapData(Constants.MAP_FILE_NAME);
     }
 
+    public void loadMapData(String file) {
+        game.loadMapData(file);
+    }
+
     /**
      * This method is used to quit game
      */

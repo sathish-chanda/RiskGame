@@ -71,7 +71,7 @@
             <Button layoutX="112.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
          </children>
       </Pane>
-      <ListView layoutX="233.0" layoutY="214.0" prefHeight="213.0" prefWidth="207.0" />
+      <ListView fx:id="continentsListView" layoutX="233.0" layoutY="214.0" prefHeight="213.0" prefWidth="207.0" />
       <ListView layoutX="471.0" layoutY="217.0" prefHeight="210.0" prefWidth="205.0" />
       <Pane layoutX="462.0" layoutY="14.0" prefHeight="210.0" prefWidth="207.0">
          <children>
@@ -82,7 +82,7 @@
             <Button layoutX="28.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
             <Button layoutX="27.0" layoutY="165.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Update" />
             <Button layoutX="109.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
-            <ComboBox layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="180.0" />
+            <ComboBox fx:id="continentsComboBox" layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="180.0" />
          </children>
       </Pane>
       <ListView layoutX="704.0" layoutY="216.0" prefHeight="210.0" prefWidth="205.0" />
