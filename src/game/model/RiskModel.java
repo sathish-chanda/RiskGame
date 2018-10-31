@@ -3,7 +3,6 @@ package game.model;
 
 import game.utils.Constants;
 import game.view.RiskView;
-import javafx.stage.Stage;
 
 /**
  * It loads map file into the game
@@ -17,6 +16,13 @@ public class RiskModel {
      */
     public RiskModel() {
         game = new Game();
+    }
+
+    /**
+     * It loading the map file into the game.
+     */
+    public void loadGame() {
+        game.loadMapData(Constants.MAP_FILE_NAME);
     }
 
     /**

@@ -1,5 +1,6 @@
 package game.controller;
 
+import game.model.Game;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;
