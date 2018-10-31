@@ -70,7 +70,7 @@ public class RiskController implements Initializable {
      */
     public void loadMap() {
         LogHelper.printMessage("loading map file");
-        riskModel.loadGame(riskView);
+        riskModel.loadGame();
     }
 
     /**
