@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
 
 public class MapEditorOptionsController implements Initializable {
 
-    private RiskModel riskModel;
 
     @FXML
     private Button createMapButton;
@@ -31,7 +30,7 @@ public class MapEditorOptionsController implements Initializable {
      * @param riskModel
      */
     public MapEditorOptionsController(RiskModel riskModel) {
-        this.riskModel = riskModel;
+
     }
 
     @Override
