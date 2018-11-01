@@ -48,7 +48,16 @@ public class MapEditorController implements Initializable {
     private ComboBox territoriesComboBox;
     @FXML
     private ListView adjacentTerritoriesListView;
-
+    @FXML
+    private TextField continentTextField;
+    @FXML
+    private TextField continentValueTextField;
+    @FXML
+    private TextField territoryTextField;
+    @FXML
+    private TextField latitudeTextField;
+    @FXML
+    private TextField longitudeTextField;
 
     /**
      * Constructor of class {@link MapEditorController}
@@ -66,7 +75,8 @@ public class MapEditorController implements Initializable {
     }
 
     private void setViewElementsListeners() {
-        //continentsListView.setOnMouseClicked(event -> loadTerritoriesListView(continentsListView.getSelectionModel().getSelectedIndex()));
+        continentsListView.setOnMouseClicked(event -> setContinentFieldsData(continentsListView.getSelectionModel().getSelectedIndex()));
+        territoriesListView.setOnMouseClicked(event -> setTerritoryFieldsData(continentsComboBox.getSelectionModel().getSelectedIndex(), territoriesListView.getSelectionModel().getSelectedIndex()));
         continentsComboBox.setOnAction(event -> loadTerritoriesListView(continentsComboBox.getSelectionModel().getSelectedIndex()));
         territoriesComboBox.setOnAction(event -> loadAdjacentTerritoriesListView(territoriesComboBox.getSelectionModel().getSelectedIndex()));
     }
@@ -126,6 +136,29 @@ public class MapEditorController implements Initializable {
     }
 
     /**
+     * Method to set continents UI fields data
+     */
+    private void setContinentFieldsData(int position) {
+        String continentName = continentList.get(position).getContinentName();
+        int continentValue = continentList.get(position).getMaximumArmy();
+        continentTextField.setText(continentName);
+        continentValueTextField.setText(String.valueOf(continentValue));
+    }
+
+    /**
+     * Method to set territory UI fields data
+     */
+    private void setTerritoryFieldsData(int continentPosition, int territoryPosition) {
+        Territory territory = continentList.get(continentPosition).getTerritoryList().get(territoryPosition);
+        String territoryName = territory.getTerritoryName();
+        String latitude = territory.getLatitude();
+        String longitude = territory.getLongitude();
+        territoryTextField.setText(territoryName);
+        latitudeTextField.setText(latitude);
+        longitudeTextField.setText(longitude);
+    }
+
+    /**
      * Method to create territories list from existing continent list
      */
     private void prepareTerritoriesList() {
@@ -146,27 +179,6 @@ public class MapEditorController implements Initializable {
                 adjacentTerritoriesListView.getItems().add(adjacentTerritory);
             }
         }
-
-    }
-
-    /**
-     * method to load map file
-     */
-    private void loadMapFile() {
-
-    }
-
-    /**
-     * method to create map file
-     */
-    private void createMapFile() {
-
-    }
-
-    /**
-     * Method to save map file
-     */
-    private void saveMapFile() {
 
     }
 }
