@@ -1,5 +1,6 @@
 package game.controller;
 
+import game.main.CreateNewMap;
 import game.main.MapEditor;
 import game.model.RiskModel;
 import game.utils.Constants;
@@ -48,19 +49,19 @@ public class MapEditorOptionsController implements Initializable {
     }
 
     /**
-     * Method to open map editor dialog
+     * Method to open map editor dialog with loaded map data
      */
     private MapEditor loadAndEditMapFileDialog() {
-        MapEditor mapEditor = new MapEditor(true);
+        MapEditor mapEditor = new MapEditor();
         return mapEditor;
     }
 
     /**
-     *
+     * Method to open map editor dialog with empty data
      */
-    private MapEditor createMapFileDialog() {
-        MapEditor mapEditor = new MapEditor(false);
-        return mapEditor;
+    private CreateNewMap createMapFileDialog() {
+        CreateNewMap createNewMap = new CreateNewMap();
+        return createNewMap;
     }
 
     /**
