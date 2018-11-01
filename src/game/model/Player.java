@@ -34,6 +34,7 @@ public class Player {
     /**
      * Method used to setup player description
      * Assigning of Id, initial armies and owned countries
+     *
      * @param playerNum, no of players in the game
      */
     public Player(int playerNum) {
@@ -53,6 +54,7 @@ public class Player {
 
     /**
      * method get player unique Id
+     *
      * @return player Id
      */
     public int getPlayerID() {
@@ -61,6 +63,7 @@ public class Player {
 
     /**
      * Method to add player owned territory to the list
+     *
      * @param country
      */
     public void addCountry(Territory country) {
@@ -69,6 +72,7 @@ public class Player {
 
     /**
      * Method to remove player loosed territory from the list
+     *
      * @param country
      */
     public void removeCountry(Territory country) {
@@ -77,6 +81,7 @@ public class Player {
 
     /**
      * Method to get owned territories list
+     *
      * @return list of territories
      */
     public ArrayList<Territory> getCountry() {
@@ -85,6 +90,7 @@ public class Player {
 
     /**
      * Method to get number of countries a player owned
+     *
      * @return total country number
      */
     public int getCountryNum() {
@@ -93,6 +99,7 @@ public class Player {
 
     /**
      * Method to get total number of armies a player owned
+     *
      * @return total armies count
      */
     public int getArmyNum() {
@@ -101,6 +108,7 @@ public class Player {
 
     /**
      * Method to update new army count, result from reinforcement phase
+     *
      * @param armyNumber
      */
     public void updateArmyNum(int armyNumber) {
@@ -181,7 +189,6 @@ public class Player {
 
     /**
      * The attack method realize the attack logic
-     *
      */
     public void attack(GameMap gameMap) {
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
@@ -236,7 +243,10 @@ public class Player {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins");
-            defender.removeCountry(defendingTerritory);
+            if(defender != null){
+                defender.removeCountry(defendingTerritory);
+            }
+
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
         } else if (result == -1) {
@@ -247,7 +257,6 @@ public class Player {
 
     /**
      * the attackAllOut method realize the all-out requirements in the grading sheet
-     *
      */
     public void attackAllOut(GameMap gameMap) {
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
@@ -387,17 +396,19 @@ public class Player {
                     attackingTerritory.updateArmyNum(-1);
                 }
             }
-            LogHelper.printMessage("do you want to continue to attack?");
-            String choice = null;
-            while (choice == null) {
-                choice = scanner.nextLine();
+            LogHelper.printMessage("do you want to continue to attack: y/n?");
+            String choice = "";
+            choice = scanner.next();
+            while (choice.length() > 0) {
                 if (choice.matches("y"))
                     break;
                 else if (choice.matches("n"))
                     return 0;
-                else
+                else {
                     LogHelper.printMessage("wrong input format! please reinput");
-                choice = null;
+                    choice = "";
+                }
+
             }
         }
         if (attackingTerritory.getArmyNum() == 0) {
@@ -494,7 +505,6 @@ public class Player {
 
         gameMap.fortification(territorySourceName, territoryDestinationName, getPlayerID());
     }
-
 
 
 }

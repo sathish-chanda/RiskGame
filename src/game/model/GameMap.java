@@ -322,7 +322,7 @@ public class GameMap {
         Territory t = null;
         for (int i = 0; i < territoryList.size(); i++) {
             String s = territoryList.get(i).getTerritoryName();
-            if (s.matches(countryName)) {
+            if (s.equalsIgnoreCase(countryName)) {
                 t = territoryList.get(i);
             }
         }
