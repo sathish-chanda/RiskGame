@@ -19,18 +19,16 @@ import java.util.Map;
 
 public class MapEditor implements EventHandler<ActionEvent> {
 
-    private boolean loadAndEditMapFile;
     private RiskModel riskModel;
 
-    public MapEditor(boolean loadAndEditMapFile) {
+    public MapEditor() {
         riskModel = new RiskModel();
-        this.loadAndEditMapFile = loadAndEditMapFile;
     }
 
     @Override
     public void handle(ActionEvent event) {
         LogHelper.printMessage("Opening Map editor");
-        initMapEditorDialog();
+        populateMapDataToMapEditor();
     }
 
     /**
@@ -47,14 +45,6 @@ public class MapEditor implements EventHandler<ActionEvent> {
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 950, 500));
         mapEditorStage.show();
-    }
-
-    private void initMapEditorDialog() {
-        if (loadAndEditMapFile) {
-            populateMapDataToMapEditor();
-        } else {
-            openMapEditorLayout();
-        }
     }
 
     /**
