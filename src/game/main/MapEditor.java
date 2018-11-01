@@ -64,8 +64,6 @@ public class MapEditor implements EventHandler<ActionEvent> {
         File file = MapFileHelper.getFileFromFileChooser();
         if (file != null) {
             riskModel.loadMapData(file.getPath());
-            Map<String, String> mapComponents = riskModel.getGame().getGameMap().getMapComponentsHashMap();
-            List<Continent> continents = riskModel.getGame().getGameMap().getContinentListMap();
             openMapEditorLayout();
         } else {
             LogHelper.printMessage("Unable to read file or Invalid file");
