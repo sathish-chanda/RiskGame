@@ -60,44 +60,43 @@
                 <TextField fx:id="warnTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>
-      <Pane layoutX="232.0" layoutY="17.0" prefHeight="189.0" prefWidth="207.0" AnchorPane.bottomAnchor="278.0" AnchorPane.leftAnchor="232.0" AnchorPane.rightAnchor="505.0" AnchorPane.topAnchor="17.0">
+      <Pane layoutX="228.0" layoutY="14.0" prefHeight="199.0" prefWidth="217.0" style="-fx-background-color: #c6cad1;">
          <children>
-            <TextField layoutX="93.0" layoutY="14.0" prefHeight="25.0" prefWidth="101.0" />
+            <TextField fx:id="continentTextField" layoutX="93.0" layoutY="14.0" prefHeight="25.0" prefWidth="101.0" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="18.0" prefHeight="17.0" prefWidth="64.0" text="Continent" />
             <Label contentDisplay="CENTER" layoutX="13.0" layoutY="52.0" prefHeight="17.0" prefWidth="57.0" text="Value" />
-            <TextField layoutX="93.0" layoutY="49.0" prefHeight="25.0" prefWidth="101.0" />
+            <TextField fx:id="continentValueTextField" layoutX="93.0" layoutY="49.0" prefHeight="25.0" prefWidth="101.0" />
             <Button layoutX="27.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
-            <Button layoutX="28.0" layoutY="119.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Update" />
             <Button layoutX="112.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
          </children>
       </Pane>
-      <ListView fx:id="continentsListView" layoutX="233.0" layoutY="214.0" prefHeight="213.0" prefWidth="207.0" />
-      <ListView fx:id="territoriesListView" layoutX="471.0" layoutY="217.0" prefHeight="210.0" prefWidth="205.0" />
-      <Pane layoutX="462.0" layoutY="14.0" prefHeight="210.0" prefWidth="207.0">
+
+
+      <ListView fx:id="continentsListView" layoutX="228.0" layoutY="223.0" prefHeight="210.0" prefWidth="217.0" />
+      <ListView fx:id="territoriesListView" layoutX="460.0" layoutY="222.0" prefHeight="210.0" prefWidth="217.0" />
+      <Pane layoutX="460.0" layoutY="14.0" prefHeight="199.0" prefWidth="217.0" style="-fx-background-color: #c6cad1;">
          <children>
-            <TextField layoutX="93.0" layoutY="52.0" prefHeight="25.0" prefWidth="101.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="56.0" prefHeight="17.0" prefWidth="64.0" text="Territory" />
-            <Label contentDisplay="CENTER" layoutX="17.0" layoutY="91.0" prefHeight="17.0" prefWidth="57.0" text="Latitude" />
-            <TextField layoutX="93.0" layoutY="87.0" prefHeight="25.0" prefWidth="101.0" />
-            <Button layoutX="28.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
-            <Button layoutX="27.0" layoutY="165.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Update" />
-            <Button layoutX="109.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <TextField fx:id="territoryTextField" layoutX="93.0" layoutY="52.0" prefHeight="25.0" prefWidth="101.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="57.0" prefHeight="17.0" prefWidth="64.0" text="Territory" />
+            <Label contentDisplay="CENTER" layoutX="23.0" layoutY="90.0" prefHeight="17.0" prefWidth="57.0" text="Latitude" />
+            <TextField fx:id="latitudeTextField" layoutX="93.0" layoutY="85.0" prefHeight="25.0" prefWidth="101.0" />
+            <Button layoutX="33.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
+            <Button layoutX="108.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
             <ComboBox fx:id="continentsComboBox" layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="180.0" />
+            <Label contentDisplay="CENTER" layoutX="23.0" layoutY="123.0" prefHeight="17.0" prefWidth="57.0" text="Longitude" />
+            <TextField fx:id="longitudeTextField" layoutX="94.0" layoutY="118.0" prefHeight="25.0" prefWidth="101.0" />
          </children>
       </Pane>
-      <ListView fx:id="adjacentTerritoriesListView" layoutX="692.0" layoutY="216.0" prefHeight="210.0" prefWidth="217.0" />
+      <ListView fx:id="adjacentTerritoriesListView" layoutX="692.0" layoutY="222.0" prefHeight="210.0" prefWidth="217.0" />
       <Button fx:id="saveMapButoon" layoutX="14.0" layoutY="387.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="101.0" text="Save Map" />
       <Button layoutX="123.0" layoutY="387.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="101.0" text="Exit" />
-      <Pane layoutX="692.0" layoutY="14.0" prefHeight="199.0" prefWidth="217.0">
+      <Pane layoutX="692.0" layoutY="14.0" prefHeight="199.0" prefWidth="217.0" style="-fx-background-color: #c6cad1;">
          <children>
-            <TextField layoutX="109.0" layoutY="52.0" prefHeight="25.0" prefWidth="101.0" />
-            <Label contentDisplay="CENTER" layoutX="9.0" layoutY="90.0" prefHeight="17.0" prefWidth="57.0" text="Latitude" />
-            <TextField layoutX="109.0" layoutY="86.0" prefHeight="25.0" prefWidth="101.0" />
-            <Button layoutX="28.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
-            <Button layoutX="27.0" layoutY="165.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Update" />
-            <Button layoutX="109.0" layoutY="130.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
-            <ComboBox fx:id="territoriesComboBox" layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="195.0" />
-            <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="54.0" prefHeight="48.0" prefWidth="101.0" text="Adjacent Territory" />
+            <TextField fx:id="adjacentTerritoryTextField" layoutX="117.0" layoutY="52.0" prefHeight="25.0" prefWidth="93.0" />
+            <Button layoutX="30.0" layoutY="98.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
+            <Button layoutX="112.0" layoutY="97.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <ComboBox fx:id="territoriesComboBox" layoutX="5.0" layoutY="14.0" prefHeight="25.0" prefWidth="205.0" />
+            <Label alignment="TOP_LEFT" layoutX="13.0" layoutY="54.0" prefHeight="48.0" prefWidth="101.0" text="Adjacent Territory" />
          </children>
       </Pane>
     </children>
