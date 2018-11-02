@@ -1,5 +1,6 @@
 package game.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,12 +53,15 @@ public class Continent {
     }
 
     /**
-     * This method set continent territory list
+     * This method is used to add territory
      *
-     * @param territoryList
+     * @param territory
      */
-    public void setTerritoryList(List<Territory> territoryList) {
-        this.territoryList = territoryList;
+    public void addTerritoryList(Territory territory) {
+        if (territoryList == null) {
+            territoryList = new ArrayList<>();
+        }
+        this.territoryList.add(territory);
     }
 
     /**
