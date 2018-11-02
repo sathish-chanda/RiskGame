@@ -66,8 +66,8 @@
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="18.0" prefHeight="17.0" prefWidth="64.0" text="Continent" />
             <Label contentDisplay="CENTER" layoutX="13.0" layoutY="52.0" prefHeight="17.0" prefWidth="57.0" text="Value" />
             <TextField fx:id="continentValueTextField" layoutX="93.0" layoutY="49.0" prefHeight="25.0" prefWidth="101.0" />
-            <Button layoutX="27.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
-            <Button layoutX="112.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <Button fx:id="addContinentButton" layoutX="27.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
+            <Button fx:id="deleteContinentButton" layoutX="112.0" layoutY="84.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
          </children>
       </Pane>
 
@@ -80,8 +80,8 @@
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="57.0" prefHeight="17.0" prefWidth="64.0" text="Territory" />
             <Label contentDisplay="CENTER" layoutX="23.0" layoutY="90.0" prefHeight="17.0" prefWidth="57.0" text="Latitude" />
             <TextField fx:id="latitudeTextField" layoutX="93.0" layoutY="85.0" prefHeight="25.0" prefWidth="101.0" />
-            <Button layoutX="33.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
-            <Button layoutX="108.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
+            <Button fx:id="addTerritoryButton" layoutX="33.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
+            <Button fx:id="deleteTerritoryButton" layoutX="108.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
             <ComboBox fx:id="continentsComboBox" layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="180.0" />
             <Label contentDisplay="CENTER" layoutX="23.0" layoutY="123.0" prefHeight="17.0" prefWidth="57.0" text="Longitude" />
             <TextField fx:id="longitudeTextField" layoutX="94.0" layoutY="118.0" prefHeight="25.0" prefWidth="101.0" />

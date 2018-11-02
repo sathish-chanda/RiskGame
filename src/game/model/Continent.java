@@ -43,12 +43,21 @@ public class Continent {
     }
 
     /**
-     * This method return an ArrayList containing all the countries in a continent.
+     * This method return an ArrayList containing all the countries in a continent
      *
      * @return list of territories
      */
     public List<Territory> getTerritoryList() {
         return territoryList;
+    }
+
+    /**
+     * This method set continent territory list
+     *
+     * @param territoryList
+     */
+    public void setTerritoryList(List<Territory> territoryList) {
+        this.territoryList = territoryList;
     }
 
     /**
