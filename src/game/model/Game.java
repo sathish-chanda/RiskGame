@@ -152,7 +152,6 @@ public class Game implements GameListener {
                         break;
                 }
             }
-//                attacker.attack(gameMap);
                 while (attacker.getArmyNum() > 0) {
                     LogHelper.printMessage("--------------------------------------------------------------------------------");
                     LogHelper.printMessage("do you still want to attack? y for yes, n for no");
