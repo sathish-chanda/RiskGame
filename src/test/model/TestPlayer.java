@@ -1,6 +1,6 @@
 package test.model;
 
-import game.Player;
+import game.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 import game.model.Territory;

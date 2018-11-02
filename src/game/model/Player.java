@@ -1,5 +1,6 @@
 package game.model;
 
+import game.controller.CardController;
 import game.model.Territory;
 import game.utils.LogHelper;
 
@@ -15,7 +16,7 @@ public class Player {
     private int countryNum = 0;//number of country owned by a player
     private int armyNum = 0;//number of army owned by a player
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
-
+    private CardModel card;
 
     public int getReinforcementArmyNum() {
         return reinforcementArmyNum;
@@ -144,7 +145,8 @@ public class Player {
         updateArmyNum(reinforcementArmyNum);
         setReinforcementArmyNum(reinforcementArmyNum);
         LogHelper.printMessage("Player" + playerID + " has " + reinforcementArmyNum + " reinforcement armies.");
-        //placeArmyOnCountry(armyNum);
+        CardController cardController = new CardController();
+        cardController.exchangeCardsForArmies(this);
     }
 
     /**
@@ -243,10 +245,8 @@ public class Player {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins");
-            if(defender != null){
-                defender.removeCountry(defendingTerritory);
-            }
-
+            card.increaseCard();
+            defender.removeCountry(defendingTerritory);
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
         } else if (result == -1) {
