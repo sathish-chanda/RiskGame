@@ -96,7 +96,7 @@
             <Button layoutX="30.0" layoutY="148.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Add" />
             <Button layoutX="112.0" layoutY="147.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="64.0" text="Delete" />
             <ComboBox fx:id="territoriesComboBox" layoutX="5.0" layoutY="35.0" prefHeight="25.0" prefWidth="205.0" />
-            <Label alignment="TOP_LEFT" layoutX="13.0" layoutY="68.0" prefHeight="20.0" prefWidth="101.0" text="Adjacent Territory" />
+            <Label alignment="TOP_LEFT" layoutX="12.0" layoutY="68.0" prefHeight="20.0" prefWidth="101.0" text="Select Adjacent Territory" />
             <ComboBox fx:id="adjacentTerritoriesComboBox" layoutX="5.0" layoutY="87.0" prefHeight="25.0" prefWidth="205.0" />
          </children>
       </Pane>
