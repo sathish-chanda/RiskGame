@@ -1,73 +1,68 @@
 package game.controller;
 
+import game.main.MapEditor;
+import game.main.MapEditorOptions;
 import game.model.Game;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.RiskView;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 /**
  * This controller class maps the user's actions to both RiskView and RiskModel
  * to handle data
  */
-public class RiskController implements ActionListener {
+public class RiskController implements Initializable {
 
     private RiskModel riskModel;
     private RiskView riskView;
 
+    @FXML
+    private Button newGameButton;
+    @FXML
+    private Button mapEditorButton;
+    @FXML
+    private Button quitGameButton;
+
     /**
-     * Constructor of RiskController class
+     * Constructor of class RiskController
      *
      * @param riskModel
-     * @param riskView
      */
-    public RiskController(RiskModel riskModel, RiskView riskView) {
+    public RiskController(RiskModel riskModel) {
         this.riskModel = riskModel;
-        this.riskView = riskView;
-        addRiskViewListeners();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initButtonActions();
     }
 
     /**
-     * Method to add risk view listeners
+     * Method to initialize button  actions
      */
-    private void addRiskViewListeners() {
-        riskView.initActionListeners(this);
+    private void initButtonActions() {
+        newGameButton.setOnAction(null);
+        mapEditorButton.setOnAction(openMapEditorOptionsDialog());
+        quitGameButton.setOnAction(event -> quitGame());
     }
 
     /**
-     * Method to initialize Risk Game
+     * Method to open map editor options dialog
      */
-    public void initializeRiskGame() {
-        openMainMenu();
-    }
-
-
-    /**
-     *
-     */
-    private void openMainMenu() {
-        riskView.createMainMenu();
-    }
-
-    /**
-     * Method to show dialog of number of players
-     */
-    private void openSelectPlayersDialog() {
-        PlayerSelectController playerSelectController = new PlayerSelectController(riskModel, riskView);
-        playerSelectController.openPlayerSelectDialog();
-
-    }
-
-    /**
-     * Method used to create map
-     */
-    public void createMap() {
-        LogHelper.printMessage("Creating Map");
-        riskModel.createMap();
+    private MapEditorOptions openMapEditorOptionsDialog() {
+        MapEditorOptions mapEditorOptions = new MapEditorOptions(riskModel);
+        return mapEditorOptions;
     }
 
     /**
@@ -75,7 +70,7 @@ public class RiskController implements ActionListener {
      */
     public void loadMap() {
         LogHelper.printMessage("loading map file");
-        riskModel.loadGame(riskView);
+        riskModel.loadGame();
     }
 
     /**
@@ -84,27 +79,6 @@ public class RiskController implements ActionListener {
     public void quitGame() {
         LogHelper.printMessage("Quitting Game");
         riskModel.quitGame();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        switch (event.getActionCommand()) {
-            case Constants.NEW_GAME_BUTTON_LABEL:
-                openSelectPlayersDialog();
-                break;
-            case Constants.LOAD_GAME_BUTTON_LABEL:
-                loadMap();
-                break;
-            case Constants.QUIT_GAME_BUTTON_LABEL:
-                quitGame();
-                break;
-            case Constants.SELECT_PLAYER_NEXT_BUTTON_lABEL:
-
-                break;
-            case Constants.SELECT_PLAYER_BACK_BUTTON_lABEL:
-                openMainMenu();
-                break;
-        }
     }
 
 

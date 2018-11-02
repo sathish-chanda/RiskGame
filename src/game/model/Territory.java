@@ -24,6 +24,21 @@ public class Territory {
 
     /**
      * This is the constructor method used to initialize various attributes of map file.
+     * @param countryName
+     * @param latitude
+     * @param longitude
+     * @param continentName
+     */
+    public Territory(String countryName, String latitude, String longitude, String continentName) {
+        this.territoryName = countryName;
+        this.continentName = continentName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        //this.adjacentCountryList = adjacentCountryList;
+    }
+
+    /**
+     * This is the constructor method used to initialize various attributes of map file.
      * @param countryName refers primary country of the continent
      * @param latitude refers co-ordinate of country located in the map
      * @param longitude refers co-ordinate of country located in the map

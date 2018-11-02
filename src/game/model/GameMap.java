@@ -27,6 +27,7 @@ public class GameMap {
     private List<Continent> continentListMap;
     private List<Territory> territoryListMap;
     private MapFileHelper mapFileHelper;
+    private Map<String, String> mapComponentsHashMap;
     private Map<String, Integer> continentsHashMap;
 
     /**
@@ -44,16 +45,6 @@ public class GameMap {
      */
     public void loadMap(String mapFileName) {
         mapFileHelper.readMapFile(mapFileName);
-        onMapLoaded();
-    }
-
-    /**
-     * Method to choose  risk game  file
-     *
-     * @param view
-     */
-    public void chooseFile(RiskView view) {
-        mapFileHelper.fileChooser(view);
         onMapLoaded();
     }
 
@@ -246,7 +237,6 @@ public class GameMap {
     private void onMapLoaded() {
         if (mapFileHelper.isMapValid()) {
             gameListener.onMapLoadSuccess();
-
         } else {
             gameListener.onMapLoadFailure(mapFileHelper.getErrorMessage());
         }
@@ -275,10 +265,24 @@ public class GameMap {
     }
 
     /**
+     * This method load map components from mapFileHelper class
+     */
+    public void loadMapComponents() {
+        List<String> mapComponentList = mapFileHelper.getMapComponentList();
+        List<String> mapComponentSplitList;
+        mapComponentsHashMap = new HashMap<>();
+        for (int i = 0; i < mapComponentList.size(); i++) {
+            mapComponentSplitList = Arrays.asList(mapComponentList.get(i).split("="));
+            if (mapComponentSplitList.size() == 2) {
+                mapComponentsHashMap.put(mapComponentSplitList.get(0), mapComponentSplitList.get(1));
+            }
+        }
+    }
+
+    /**
      * This method load continents from mapFileHelper class
      */
     public void loadContinents() {
-        LogHelper.printMessage(" " + mapFileHelper.getContinentsComponentList().size());
         List<String> continentComponentList = mapFileHelper.getContinentsComponentList();
         List<String> continentSplitList;
         continentsHashMap = new HashMap<>();
@@ -535,6 +539,10 @@ public class GameMap {
      */
     public MapFileHelper getMapFileHelper() {
         return mapFileHelper;
+    }
+
+    public Map<String, String> getMapComponentsHashMap() {
+        return mapComponentsHashMap;
     }
 
     /**

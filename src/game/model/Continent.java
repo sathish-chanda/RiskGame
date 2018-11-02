@@ -1,5 +1,6 @@
 package game.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,12 +44,24 @@ public class Continent {
     }
 
     /**
-     * This method return an ArrayList containing all the countries in a continent.
+     * This method return an ArrayList containing all the countries in a continent
      *
      * @return list of territories
      */
     public List<Territory> getTerritoryList() {
         return territoryList;
+    }
+
+    /**
+     * This method is used to add territory
+     *
+     * @param territory
+     */
+    public void addTerritoryList(Territory territory) {
+        if (territoryList == null) {
+            territoryList = new ArrayList<>();
+        }
+        this.territoryList.add(territory);
     }
 
     /**

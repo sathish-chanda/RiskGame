@@ -4,6 +4,8 @@ package game.model;
 import game.utils.Constants;
 import game.view.RiskView;
 
+import java.io.File;
+
 /**
  * It loads map file into the game
  */
@@ -25,18 +27,8 @@ public class RiskModel {
         game.loadMapData(Constants.MAP_FILE_NAME);
     }
 
-    /**
-     * It loading the map file into the game.
-     */
-    public void loadGame(RiskView view) {
-        game.chooseFile(view);
-    }
-
-    /**
-     * Method to create user defined map
-     */
-    public void createMap() {
-
+    public void loadMapData(String file) {
+        game.loadMapData(file);
     }
 
     /**

@@ -5,6 +5,7 @@ import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.RiskView;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -37,11 +38,12 @@ public class Game implements GameListener {
         gameMap.loadMap(fileName);
     }
 
-    /**
-     * Method to open file chooser
-     */
-    public void chooseFile(RiskView view) {
-        gameMap.chooseFile(view);
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 
     /**
@@ -86,6 +88,7 @@ public class Game implements GameListener {
 
     @Override
     public void onMapLoadSuccess() {
+        gameMap.loadMapComponents();
         gameMap.loadContinents();
         gameMap.loadTerritories();
         gameMap.syncContinentsAndTerritories();
@@ -288,9 +291,6 @@ public class Game implements GameListener {
             LogHelper.printMessage("--------------------------------------------------------------------------------");
         }
     }
-
-
-
 
 
     /**

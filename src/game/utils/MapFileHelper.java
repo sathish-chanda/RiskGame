@@ -2,6 +2,8 @@ package game.utils;
 
 import game.model.MapValidator;
 import game.view.RiskView;
+import javafx.stage.FileChooser;
+import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
 public class MapFileHelper {
 
     private static MapFileHelper instance = null;
+    Map<String, String> mapComponents = new HashMap<>();
     private List<String> mapComponentList = new ArrayList<>();
     private List<String> continentsComponentList = new ArrayList<>();
     private List<String> territoriesComponentList = new ArrayList<>();
@@ -59,22 +62,16 @@ public class MapFileHelper {
     }
 
     /**
-     * Method used to choose file
+     * Method to get file from file chooser
+     *
+     * @return
      */
-    public void fileChooser(RiskView view) {
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Load Risk Game file", "map");
-        fileChooser.setFileFilter(filter);
-        if (fileChooser.showOpenDialog(view) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (file != null) {
-                readMapFile(file.getPath());
-            } else {
-                LogHelper.printMessage("File not found");
-            }
-        } else {
-            LogHelper.printMessage("Invalid file");
-        }
+    public static File getFileFromFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
+        fileChooser.getExtensionFilters().add(filter);
+        File file = fileChooser.showOpenDialog(null);
+        return file;
     }
 
     /**
@@ -195,6 +192,73 @@ public class MapFileHelper {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Method to initialize map file saving process
+     */
+    public void initMapFileSaver() {
+        openSaveMapFileChooserDialog();
+    }
+
+    /**
+     * This method is used to save map file
+     */
+    public void openSaveMapFileChooserDialog() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
+        fileChooser.getExtensionFilters().add(filter);
+        File file = fileChooser.showOpenDialog(null);
+        LogHelper.printMessage("file path == " + file.getPath());
+        writeToMapFile(file);
+    }
+
+    /**
+     * Method to write data to file
+     *
+     * @param file
+     */
+    private void writeToMapFile(File file) {
+        String appendedMapData = createMapdata();
+        try {
+            FileWriter fileWriter = new FileWriter(file, false);
+            fileWriter.write(appendedMapData);
+            fileWriter.close();
+        } catch (Exception exeption) {
+            LogHelper.printMessage("Error Message " + exeption);
+        }
+    }
+
+    /**
+     * Method to create map data
+     */
+    private String createMapdata() {
+        String data = "";
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<String, String> map : mapComponents.entrySet()) {
+            String mapComponent = map.getKey() + "=" + map.getValue();
+            stringBuilder.append(mapComponent);
+        }
+        data = stringBuilder.toString();
+        return data;
+    }
+
+    /**
+     * Method to set map components
+     *
+     * @param mapComponents
+     */
+    public void setMapComponents(Map<String, String> mapComponents) {
+        this.mapComponents = mapComponents;
+    }
+
+    /**
+     * Method to get map components
+     *
+     * @return
+     */
+    public Map<String, String> getMapComponents() {
+        return mapComponents;
     }
 
     /**
