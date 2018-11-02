@@ -3,6 +3,7 @@ package game.controller;
 import game.model.Continent;
 import game.model.RiskModel;
 import game.model.Territory;
+import game.utils.LogHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,7 +19,6 @@ public class MapCreatorController implements Initializable {
 
     private Map<String, String> mapComponents = new HashMap<>();
     private List<Continent> continentList = new ArrayList<>();
-    private List<Territory> territoryList = new ArrayList<>();
 
     private RiskModel riskModel;
     @FXML
@@ -82,17 +82,26 @@ public class MapCreatorController implements Initializable {
 
 
     /**
-     * Method to set listeners for UI elements
+     * Method to set click listeners for UI elements
      */
     private void initViewListeners() {
         saveMapButton.setOnAction(event -> saveMapFile());
         exitMapEditorButton.setOnAction(event -> closeMapEditorWindow());
+
         addContinentButton.setOnAction(event -> addContinent());
         deleteContinentButton.setOnAction(event -> deleteContinent(continentsListView.getSelectionModel().getSelectedIndex()));
+
         continentsListView.setOnMouseClicked(event -> setContinentFieldsData(continentsListView.getSelectionModel().getSelectedIndex()));
+        continentsComboBox.setOnAction(event -> loadTerritoriesListView(continentsComboBox.getSelectionModel().getSelectedIndex()));
+
         addTerritoryButton.setOnAction(event -> addTerritory(continentsComboBox.getSelectionModel().getSelectedIndex()));
         deleteTerritoryButton.setOnAction(event -> deleteTerritory(continentsComboBox.getSelectionModel().getSelectedIndex(),
                 territoriesListView.getSelectionModel().getSelectedIndex()));
+
+        territoriesListView.setOnMouseClicked(event -> setTerritoryFieldsData(continentsComboBox.getSelectionModel().getSelectedIndex(),
+                territoriesListView.getSelectionModel().getSelectedIndex()));
+
+
     }
 
 
@@ -123,12 +132,16 @@ public class MapCreatorController implements Initializable {
     private void addTerritory(int continentPosition) {
         clearContinentTextFields();
         String continentName = (String) continentsComboBox.getSelectionModel().getSelectedItem();
+        LogHelper.printMessage("continentName " + continentName);
         String territoryName = territoryTextField.getText();
         String latitude = latitudeTextField.getText();
         String longitude = longitudeTextField.getText();
         Territory territory = new Territory(territoryName, latitude, longitude, continentName);
-        territoryList.add(territory);
-        continentList.get(continentPosition).setTerritoryList(territoryList);
+        continentList.get(continentPosition).addTerritoryList(territory);
+
+        LogHelper.printMessage("continent position = " + continentPosition);
+        LogHelper.printMessage("added territoryName " + territoryName + " in " + continentList.get(continentPosition).getContinentName());
+
         loadTerritoriesListView(continentPosition);
         //loadTerritoryComboBox();
     }
@@ -158,9 +171,13 @@ public class MapCreatorController implements Initializable {
     private void loadTerritoriesListView(int continentPosition) {
         clearTerritoryTextFields();
         territoriesListView.getItems().clear();
-        List<Territory> territoriesList = continentList.get(continentPosition).getTerritoryList();
-        for (Territory territory : territoriesList) {
-            territoriesListView.getItems().add(territory.getTerritoryName());
+        if (continentPosition >= 0) {
+            List<Territory> territoriesList = continentList.get(continentPosition).getTerritoryList();
+            if (territoriesList != null) {
+                for (Territory territory : territoriesList) {
+                    territoriesListView.getItems().add(territory.getTerritoryName());
+                }
+            }
         }
     }
 
@@ -170,12 +187,30 @@ public class MapCreatorController implements Initializable {
      * @param position
      */
     private void setContinentFieldsData(int position) {
-        if (continentList.size() > 0) {
-            String continentName = continentList.get(position).getContinentName();
-            int continentValue = continentList.get(position).getMaximumArmy();
-            continentTextField.setText(continentName);
-            continentValueTextField.setText(String.valueOf(continentValue));
-            setContinentComboBoxData(position);
+        String continentName = continentList.get(position).getContinentName();
+        int continentValue = continentList.get(position).getMaximumArmy();
+        continentTextField.setText(continentName);
+        continentValueTextField.setText(String.valueOf(continentValue));
+        setContinentComboBoxData(position);
+    }
+
+    /**
+     * Method to set territory UI fields data
+     *
+     * @param continentPosition
+     * @param territoryPosition
+     */
+    private void setTerritoryFieldsData(int continentPosition, int territoryPosition) {
+        if (continentPosition >= 0 && territoryPosition >= 0) {
+            List<Territory> territoryList = continentList.get(continentPosition).getTerritoryList();
+            Territory territory = continentList.get(continentPosition).getTerritoryList().get(territoryPosition);
+            String territoryName = territory.getTerritoryName();
+            String latitude = territory.getLatitude();
+            String longitude = territory.getLongitude();
+            territoryTextField.setText(territoryName);
+            latitudeTextField.setText(latitude);
+            longitudeTextField.setText(longitude);
+            //setTerritoryComboBoxData(territoryList, territoryPosition);
         }
     }
 
