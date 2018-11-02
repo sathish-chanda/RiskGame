@@ -4,6 +4,7 @@ import game.model.Continent;
 import game.model.RiskModel;
 import game.model.Territory;
 import game.utils.LogHelper;
+import game.utils.MapFileHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,8 +20,8 @@ public class MapCreatorController implements Initializable {
 
     private Map<String, String> mapComponents = new HashMap<>();
     private List<Continent> continentList = new ArrayList<>();
-
     private RiskModel riskModel;
+    private MapFileHelper mapFileHelper;
     @FXML
     private Button saveMapButton;
     @FXML
@@ -75,13 +76,13 @@ public class MapCreatorController implements Initializable {
      */
     public MapCreatorController(RiskModel riskModel) {
         this.riskModel = riskModel;
+        mapFileHelper = MapFileHelper.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initViewListeners();
     }
-
 
     /**
      * Method to set click listeners for UI elements
@@ -107,7 +108,6 @@ public class MapCreatorController implements Initializable {
         //adjacentTerritoriesComboBox.setOnAction(event -> );
 
     }
-
 
     /**
      * Method to add continent
@@ -287,7 +287,6 @@ public class MapCreatorController implements Initializable {
         }
     }
 
-
     /**
      * Method to clear continents text field
      */
@@ -310,6 +309,7 @@ public class MapCreatorController implements Initializable {
      */
     private void saveMapFile() {
         saveMapComponents();
+        mapFileHelper.initMapFileSaver();
     }
 
     /**
@@ -321,6 +321,7 @@ public class MapCreatorController implements Initializable {
         mapComponents.put("scroll", checkEmptyData(scrollTextField.getText()));
         mapComponents.put("warn", checkEmptyData(warnTextField.getText()));
         mapComponents.put("wrap", checkEmptyData(wrapTextField.getText()));
+        mapFileHelper.setMapComponents(mapComponents);
     }
 
     private String checkEmptyData(String data) {
