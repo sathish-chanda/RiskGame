@@ -2,6 +2,7 @@ package game.controller;
 
 import game.main.MapEditor;
 import game.main.MapEditorOptions;
+import game.model.Game;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;
@@ -69,7 +70,7 @@ public class RiskController implements Initializable {
      */
     public void loadMap() {
         LogHelper.printMessage("loading map file");
-        riskModel.loadGame(riskView);
+        riskModel.loadGame();
     }
 
     /**
