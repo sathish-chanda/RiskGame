@@ -1,5 +1,6 @@
 package game.main;
 
+import game.controller.MapCreatorController;
 import game.controller.MapEditorController;
 import game.model.RiskModel;
 import game.utils.Constants;
@@ -35,10 +36,10 @@ public class CreateNewMap implements EventHandler<ActionEvent> {
      */
     private void createMapCreatorLayout() throws Exception {
         Stage mapEditorStage = new Stage();
-        mapEditorStage.setTitle("Edit Map");
+        mapEditorStage.setTitle("Create New Map");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_viewer.fxml"));
-        MapEditorController mapEditorController = new MapEditorController(riskModel);
-        fxmlLoader.setController(mapEditorController);
+        MapCreatorController mapCreatorController = new MapCreatorController(riskModel);
+        fxmlLoader.setController(mapCreatorController);
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 950, 500));
         mapEditorStage.show();

@@ -23,6 +23,10 @@ public class MapEditorController implements Initializable {
     private List<Continent> continentList;
 
     @FXML
+    private Button saveMapButton;
+    @FXML
+    private Button exitMapEditorButton;
+    @FXML
     private TextField authorTextField;
     @FXML
     private TextField imageTextField;
@@ -32,10 +36,6 @@ public class MapEditorController implements Initializable {
     private TextField scrollTextField;
     @FXML
     private TextField warnTextField;
-    @FXML
-    private Button saveMapButoon;
-    @FXML
-    private Button exitMapButoon;
     @FXML
     private ListView continentsListView;
     @FXML
