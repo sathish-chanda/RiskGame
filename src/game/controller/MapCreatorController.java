@@ -65,6 +65,8 @@ public class MapCreatorController implements Initializable {
     private Button addTerritoryButton;
     @FXML
     private Button deleteTerritoryButton;
+    @FXML
+    private ComboBox adjacentTerritoriesComboBox;
 
     /**
      * Constructor of class {@link MapCreatorController}
@@ -101,6 +103,8 @@ public class MapCreatorController implements Initializable {
         territoriesListView.setOnMouseClicked(event -> setTerritoryFieldsData(continentsComboBox.getSelectionModel().getSelectedIndex(),
                 territoriesListView.getSelectionModel().getSelectedIndex()));
 
+        //territoriesComboBox.setOnAction(event -> );
+        //adjacentTerritoriesComboBox.setOnAction(event -> );
 
     }
 
@@ -127,6 +131,16 @@ public class MapCreatorController implements Initializable {
     }
 
     /**
+     * Method to load continents into combo box
+     */
+    private void loadContinentsComboBox() {
+        continentsComboBox.getItems().clear();
+        for (Continent continent : continentList) {
+            continentsComboBox.getItems().add(continent.getContinentName());
+        }
+    }
+
+    /**
      * Method to add Territory
      */
     private void addTerritory(int continentPosition) {
@@ -143,7 +157,6 @@ public class MapCreatorController implements Initializable {
         LogHelper.printMessage("added territoryName " + territoryName + " in " + continentList.get(continentPosition).getContinentName());
 
         loadTerritoriesListView(continentPosition);
-        //loadTerritoryComboBox();
     }
 
     /**
@@ -195,6 +208,15 @@ public class MapCreatorController implements Initializable {
     }
 
     /**
+     * Method to set continents UI combo vox data
+     *
+     * @param position
+     */
+    private void setContinentComboBoxData(int position) {
+        continentsComboBox.getSelectionModel().select(position);
+    }
+
+    /**
      * Method to set territory UI fields data
      *
      * @param continentPosition
@@ -210,28 +232,61 @@ public class MapCreatorController implements Initializable {
             territoryTextField.setText(territoryName);
             latitudeTextField.setText(latitude);
             longitudeTextField.setText(longitude);
-            //setTerritoryComboBoxData(territoryList, territoryPosition);
+            setTerritoryComboBoxData(territoryList, territoryPosition);
         }
     }
 
     /**
-     * Method to set continents UI combo vox data
+     * Method to set territory combo box data
      *
+     * @param territoryList
+     * @param territoryPosition
+     */
+    private void setTerritoryComboBoxData(List<Territory> territoryList, int territoryPosition) {
+        if (territoryPosition >= 0) {
+            territoriesComboBox.getItems().clear();
+            for (Territory territory : territoryList) {
+                territoriesComboBox.getItems().add(territory.getTerritoryName());
+            }
+            territoriesComboBox.getSelectionModel().select(territoryPosition);
+        }
+        //ToDo change the position of this function
+        loadAllTerritoriesInAdjacentComboBox();
+        loadAdjacentTerritoriesListView(territoryList, territoryPosition);
+    }
+
+    /**
+     * Method to load adjacent territories into list view
+     *
+     * @param territoryList
      * @param position
      */
-    private void setContinentComboBoxData(int position) {
-        continentsComboBox.getSelectionModel().select(position);
+    private void loadAdjacentTerritoriesListView(List<Territory> territoryList, int position) {
+        if (position >= 0) {
+            List<String> adjacentTerritoriesList = territoryList.get(position).getAdjacentCountryList();
+            adjacentTerritoriesListView.getItems().clear();
+            if (adjacentTerritoriesList != null && adjacentTerritoriesList.size() != 0) {
+                for (String adjacentTerritory : adjacentTerritoriesList) {
+                    adjacentTerritoriesListView.getItems().add(adjacentTerritory);
+                }
+            }
+
+        }
     }
 
     /**
-     * Method to load continents into combo box
+     * Method to load all territories in adjacent territory combo box
      */
-    private void loadContinentsComboBox() {
-        continentsComboBox.getItems().clear();
+    private void loadAllTerritoriesInAdjacentComboBox() {
+        adjacentTerritoriesComboBox.getItems().clear();
         for (Continent continent : continentList) {
-            continentsComboBox.getItems().add(continent.getContinentName());
+            List<Territory> territoryList = continent.getTerritoryList();
+            for (Territory territory : territoryList) {
+                adjacentTerritoriesComboBox.getItems().add(territory.getTerritoryName());
+            }
         }
     }
+
 
     /**
      * Method to clear continents text field
