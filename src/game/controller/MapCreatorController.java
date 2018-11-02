@@ -121,6 +121,7 @@ public class MapCreatorController implements Initializable {
      * Method to add Territory
      */
     private void addTerritory(int continentPosition) {
+        clearContinentTextFields();
         String continentName = (String) continentsComboBox.getSelectionModel().getSelectedItem();
         String territoryName = territoryTextField.getText();
         String latitude = latitudeTextField.getText();
@@ -136,6 +137,7 @@ public class MapCreatorController implements Initializable {
      * Method to delete Territory
      */
     private void deleteTerritory(int continentPosition, int territoryPosition) {
+        clearContinentTextFields();
         continentList.get(continentPosition).getTerritoryList().remove(territoryPosition);
         loadTerritoriesListView(continentPosition);
     }
@@ -144,7 +146,6 @@ public class MapCreatorController implements Initializable {
      * Method to load continents into list view
      */
     private void loadContinentsListView() {
-        clearContinentTextFields();
         continentsListView.getItems().clear();
         for (Continent continent : continentList) {
             continentsListView.getItems().add(continent.getContinentName());
@@ -155,6 +156,7 @@ public class MapCreatorController implements Initializable {
      * Method to load territories into list view
      */
     private void loadTerritoriesListView(int continentPosition) {
+        clearTerritoryTextFields();
         territoriesListView.getItems().clear();
         List<Territory> territoriesList = continentList.get(continentPosition).getTerritoryList();
         for (Territory territory : territoriesList) {
