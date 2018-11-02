@@ -311,7 +311,10 @@ public class Player {
         int result = rollingDiceAllOut(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins this round");
-            defender.removeCountry(defendingTerritory);
+
+            if(defender != null){
+                defender.removeCountry(defendingTerritory);
+            }
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
         } else if (result == -1) {
