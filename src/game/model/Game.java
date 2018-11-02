@@ -118,7 +118,7 @@ public class Game implements GameListener {
         }*/
 
         selectNumberOfPlayers();
-        assignCountryToPlayers();
+        startUp();
         randomPlaceArmyOnCountry();
         roundRobinPlay();
 
@@ -214,7 +214,7 @@ public class Game implements GameListener {
      * The assignCountrytoPlayers method is used in the constructor.
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
-    private void assignCountryToPlayers() {
+    private void startUp() {
         int playerSelect;
         Random rand = new Random();
         for (int i = 0; i < gameMap.getTerritoryList().size(); i++) {
