@@ -381,9 +381,6 @@ public class Player {
             }else if (attackingTerritoryArmyNum == 2) {
                 maxAttackingDiceNum = 1;
             }
-//            } else if (attackingTerritoryArmyNum == 1) {
-//                maxAttackingDiceNum = 1;
-//            }
             LogHelper.printMessage("attacker, you can roll up to " + maxAttackingDiceNum + " dice, how many dice you want to roll?");
             inputAttackingDiceNum = scanner.nextInt();
             while ((inputAttackingDiceNum > maxAttackingDiceNum) || (inputAttackingDiceNum <= 0)) {
