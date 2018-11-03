@@ -17,9 +17,9 @@ public class TestPlayer {
         territory = new Territory();
 
     }
-
     @Test
     public void testPlayerId() {
+        player = new Player(2);
         assertEquals(1, player.getPlayerID());
     }
 
