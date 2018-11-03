@@ -1,12 +1,8 @@
 package game.utils;
 
 import game.model.MapValidator;
-import game.view.RiskView;
 import javafx.stage.FileChooser;
-import sun.rmi.runtime.Log;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;

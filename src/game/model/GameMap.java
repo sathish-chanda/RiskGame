@@ -1,12 +1,8 @@
 package game.model;
 
 import game.listeners.GameListener;
-import game.model.Continent;
-import game.model.Territory;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
-import game.view.RiskView;
-import javafx.stage.Stage;
 
 import java.util.Map;
 

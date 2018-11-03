@@ -1,19 +1,12 @@
 package game.controller;
 
-import game.main.MapEditor;
 import game.main.MapEditorOptions;
-import game.model.Game;
 import game.model.RiskModel;
-import game.utils.Constants;
 import game.utils.LogHelper;
-import game.view.RiskView;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,7 +18,6 @@ import java.util.ResourceBundle;
 public class RiskController implements Initializable {
 
     private RiskModel riskModel;
-    private RiskView riskView;
 
     @FXML
     private Button newGameButton;
