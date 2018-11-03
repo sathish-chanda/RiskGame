@@ -38,44 +38,15 @@ public class Player {
      *
      * @param playerNum, no of players in the game
      */
-   /* public Player(int playerNum) {
+    public Player(int playerNum) {
         playerID = ++playerCounter;
         int initialArmyNum = 40 - 5 * (playerNum - 2);
         armyNum = armyNum + initialArmyNum;
         ownedCountry = new ArrayList<Territory>();
 
         //LogHelper.printMessage("" + armyNum);
-    }*/
-    public Player(int playerNum)
-    {
-        playerID= ++playerCounter;
-        int initialArmy = 0;
-        switch (playerNum)
-        {
-            case 1:
-                LogHelper.printMessage("this is not a valid plyer number");
-                break;
-            case 2:
-                initialArmy = 40;
-                break;
-            case 3:
-                initialArmy = 35;
-                break;
-            case 4:
-                initialArmy = 30;
-                break;
-            case 5:
-                initialArmy = 25;
-                break;
-            case 6:
-                initialArmy = 20;
-                break;
-        }
-        armyNum = initialArmy;
-        ownedCountry = new ArrayList<Territory>();
-        LogHelper.printMessage("Player num" +playerID , "Initial  army" +armyNum);
-    }
 
+    }
 
     /**
      * method to increase country number depends on players count
@@ -276,8 +247,10 @@ public class Player {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins");
-            card.increaseCard();
-            defender.removeCountry(defendingTerritory);
+            if(defender != null){
+                defender.removeCountry(defendingTerritory);
+            }
+
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
         } else if (result == -1) {
