@@ -44,9 +44,14 @@ public class RiskController implements Initializable {
      * Method to initialize button  actions
      */
     private void initButtonActions() {
-        newGameButton.setOnAction(null);
+        newGameButton.setOnAction(event -> newGame());
         mapEditorButton.setOnAction(openMapEditorOptionsDialog());
         quitGameButton.setOnAction(event -> quitGame());
+    }
+
+    //Todo remove / change this in future
+    private void newGame() {
+        riskModel.loadGame();
     }
 
     /**
