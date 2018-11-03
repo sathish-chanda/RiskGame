@@ -8,7 +8,6 @@ import java.util.Observer;
 
 public class CardView implements Observer {
     public void update (Observable obs, Object x) {
-
         int totalCardNum = ((CardModel) obs).getTotalCardNum();
         int infantryCard = ((CardModel) obs).getInfantryCardNum();
         int cavalryCard = ((CardModel) obs).getCavalryCardNum();

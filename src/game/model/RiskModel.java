@@ -2,9 +2,6 @@ package game.model;
 
 
 import game.utils.Constants;
-import game.view.RiskView;
-
-import java.io.File;
 
 /**
  * It loads map file into the game
