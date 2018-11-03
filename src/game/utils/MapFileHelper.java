@@ -38,7 +38,7 @@ public class MapFileHelper {
      */
     public void readMapFile(String fileName) {
         try {
-            FileReader fileReader = new FileReader(fileName);
+            FileReader fileReader = new FileReader(Constants.FILE_DOMAIN_PATH + fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             mapValidator = new MapValidator();
             mapValidator.setCurrentKey(Constants.MAP_KEY);

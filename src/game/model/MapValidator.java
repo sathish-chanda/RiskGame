@@ -13,6 +13,7 @@ public class MapValidator {
 
     /**
      * check key string in the map for validity
+     *
      * @return boolean
      */
     public boolean isMapKeyValid() {
@@ -21,6 +22,7 @@ public class MapValidator {
 
     /**
      * setting map validity key to validate map file
+     *
      * @param mapKeyValid
      */
     public void setMapKeyValid(boolean mapKeyValid) {
@@ -29,6 +31,7 @@ public class MapValidator {
 
     /**
      * this method is used to check continent validity in map
+     *
      * @return boolean
      */
     public boolean isContinentKeyValid() {
@@ -37,6 +40,7 @@ public class MapValidator {
 
     /**
      * set continent validity key
+     *
      * @param continentKeyValid
      */
     public void setContinentKeyValid(boolean continentKeyValid) {
@@ -45,6 +49,7 @@ public class MapValidator {
 
     /**
      * This method is used to check territory validity in map
+     *
      * @return boolean
      */
     public boolean isTerrtitoryKeyValid() {
@@ -53,6 +58,7 @@ public class MapValidator {
 
     /**
      * set territory validity key
+     *
      * @param terrtitoryKeyValid
      */
     public void setTerrtitoryKeyValid(boolean terrtitoryKeyValid) {
@@ -61,6 +67,7 @@ public class MapValidator {
 
     /**
      * getting current key status
+     *
      * @return current key
      */
     public String getCurrentKey() {
@@ -69,6 +76,7 @@ public class MapValidator {
 
     /**
      * set current key
+     *
      * @param currentKey
      */
     public void setCurrentKey(String currentKey) {
@@ -77,6 +85,7 @@ public class MapValidator {
 
     /**
      * check whether file saved successfully
+     *
      * @return boolean
      */
     public boolean isFileSaveSuccess() {
@@ -85,6 +94,7 @@ public class MapValidator {
 
     /**
      * set file saved status
+     *
      * @param fileSaveSuccess
      */
     public void setFileSaveSuccess(boolean fileSaveSuccess) {
