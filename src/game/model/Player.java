@@ -35,7 +35,6 @@ public class Player {
     /**
      * Method used to setup player description
      * Assigning of Id, initial armies and owned countries
-     *
      * @param playerNum, no of players in the game
      */
    /* public Player(int playerNum) {
@@ -276,8 +275,12 @@ public class Player {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins");
-            card.increaseCard();
-            defender.removeCountry(defendingTerritory);
+            if(card != null ){
+                card.increaseCard();
+            }
+            if(defender != null){
+                defender.removeCountry(defendingTerritory);
+            }
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
         } else if (result == -1) {
@@ -369,13 +372,13 @@ public class Player {
         int inputAttackingDiceNum = 0;
         int inputDefendingDiceNum = 0;
         Scanner scanner = new Scanner(System.in);
-        while ((attackingTerritory.getArmyNum() > 0) && (defendingTerritory.getArmyNum() > 0)) {
+        while ((attackingTerritory.getArmyNum() > 1) && (defendingTerritory.getArmyNum() > 0)) {
             attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
-            if (attackingTerritoryArmyNum >= 3) {
+            if (attackingTerritoryArmyNum > 3) {
                 maxAttackingDiceNum = 3;
-            } else if (attackingTerritoryArmyNum == 2) {
+            } else if (attackingTerritoryArmyNum == 3) {
                 maxAttackingDiceNum = 2;
-            } else if (attackingTerritoryArmyNum == 1) {
+            }else if (attackingTerritoryArmyNum == 2) {
                 maxAttackingDiceNum = 1;
             }
             LogHelper.printMessage("attacker, you can roll up to " + maxAttackingDiceNum + " dice, how many dice you want to roll?");
@@ -386,7 +389,7 @@ public class Player {
             }
 
             defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
-            if ((defendingTerritoryArmyNum >= 2) && (attackingTerritoryArmyNum >= 2)) {
+            if ((defendingTerritoryArmyNum >= 2) && (maxAttackingDiceNum >= 2)) {
                 maxDefendingDiceNum = 2;
             } else {
                 maxDefendingDiceNum = 1;
@@ -461,18 +464,18 @@ public class Player {
         //int inputAttackingDiceNum = 0;
         //int inputDefendingDiceNum = 0;
         Scanner scanner = new Scanner(System.in);
-        while ((attackingTerritory.getArmyNum() > 0) && (defendingTerritory.getArmyNum() > 0)) {
+        while ((attackingTerritory.getArmyNum() > 1) && (defendingTerritory.getArmyNum() > 0)) {
             attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
-            if (attackingTerritoryArmyNum >= 3) {
+            if (attackingTerritoryArmyNum > 3) {
                 maxAttackingDiceNum = 3;
-            } else if (attackingTerritoryArmyNum == 2) {
+            } else if (attackingTerritoryArmyNum == 3) {
                 maxAttackingDiceNum = 2;
-            } else if (attackingTerritoryArmyNum == 1) {
+            } else if (attackingTerritoryArmyNum == 2) {
                 maxAttackingDiceNum = 1;
             }
 
             defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
-            if ((defendingTerritoryArmyNum >= 2) && (attackingTerritoryArmyNum >= 2)) {
+            if ((defendingTerritoryArmyNum >= 2) && (maxAttackingDiceNum >= 2)) {
                 maxDefendingDiceNum = 2;
             } else {
                 maxDefendingDiceNum = 1;
