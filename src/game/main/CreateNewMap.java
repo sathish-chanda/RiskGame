@@ -38,7 +38,7 @@ public class CreateNewMap implements EventHandler<ActionEvent> {
         Stage mapEditorStage = new Stage();
         mapEditorStage.setTitle("Create New Map");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_viewer.fxml"));
-        MapCreatorController mapCreatorController = new MapCreatorController(riskModel);
+        MapCreatorController mapCreatorController = new MapCreatorController();
         fxmlLoader.setController(mapCreatorController);
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 950, 500));

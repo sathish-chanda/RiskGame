@@ -1,12 +1,8 @@
 package game.utils;
 
 import game.model.MapValidator;
-import game.view.RiskView;
 import javafx.stage.FileChooser;
-import sun.rmi.runtime.Log;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -233,14 +229,28 @@ public class MapFileHelper {
      * Method to create map data
      */
     private String createMapdata() {
-        String data = "";
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder = createMapComponents(stringBuilder);
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Method to create map component data
+     *
+     * @param stringBuilder
+     * @return
+     */
+    private StringBuilder createMapComponents(StringBuilder stringBuilder) {
+        stringBuilder.append(Constants.MAP_KEY);
+        stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
         for (Map.Entry<String, String> map : mapComponents.entrySet()) {
             String mapComponent = map.getKey() + "=" + map.getValue();
             stringBuilder.append(mapComponent);
+            stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
         }
-        data = stringBuilder.toString();
-        return data;
+        stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
+
+        return stringBuilder;
     }
 
     /**
