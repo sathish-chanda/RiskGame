@@ -20,8 +20,10 @@ public class MapCreatorController implements Initializable {
 
     private Map<String, String> mapComponents = new HashMap<>();
     private List<Continent> continentList = new ArrayList<>();
-    private RiskModel riskModel;
+    private List<Territory> territoriesList = new ArrayList<>();
+
     private MapFileHelper mapFileHelper;
+
     @FXML
     private Button saveMapButton;
     @FXML
@@ -68,14 +70,15 @@ public class MapCreatorController implements Initializable {
     private Button deleteTerritoryButton;
     @FXML
     private ComboBox adjacentTerritoriesComboBox;
+    @FXML
+    private Button addAdjacentTerritoryButton;
+    @FXML
+    private Button deleteAdjacentTerritoryButton;
 
     /**
      * Constructor of class {@link MapCreatorController}
-     *
-     * @param riskModel
      */
-    public MapCreatorController(RiskModel riskModel) {
-        this.riskModel = riskModel;
+    public MapCreatorController() {
         mapFileHelper = MapFileHelper.getInstance();
     }
 
@@ -104,8 +107,8 @@ public class MapCreatorController implements Initializable {
         territoriesListView.setOnMouseClicked(event -> setTerritoryFieldsData(continentsComboBox.getSelectionModel().getSelectedIndex(),
                 territoriesListView.getSelectionModel().getSelectedIndex()));
 
-        //territoriesComboBox.setOnAction(event -> );
-        //adjacentTerritoriesComboBox.setOnAction(event -> );
+        addAdjacentTerritoryButton.setOnAction(event -> addAdjacentTerritory());
+        deleteAdjacentTerritoryButton.setOnAction(event -> deleteAdjacentTerritory());
 
     }
 
@@ -288,6 +291,52 @@ public class MapCreatorController implements Initializable {
     }
 
     /**
+     * Method to add adjacent territory
+     */
+    private void addAdjacentTerritory() {
+        String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
+        continentList.get(getContinentCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().add(adjacentTerritory);
+        syncAddAdjacentTerritory(adjacentTerritory);
+    }
+
+    /**
+     * Method to synchronize and add adjacent adjacent territory
+     *
+     * @param currentTerritory
+     */
+    private void syncAddAdjacentTerritory(String currentTerritory) {
+        String adjacentTerritory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
+
+        LogHelper.printMessage("currentTerritory = " + currentTerritory + " adjacentTerritory " + adjacentTerritory);
+
+        String tempContinentName = null;
+        Territory tempTerritory;
+
+        for (Continent continent : continentList) {
+            for (Territory territory : continent.getTerritoryList()) {
+                if (territory.getTerritoryName().equals(currentTerritory)) {
+                    LogHelper.printMessage("territory.getTerritoryName() = " + territory.getTerritoryName());
+                    territory.getAdjacentCountryList().add(adjacentTerritory);
+                    tempTerritory = territory;
+                    tempContinentName = territory.getContinentName();
+                }
+            }
+            if (continent.getContinentName().equals(tempContinentName)) {
+            }
+        }
+        LogHelper.printMessage("territories synced");
+    }
+
+    /**
+     * Method to delete adjacent territory
+     */
+    private void deleteAdjacentTerritory() {
+        String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
+        continentList.get(getContinentCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().remove(adjacentTerritory);
+        LogHelper.printMessage("deleted");
+    }
+
+    /**
      * Method to clear continents text field
      */
     private void clearContinentTextFields() {
@@ -334,6 +383,20 @@ public class MapCreatorController implements Initializable {
     private void closeMapEditorWindow() {
         Stage stage = (Stage) exitMapEditorButton.getScene().getWindow();
         stage.close();
+    }
+
+    /**
+     * Method to get current index of continent from continent combo box
+     */
+    private int getContinentCurrentIndex() {
+        return continentsComboBox.getSelectionModel().getSelectedIndex();
+    }
+
+    /**
+     * Method to get current index of territroy from territory List view
+     */
+    private int getTerritoryCurrentIndex() {
+        return territoriesListView.getSelectionModel().getSelectedIndex();
     }
 
 }

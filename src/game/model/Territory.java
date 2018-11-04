@@ -24,6 +24,7 @@ public class Territory {
 
     /**
      * This is the constructor method used to initialize various attributes of map file.
+     *
      * @param countryName
      * @param latitude
      * @param longitude
@@ -39,10 +40,11 @@ public class Territory {
 
     /**
      * This is the constructor method used to initialize various attributes of map file.
-     * @param countryName refers primary country of the continent
-     * @param latitude refers co-ordinate of country located in the map
-     * @param longitude refers co-ordinate of country located in the map
-     * @param continentName refers continent name
+     *
+     * @param countryName         refers primary country of the continent
+     * @param latitude            refers co-ordinate of country located in the map
+     * @param longitude           refers co-ordinate of country located in the map
+     * @param continentName       refers continent name
      * @param adjacentCountryList refers list of adjacent countries connected to primary country
      */
     public Territory(String countryName, String latitude, String longitude, String continentName, ArrayList<String> adjacentCountryList) {
@@ -77,8 +79,24 @@ public class Territory {
      * @return
      */
     public ArrayList<String> getAdjacentCountryList() {
+        if (adjacentCountryList == null) {
+            adjacentCountryList = new ArrayList<>();
+        }
         return adjacentCountryList;
     }
+
+    /**
+     * This method sets an ArrayList which has the names of a country's adjacent country
+     *
+     * @return
+     */
+    public void addAdjacentCountryList(String adjacentCountry) {
+        if (adjacentCountryList == null) {
+            adjacentCountryList = new ArrayList<String>();
+        }
+        adjacentCountryList.add(adjacentCountry);
+    }
+
 
     /**
      * This method returns name of the player owning the country
@@ -109,6 +127,7 @@ public class Territory {
 
     /**
      * This method is used to get continent name
+     *
      * @return continent name
      */
     public String getContinentName() {
@@ -143,7 +162,8 @@ public class Territory {
     }
 
     /**
-     *  get latitude position of countries in the map
+     * get latitude position of countries in the map
+     *
      * @return latitude point
      */
     public String getLatitude() {
@@ -151,7 +171,8 @@ public class Territory {
     }
 
     /**
-     *  get longitude position of countries in the map
+     * get longitude position of countries in the map
+     *
      * @return longitude point
      */
     public String getLongitude() {
