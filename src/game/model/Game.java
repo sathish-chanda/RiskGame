@@ -116,16 +116,17 @@ public class Game implements GameListener {
     }
 
     /**
-     *This method implements the start up phase of the game.
-     *In which a user selects the user saved map file,then load the map as a connected graph.
-     *User chooses the number of players,then all countries are randomly assign to players.
-     *In round-robin fashion,the players place one-by-one their given armies on their own countries.
+     * This method implements the start up phase of the game.
+     * In which a user selects the user saved map file,then load the map as a connected graph.
+     * User chooses the number of players,then all countries are randomly assign to players.
+     * In round-robin fashion,the players place one-by-one their given armies on their own countries.
      */
-    public void startupPhase(){
+    public void startupPhase() {
         chooseNumberOfPlayers();
         randomAssignCountryToPlayers();
         roundRobinPlaceArmyOnCountry();
     }
+
     /**
      * the roundRobinPlay method is used to realize round robin logic
      */
@@ -139,21 +140,21 @@ public class Game implements GameListener {
                 LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
                 String alloutMode = "";
                 alloutMode = scanner.next();
-                while (alloutMode.length() > 0){
-                switch (alloutMode) {
-                    case "y":
-                        attacker.attackAllOut(gameMap);
-                        alloutMode = "";
-                        break;
-                    case "n":
-                        attacker.attack(gameMap);
-                        alloutMode = "";
-                        break;
-                    default:
-                        LogHelper.printMessage("wrong input format! please reinput");
-                        break;
+                while (alloutMode.length() > 0) {
+                    switch (alloutMode) {
+                        case "y":
+                            attacker.attackAllOut(gameMap);
+                            alloutMode = "";
+                            break;
+                        case "n":
+                            attacker.attack(gameMap);
+                            alloutMode = "";
+                            break;
+                        default:
+                            LogHelper.printMessage("wrong input format! please reinput");
+                            break;
+                    }
                 }
-            }
                 while (attacker.getArmyNum() > 0) {
                     LogHelper.printMessage("--------------------------------------------------------------------------------");
                     LogHelper.printMessage("do you still want to attack? y for yes, n for no");
@@ -251,50 +252,55 @@ public class Game implements GameListener {
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
     private void randomAssignCountryToPlayers() {
-        int playerSelect;
+        int playerSelect,countrySelect;
         Random rand = new Random();
-        for (int i = 0; i < gameMap.getTerritoryList().size(); i++) {
-            playerSelect = rand.nextInt(playerNum) + 1;
-            gameMap.getTerritoryList().get(i).setPlayer(playerSelect);
-            players.get(playerSelect-1).addCountry(gameMap.getTerritoryList().get(i));
+        List<Territory> countryList = new ArrayList<Territory>();
+        for (int i = 0; i < gameMap.getTerritoryList().size(); i++)
+            countryList.add(gameMap.getTerritoryList().get(i));
+        playerSelect = 0;
+        while (countryList.size() != 0) {
+            countrySelect = rand.nextInt(countryList.size());
+            gameMap.getTerritoryList().get(gameMap.getTerritoryList().indexOf(countryList.get(countrySelect))).setPlayer(playerSelect + 1);
+            players.get(playerSelect).addCountry(countryList.get(countrySelect));
+            countryList.remove(countrySelect);
+            playerSelect += 1;
+            playerSelect = playerSelect % players.size();
         }
+
         for (int j = 0; j < players.size(); j++) {
             LogHelper.printMessage("the player" + players.get(j).getPlayerID() + " has " + players.get(j).getCountry().size() + " countries");
         }
         LogHelper.printMessage("--------------------------------------------------------------------------------");
     }
 
-    public void roundRobinPlaceArmyOnCountry(){
+    public void roundRobinPlaceArmyOnCountry() {
         Random rand = new Random();
         int[] armiesCount = new int[players.size()];
         int totalArmy = 0;
-        for(int i=0;i<players.size();i++) {
+        for (int i = 0; i < players.size(); i++) {
             armiesCount[i] = players.get(i).getArmyNum();
-            totalArmy+=armiesCount[i];
+            totalArmy += armiesCount[i];
         }
-        for(int i=0;i<players.size();i++) {
-            //Player player = players.get(i);
-            for(int j=0;j<players.get(i).getCountryNum();j++)
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < players.get(i).getCountryNum(); j++)
                 players.get(i).getCountry().get(j).updateArmyNum(1);
-            armiesCount[i]-=players.get(i).getCountryNum();
-            totalArmy-=players.get(i).getCountryNum();
+            armiesCount[i] -= players.get(i).getCountryNum();
+            totalArmy -= players.get(i).getCountryNum();
         }
         int currentPlayer = 0;
-        while(totalArmy!=0)
-        {
-            currentPlayer=currentPlayer%(players.size());
+        while (totalArmy != 0) {
+            currentPlayer = currentPlayer % (players.size());
             int randomChooseCountry = rand.nextInt(players.get(currentPlayer).getCountryNum());
-            if(armiesCount[currentPlayer]!=0)
-            {
+            if (armiesCount[currentPlayer] != 0) {
                 players.get(currentPlayer).getCountry().get(randomChooseCountry).updateArmyNum(1);
-                armiesCount[currentPlayer]-=1;
-                totalArmy-=1;
+                armiesCount[currentPlayer] -= 1;
+                totalArmy -= 1;
             }
             currentPlayer++;
         }
         for (int k = 0; k < players.size(); k++) {
             Player player = players.get(k);
-            LogHelper.printMessage("player-" + player.getPlayerID() + " has");
+            LogHelper.printMessage("Player-" + player.getPlayerID() + " has");
             for (int m = 0; m < player.getCountryNum(); m++) {
                 Territory territory = player.getCountry().get(m);
                 LogHelper.printMessage(territory.getArmyNum() + " armies on territroy " + territory.getTerritoryName());
