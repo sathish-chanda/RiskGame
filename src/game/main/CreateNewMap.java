@@ -1,5 +1,6 @@
 package game.main;
 
+import game.controller.MapController;
 import game.controller.MapCreatorController;
 import game.controller.MapEditorController;
 import game.model.RiskModel;
@@ -14,14 +15,6 @@ import javafx.stage.Stage;
 
 public class CreateNewMap implements EventHandler<ActionEvent> {
 
-    RiskModel riskModel;
-
-    /**
-     * Constructor of class {@link CreateNewMap}
-     */
-    public CreateNewMap() {
-        riskModel = new RiskModel();
-    }
 
     @Override
     public void handle(ActionEvent event) {
@@ -38,8 +31,8 @@ public class CreateNewMap implements EventHandler<ActionEvent> {
         Stage mapEditorStage = new Stage();
         mapEditorStage.setTitle("Create New Map");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_viewer.fxml"));
-        MapCreatorController mapCreatorController = new MapCreatorController();
-        fxmlLoader.setController(mapCreatorController);
+        MapController mapController = new MapController(false);
+        fxmlLoader.setController(mapController);
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 950, 500));
         mapEditorStage.show();

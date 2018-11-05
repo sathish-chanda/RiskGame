@@ -14,16 +14,6 @@ import javafx.stage.Stage;
 
 public class MapEditorOptions implements EventHandler<ActionEvent> {
 
-    public RiskModel riskModel;
-
-    /**
-     * Constructor of {@link MapEditorOptions} class
-     *
-     * @param riskModel
-     */
-    public MapEditorOptions(RiskModel riskModel) {
-        this.riskModel = riskModel;
-    }
 
     @Override
     public void handle(ActionEvent event) {
@@ -38,7 +28,7 @@ public class MapEditorOptions implements EventHandler<ActionEvent> {
         Stage mapEditorOptionStage = new Stage();
         mapEditorOptionStage.setTitle("Edit Map Options");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_editor_options.fxml"));
-        MapEditorOptionsController mapEditorOptionsController = new MapEditorOptionsController(riskModel);
+        MapEditorOptionsController mapEditorOptionsController = new MapEditorOptionsController();
         fxmlLoader.setController(mapEditorOptionsController);
         Parent root = fxmlLoader.load();
         mapEditorOptionStage.setScene(new Scene(root, 300, 275));

@@ -1,5 +1,6 @@
 package game.main;
 
+import game.controller.MapController;
 import game.controller.MapEditorController;
 import game.model.Continent;
 import game.model.RiskModel;
@@ -21,14 +22,11 @@ public class MapEditor implements EventHandler<ActionEvent> {
 
     private RiskModel riskModel;
 
-    public MapEditor() {
-        riskModel = new RiskModel();
-    }
-
     @Override
     public void handle(ActionEvent event) {
         LogHelper.printMessage("Opening Map editor");
-        populateMapDataToMapEditor();
+        //populateMapDataToMapEditor();
+        openMapEditorLayout();
     }
 
     /**
@@ -40,25 +38,11 @@ public class MapEditor implements EventHandler<ActionEvent> {
         Stage mapEditorStage = new Stage();
         mapEditorStage.setTitle("Edit Map");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/map_viewer.fxml"));
-        MapEditorController mapEditorController = new MapEditorController(riskModel);
-        fxmlLoader.setController(mapEditorController);
+        MapController mapController = new MapController(true);
+        fxmlLoader.setController(mapController);
         Parent root = fxmlLoader.load();
         mapEditorStage.setScene(new Scene(root, 950, 500));
         mapEditorStage.show();
-    }
-
-    /**
-     * Populate data to map editor
-     */
-    private void populateMapDataToMapEditor() {
-        File file = MapFileHelper.getFileFromFileChooser();
-        if (file != null) {
-            riskModel.loadMapData(file.getPath());
-            openMapEditorLayout();
-        } else {
-            LogHelper.printMessage("Unable to read file or Invalid file");
-        }
-
     }
 
     /**

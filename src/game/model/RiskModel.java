@@ -18,6 +18,13 @@ public class RiskModel {
     }
 
     /**
+     * Method to open new game
+     */
+    public void newGame() {
+        //ToDo open file chooser
+    }
+
+    /**
      * It loading the map file into the game.
      */
     public void loadGame() {

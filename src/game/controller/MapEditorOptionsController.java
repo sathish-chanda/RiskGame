@@ -25,15 +25,6 @@ public class MapEditorOptionsController implements Initializable {
     @FXML
     private Button backButton;
 
-    /**
-     * Constructor of class {@link MapEditorOptionsController}
-     *
-     * @param riskModel
-     */
-    public MapEditorOptionsController(RiskModel riskModel) {
-
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initButtonActions();

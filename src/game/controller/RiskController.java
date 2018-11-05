@@ -49,16 +49,18 @@ public class RiskController implements Initializable {
         quitGameButton.setOnAction(event -> quitGame());
     }
 
-    //Todo remove / change this in future
+    /**
+     * Method to start new game
+     */
     private void newGame() {
-        riskModel.loadGame();
+        riskModel.newGame();
     }
 
     /**
      * Method to open map editor options dialog
      */
     private MapEditorOptions openMapEditorOptionsDialog() {
-        MapEditorOptions mapEditorOptions = new MapEditorOptions(riskModel);
+        MapEditorOptions mapEditorOptions = new MapEditorOptions();
         return mapEditorOptions;
     }
 

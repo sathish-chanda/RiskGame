@@ -197,13 +197,17 @@ public class MapFileHelper {
      * Method to initialize map file saving process
      */
     public void initMapFileSaver() {
-        openSaveMapFileChooserDialog();
+        try {
+            openSaveMapFileChooserDialog();
+        } catch (Exception exception) {
+            LogHelper.printMessage(MapFileHelper.class.getName() + Constants.SPACE + exception.getMessage());
+        }
     }
 
     /**
      * This method is used to save map file
      */
-    public void openSaveMapFileChooserDialog() {
+    public void openSaveMapFileChooserDialog() throws Exception {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Map files (*.map)", "*.map");
         fileChooser.getExtensionFilters().add(filter);
@@ -286,9 +290,9 @@ public class MapFileHelper {
         for (Continent continent : continentsAndTerritoriesList) {
             stringBuilder.append(Constants.NEXT_LINE);
             for (Territory territory : continent.getTerritoryList()) {
-                //Alaska,70,126,North America,Northwest Territory,Alberta,Kamchatka
                 stringBuilder.append(territory.getTerritoryName() + "," + territory.getLatitude() + ","
                         + territory.getLongitude() + "," + territory.getContinentName() + "," + appendAdjacentTerritories(territory.getAdjacentCountryList()));
+                stringBuilder.append(Constants.NEXT_LINE);
             }
         }
         return stringBuilder;
@@ -304,10 +308,10 @@ public class MapFileHelper {
         StringBuilder stringBuilder = new StringBuilder();
         String adjacentTerritories = "";
         for (String adjacentTerritory : adjacentCountryList) {
-            if (adjacentCountryList.equals(adjacentCountryList.get(adjacentCountryList.size() - 1))) {
+            if (adjacentTerritory.equals(adjacentCountryList.get(adjacentCountryList.size() - 1))) {
                 stringBuilder.append(adjacentTerritory);
             } else {
-                stringBuilder.append(adjacentTerritory + Constants.NEXT_LINE);
+                stringBuilder.append(adjacentTerritory + ",");
             }
         }
         adjacentTerritories = stringBuilder.toString();
