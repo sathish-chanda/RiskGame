@@ -218,7 +218,7 @@ public class MapFileHelper {
      * @param file
      */
     private void writeToMapFile(File file) {
-        String appendedMapData = createMapdata();
+        String appendedMapData = createMapData();
         try {
             FileWriter fileWriter = new FileWriter(file, false);
             fileWriter.write(appendedMapData);
@@ -231,56 +231,60 @@ public class MapFileHelper {
     /**
      * Method to create map data
      */
-    private String createMapdata() {
+    private String createMapData() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder = appendMapComponents(stringBuilder);
+        stringBuilder.append(appendMapComponents());
+        stringBuilder.append(appendContinents());
+        stringBuilder.append(appendTerritories());
         return stringBuilder.toString();
     }
 
     /**
      * Method to create map component data
      *
-     * @param stringBuilder
      * @return
      */
-    private StringBuilder appendMapComponents(StringBuilder stringBuilder) {
+    private StringBuilder appendMapComponents() {
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Constants.MAP_KEY);
-        stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
+        stringBuilder.append(Constants.NEXT_LINE);
         for (Map.Entry<String, String> map : mapComponents.entrySet()) {
             String mapComponent = map.getKey() + "=" + map.getValue();
             stringBuilder.append(mapComponent);
-            stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
+            stringBuilder.append(Constants.NEXT_LINE);
         }
-        stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
-        return stringBuilder.append(appendContinents(stringBuilder));
+        return stringBuilder;
     }
 
 
     /**
      * Method to append continents data
      *
-     * @param stringBuilder
      * @return
      */
-    private StringBuilder appendContinents(StringBuilder stringBuilder) {
+    private StringBuilder appendContinents() {
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Constants.NEXT_LINE);
         stringBuilder.append(Constants.CONTINENTS_KEY);
         for (Continent continent : continentsAndTerritoriesList) {
+            stringBuilder.append(Constants.NEXT_LINE);
             stringBuilder.append(continent.getContinentName() + "=" + continent.getMaximumArmy());
         }
-        return stringBuilder.append(appendTerritories(stringBuilder));
+        stringBuilder.append(Constants.NEXT_LINE);
+        return stringBuilder;
     }
 
     /**
      * Method to append territories data
      *
-     * @param stringBuilder
      * @return
      */
-    private StringBuilder appendTerritories(StringBuilder stringBuilder) {
+    private StringBuilder appendTerritories() {
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Constants.NEXT_LINE);
         stringBuilder.append(Constants.TERRITORIES_KEY);
         for (Continent continent : continentsAndTerritoriesList) {
+            stringBuilder.append(Constants.NEXT_LINE);
             for (Territory territory : continent.getTerritoryList()) {
                 //Alaska,70,126,North America,Northwest Territory,Alberta,Kamchatka
                 stringBuilder.append(territory.getTerritoryName() + "," + territory.getLatitude() + ","

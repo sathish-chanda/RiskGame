@@ -198,11 +198,13 @@ public class MapCreatorController implements Initializable {
      * @param position
      */
     private void setContinentFieldsData(int position) {
-        String continentName = continentList.get(position).getContinentName();
-        int continentValue = continentList.get(position).getMaximumArmy();
-        continentTextField.setText(continentName);
-        continentValueTextField.setText(String.valueOf(continentValue));
-        setContinentComboBoxData(position);
+        if (position >= 0) {
+            String continentName = continentList.get(position).getContinentName();
+            int continentValue = continentList.get(position).getMaximumArmy();
+            continentTextField.setText(continentName);
+            continentValueTextField.setText(String.valueOf(continentValue));
+            setContinentComboBoxData(position);
+        }
     }
 
     /**
@@ -279,8 +281,10 @@ public class MapCreatorController implements Initializable {
         adjacentTerritoriesComboBox.getItems().clear();
         for (Continent continent : continentList) {
             List<Territory> territoryList = continent.getTerritoryList();
-            for (Territory territory : territoryList) {
-                adjacentTerritoriesComboBox.getItems().add(territory.getTerritoryName());
+            if (territoryList != null) {
+                for (Territory territory : territoryList) {
+                    adjacentTerritoriesComboBox.getItems().add(territory.getTerritoryName());
+                }
             }
         }
     }
@@ -291,7 +295,7 @@ public class MapCreatorController implements Initializable {
     private void addAdjacentTerritory() {
         String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
         String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
-        String message = "Territory = " + territory + System.getProperty(Constants.NEXT_LINE) + "Adjacent Territory = " + adjacentTerritory;
+        String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
         if (territory.equals(adjacentTerritory)) {
             showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
         } else {
@@ -309,10 +313,12 @@ public class MapCreatorController implements Initializable {
         String adjacentTerritory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
         LogHelper.printMessage("currentTerritory = " + currentTerritory + " adjacentTerritory " + adjacentTerritory);
         for (int i = 0; i < continentList.size(); i++) {
-            for (int j = 0; j < continentList.get(i).getTerritoryList().size(); j++) {
-                if (continentList.get(i).getTerritoryList().get(j).getTerritoryName().equals(currentTerritory)) {
-                    continentList.get(i).getTerritoryList().get(j).addAdjacentCountry(adjacentTerritory);
-                    LogHelper.printMessage("added " + adjacentTerritory + " into " + currentTerritory);
+            if (continentList.get(i).getTerritoryList() != null && continentList.get(i).getTerritoryList().size() >0) {
+                for (int j = 0; j < continentList.get(i).getTerritoryList().size(); j++) {
+                    if (continentList.get(i).getTerritoryList().get(j).getTerritoryName().equals(currentTerritory)) {
+                        continentList.get(i).getTerritoryList().get(j).addAdjacentCountry(adjacentTerritory);
+                        LogHelper.printMessage("added " + adjacentTerritory + " into " + currentTerritory);
+                    }
                 }
             }
         }
@@ -325,7 +331,7 @@ public class MapCreatorController implements Initializable {
     private void deleteAdjacentTerritory() {
         String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
         String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
-        String message = "Territory = " + territory + System.getProperty(Constants.NEXT_LINE) + "Adjacent Territory = " + adjacentTerritory;
+        String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
         if (territory.equals(adjacentTerritory)) {
             showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
         } else {
@@ -400,7 +406,7 @@ public class MapCreatorController implements Initializable {
     }
 
     private String checkEmptyData(String data) {
-        return (data == null || data.equals("")) ? "null data" : data;
+        return (data == null || data.equals("")) ? "null" : data;
     }
 
     /**
