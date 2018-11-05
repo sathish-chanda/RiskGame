@@ -1,6 +1,8 @@
 package game.utils;
 
+import game.model.Continent;
 import game.model.MapValidator;
+import game.model.Territory;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -17,6 +19,7 @@ public class MapFileHelper {
     private List<String> mapComponentList = new ArrayList<>();
     private List<String> continentsComponentList = new ArrayList<>();
     private List<String> territoriesComponentList = new ArrayList<>();
+    private List<Continent> completeMapDataList = new ArrayList<>();
     private MapValidator mapValidator;
     private String line;
     private boolean isMapInvalid = false;
@@ -230,7 +233,7 @@ public class MapFileHelper {
      */
     private String createMapdata() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder = createMapComponents(stringBuilder);
+        stringBuilder = appendMapComponents(stringBuilder);
         return stringBuilder.toString();
     }
 
@@ -240,7 +243,7 @@ public class MapFileHelper {
      * @param stringBuilder
      * @return
      */
-    private StringBuilder createMapComponents(StringBuilder stringBuilder) {
+    private StringBuilder appendMapComponents(StringBuilder stringBuilder) {
         stringBuilder.append(Constants.MAP_KEY);
         stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
         for (Map.Entry<String, String> map : mapComponents.entrySet()) {
@@ -249,9 +252,64 @@ public class MapFileHelper {
             stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
         }
         stringBuilder.append(System.getProperty(Constants.NEXT_LINE));
+        return stringBuilder.append(appendContinents(stringBuilder));
+    }
 
+
+    /**
+     * Method to append continents data
+     *
+     * @param stringBuilder
+     * @return
+     */
+    private StringBuilder appendContinents(StringBuilder stringBuilder) {
+        stringBuilder.append(Constants.NEXT_LINE);
+        stringBuilder.append(Constants.CONTINENTS_KEY);
+        for (Continent continent : completeMapDataList) {
+            stringBuilder.append(continent.getContinentName() + "=" + continent.getMaximumArmy());
+        }
+        return stringBuilder.append(appendTerritories(stringBuilder));
+    }
+
+    /**
+     * Method to append territories data
+     *
+     * @param stringBuilder
+     * @return
+     */
+    private StringBuilder appendTerritories(StringBuilder stringBuilder) {
+        stringBuilder.append(Constants.NEXT_LINE);
+        stringBuilder.append(Constants.TERRITORIES_KEY);
+        for (Continent continent : completeMapDataList) {
+            for (Territory territory : continent.getTerritoryList()) {
+                //Alaska,70,126,North America,Northwest Territory,Alberta,Kamchatka
+                stringBuilder.append(territory.getTerritoryName() + "," + territory.getLatitude() + ","
+                        + territory.getLongitude() + "," + territory.getContinentName() + "," + appendAdjacentTerritories(territory.getAdjacentCountryList()));
+            }
+        }
         return stringBuilder;
     }
+
+    /**
+     * Method to append adjacent territories data
+     *
+     * @param adjacentCountryList
+     * @return
+     */
+    private String appendAdjacentTerritories(ArrayList<String> adjacentCountryList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String adjacentTerritories = "";
+        for (String adjacentTerritory : adjacentCountryList) {
+            if (adjacentCountryList.equals(adjacentCountryList.get(adjacentCountryList.size() - 1))) {
+                stringBuilder.append(adjacentTerritory);
+            } else {
+                stringBuilder.append(adjacentTerritory + Constants.NEXT_LINE);
+            }
+        }
+        adjacentTerritories = stringBuilder.toString();
+        return adjacentTerritories;
+    }
+
 
     /**
      * Method to set map components
@@ -436,6 +494,24 @@ public class MapFileHelper {
      */
     public List<String> getTerritoriesComponentList() {
         return territoriesComponentList;
+    }
+
+    /**
+     * method to get complete data of map
+     *
+     * @return
+     */
+    public List<Continent> getCompleteMapDataList() {
+        return completeMapDataList;
+    }
+
+    /**
+     * method to get complete data of map
+     *
+     * @param completeMapDataList
+     */
+    public void setCompleteMapDataList(List<Continent> completeMapDataList) {
+        this.completeMapDataList = completeMapDataList;
     }
 
     /**
