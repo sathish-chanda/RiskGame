@@ -56,8 +56,6 @@ public class MapEditorController implements Initializable {
     private TextField latitudeTextField;
     @FXML
     private TextField longitudeTextField;
-    @FXML
-    private TextField adjacentTerritoryTextField;
 
     /**
      * Constructor of class {@link MapEditorController}
@@ -82,8 +80,8 @@ public class MapEditorController implements Initializable {
         territoriesListView.setOnMouseClicked(event -> setTerritoryFieldsData(continentsComboBox.getSelectionModel().getSelectedIndex(),
                 territoriesListView.getSelectionModel().getSelectedIndex()));
         continentsComboBox.setOnAction(event -> loadTerritoriesListView(continentsComboBox.getSelectionModel().getSelectedIndex()));
-        //territoriesComboBox.setOnAction(event -> loadAdjacentTerritoriesListView(null, territoriesComboBox.getSelectionModel().getSelectedIndex()));
-        adjacentTerritoriesListView.setOnMouseClicked(event -> setAdjacentTerritoryTextField(getCurrentAdjacentTerritory()));
+        territoriesComboBox.setOnAction(event -> loadAdjacentTerritoriesListView(continentsComboBox.getSelectionModel().getSelectedIndex(),
+                territoriesComboBox.getSelectionModel().getSelectedIndex()));
     }
 
     /**
@@ -192,33 +190,23 @@ public class MapEditorController implements Initializable {
             }
             territoriesComboBox.getSelectionModel().select(territoryPosition);
         }
-        loadAdjacentTerritoriesListView(territoryList, territoryPosition);
+        loadAdjacentTerritoriesListView(continentsComboBox.getSelectionModel().getSelectedIndex(), territoryPosition);
     }
 
     /**
      * Method to load adjacent territories into list view
      *
-     * @param territoryList
-     * @param position
+     * @param continentPosition
+     * @param territoryPosition
      */
-    private void loadAdjacentTerritoriesListView(List<Territory> territoryList, int position) {
-        if (position >= 0) {
-            List<String> adjacentTerritoriesList = territoryList.get(position).getAdjacentCountryList();
+    private void loadAdjacentTerritoriesListView(int continentPosition, int territoryPosition) {
+        if (continentPosition >= 0 && territoryPosition >= 0) {
+            Territory territory = continentList.get(continentPosition).getTerritoryList().get(territoryPosition);
             adjacentTerritoriesListView.getItems().clear();
-            for (String adjacentTerritory : adjacentTerritoriesList) {
+            for (String adjacentTerritory : territory.getAdjacentCountryList()) {
                 adjacentTerritoriesListView.getItems().add(adjacentTerritory);
             }
         }
-    }
-
-
-    /**
-     * Method to set adjacent territory text field
-     *
-     * @param adjacentTerritory
-     */
-    private void setAdjacentTerritoryTextField(String adjacentTerritory) {
-        adjacentTerritoryTextField.setText(adjacentTerritory);
     }
 
     /**

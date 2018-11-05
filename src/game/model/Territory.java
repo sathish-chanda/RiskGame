@@ -90,11 +90,22 @@ public class Territory {
      *
      * @return
      */
-    public void addAdjacentCountryList(String adjacentCountry) {
+    public void addAdjacentCountry(String adjacentCountry) {
         if (adjacentCountryList == null) {
             adjacentCountryList = new ArrayList<String>();
         }
         adjacentCountryList.add(adjacentCountry);
+    }
+
+    /**
+     * This method removes an adjacent country from current country
+     *
+     * @param adjacentCountry
+     */
+    public void removeAdjacentCountry(String adjacentCountry) {
+        if (adjacentCountryList != null) {
+            adjacentCountryList.remove(adjacentCountry);
+        }
     }
 
 

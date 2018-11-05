@@ -19,7 +19,7 @@ public class MapFileHelper {
     private List<String> mapComponentList = new ArrayList<>();
     private List<String> continentsComponentList = new ArrayList<>();
     private List<String> territoriesComponentList = new ArrayList<>();
-    private List<Continent> completeMapDataList = new ArrayList<>();
+    private List<Continent> continentsAndTerritoriesList = new ArrayList<>();
     private MapValidator mapValidator;
     private String line;
     private boolean isMapInvalid = false;
@@ -41,7 +41,7 @@ public class MapFileHelper {
      */
     public void readMapFile(String fileName) {
         try {
-            FileReader fileReader = new FileReader(Constants.FILE_DOMAIN_PATH + fileName);
+            FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             mapValidator = new MapValidator();
             mapValidator.setCurrentKey(Constants.MAP_KEY);
@@ -265,7 +265,7 @@ public class MapFileHelper {
     private StringBuilder appendContinents(StringBuilder stringBuilder) {
         stringBuilder.append(Constants.NEXT_LINE);
         stringBuilder.append(Constants.CONTINENTS_KEY);
-        for (Continent continent : completeMapDataList) {
+        for (Continent continent : continentsAndTerritoriesList) {
             stringBuilder.append(continent.getContinentName() + "=" + continent.getMaximumArmy());
         }
         return stringBuilder.append(appendTerritories(stringBuilder));
@@ -280,7 +280,7 @@ public class MapFileHelper {
     private StringBuilder appendTerritories(StringBuilder stringBuilder) {
         stringBuilder.append(Constants.NEXT_LINE);
         stringBuilder.append(Constants.TERRITORIES_KEY);
-        for (Continent continent : completeMapDataList) {
+        for (Continent continent : continentsAndTerritoriesList) {
             for (Territory territory : continent.getTerritoryList()) {
                 //Alaska,70,126,North America,Northwest Territory,Alberta,Kamchatka
                 stringBuilder.append(territory.getTerritoryName() + "," + territory.getLatitude() + ","
@@ -497,21 +497,21 @@ public class MapFileHelper {
     }
 
     /**
-     * method to get complete data of map
+     * method to get complete data of continents and its territories
      *
      * @return
      */
-    public List<Continent> getCompleteMapDataList() {
-        return completeMapDataList;
+    public List<Continent> getContinentsAndTerritoriesList() {
+        return continentsAndTerritoriesList;
     }
 
     /**
-     * method to get complete data of map
+     * method to set complete data of continents and its territories
      *
-     * @param completeMapDataList
+     * @param continentsAndTerritoriesList
      */
-    public void setCompleteMapDataList(List<Continent> completeMapDataList) {
-        this.completeMapDataList = completeMapDataList;
+    public void setContinentsAndTerritoriesList(List<Continent> continentsAndTerritoriesList) {
+        this.continentsAndTerritoriesList = continentsAndTerritoriesList;
     }
 
     /**

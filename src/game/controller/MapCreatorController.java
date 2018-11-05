@@ -1,16 +1,13 @@
 package game.controller;
 
 import game.model.Continent;
-import game.model.RiskModel;
 import game.model.Territory;
+import game.utils.Constants;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -20,8 +17,6 @@ public class MapCreatorController implements Initializable {
 
     private Map<String, String> mapComponents = new HashMap<>();
     private List<Continent> continentList = new ArrayList<>();
-    private List<Territory> territoriesList = new ArrayList<>();
-
     private MapFileHelper mapFileHelper;
 
     @FXML
@@ -294,9 +289,15 @@ public class MapCreatorController implements Initializable {
      * Method to add adjacent territory
      */
     private void addAdjacentTerritory() {
+        String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
         String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
-        continentList.get(getContinentCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().add(adjacentTerritory);
-        syncAddAdjacentTerritory(adjacentTerritory);
+        String message = "Territory = " + territory + System.getProperty(Constants.NEXT_LINE) + "Adjacent Territory = " + adjacentTerritory;
+        if (territory.equals(adjacentTerritory)) {
+            showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
+        } else {
+            continentList.get(getContinentCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().add(adjacentTerritory);
+            syncAddAdjacentTerritory(adjacentTerritory);
+        }
     }
 
     /**
@@ -306,22 +307,13 @@ public class MapCreatorController implements Initializable {
      */
     private void syncAddAdjacentTerritory(String currentTerritory) {
         String adjacentTerritory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
-
         LogHelper.printMessage("currentTerritory = " + currentTerritory + " adjacentTerritory " + adjacentTerritory);
-
-        String tempContinentName = null;
-        Territory tempTerritory;
-
-        for (Continent continent : continentList) {
-            for (Territory territory : continent.getTerritoryList()) {
-                if (territory.getTerritoryName().equals(currentTerritory)) {
-                    LogHelper.printMessage("territory.getTerritoryName() = " + territory.getTerritoryName());
-                    territory.getAdjacentCountryList().add(adjacentTerritory);
-                    tempTerritory = territory;
-                    tempContinentName = territory.getContinentName();
+        for (int i = 0; i < continentList.size(); i++) {
+            for (int j = 0; j < continentList.get(i).getTerritoryList().size(); j++) {
+                if (continentList.get(i).getTerritoryList().get(j).getTerritoryName().equals(currentTerritory)) {
+                    continentList.get(i).getTerritoryList().get(j).addAdjacentCountry(adjacentTerritory);
+                    LogHelper.printMessage("added " + adjacentTerritory + " into " + currentTerritory);
                 }
-            }
-            if (continent.getContinentName().equals(tempContinentName)) {
             }
         }
         LogHelper.printMessage("territories synced");
@@ -331,9 +323,35 @@ public class MapCreatorController implements Initializable {
      * Method to delete adjacent territory
      */
     private void deleteAdjacentTerritory() {
+        String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
         String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
-        continentList.get(getContinentCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().remove(adjacentTerritory);
-        LogHelper.printMessage("deleted");
+        String message = "Territory = " + territory + System.getProperty(Constants.NEXT_LINE) + "Adjacent Territory = " + adjacentTerritory;
+        if (territory.equals(adjacentTerritory)) {
+            showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
+        } else {
+            continentList.get(getContinentCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().remove(adjacentTerritory);
+            syncDeleteAdjacentTerritory(adjacentTerritory);
+            LogHelper.printMessage("deleted");
+        }
+    }
+
+    /**
+     * Method to synchronize and delete adjacent territory
+     *
+     * @param currentTerritory
+     */
+    private void syncDeleteAdjacentTerritory(String currentTerritory) {
+        String adjacentTerritory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
+        LogHelper.printMessage("currentTerritory = " + currentTerritory + " adjacentTerritory " + adjacentTerritory);
+        for (int i = 0; i < continentList.size(); i++) {
+            for (int j = 0; j < continentList.get(i).getTerritoryList().size(); j++) {
+                if (continentList.get(i).getTerritoryList().get(j).getTerritoryName().equals(currentTerritory)) {
+                    continentList.get(i).getTerritoryList().get(j).removeAdjacentCountry(adjacentTerritory);
+                    LogHelper.printMessage("deleted " + adjacentTerritory + " from " + currentTerritory);
+                }
+            }
+        }
+        LogHelper.printMessage("territories synced");
     }
 
     /**
@@ -358,7 +376,15 @@ public class MapCreatorController implements Initializable {
      */
     private void saveMapFile() {
         saveMapComponents();
+        saveCompleteMapDataList();
         mapFileHelper.initMapFileSaver();
+    }
+
+    /**
+     * Method to save complete map data list
+     */
+    private void saveCompleteMapDataList() {
+        mapFileHelper.setContinentsAndTerritoriesList(continentList);
     }
 
     /**
@@ -397,6 +423,21 @@ public class MapCreatorController implements Initializable {
      */
     private int getTerritoryCurrentIndex() {
         return territoriesListView.getSelectionModel().getSelectedIndex();
+    }
+
+    /**
+     * Method to show error dialog
+     *
+     * @param title
+     * @param headerText
+     * @param contentText
+     */
+    private void showErrorDialog(String title, String headerText, String contentText) {
+        Alert alertDialog = new Alert(Alert.AlertType.INFORMATION);
+        alertDialog.setTitle(title);
+        alertDialog.setHeaderText(headerText);
+        alertDialog.setContentText(contentText);
+        alertDialog.show();
     }
 
 }
