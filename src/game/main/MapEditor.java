@@ -1,7 +1,6 @@
 package game.main;
 
 import game.controller.MapController;
-import game.controller.MapEditorController;
 import game.model.Continent;
 import game.model.RiskModel;
 import game.utils.Constants;

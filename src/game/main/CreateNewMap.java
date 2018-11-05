@@ -1,8 +1,6 @@
 package game.main;
 
 import game.controller.MapController;
-import game.controller.MapCreatorController;
-import game.controller.MapEditorController;
 import game.model.RiskModel;
 import game.utils.Constants;
 import game.utils.LogHelper;

@@ -73,7 +73,7 @@ public class MapController implements Initializable {
     protected Button deleteAdjacentTerritoryButton;
 
     /**
-     * Constructor of class {@link MapCreatorController}
+     * Constructor of class {@link MapController}
      */
     public MapController(boolean loadDataToMapEditor) {
         this.loadDataToMapEditor = loadDataToMapEditor;
