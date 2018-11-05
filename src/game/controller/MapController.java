@@ -77,16 +77,17 @@ public class MapController implements Initializable {
      */
     public MapController(boolean loadDataToMapEditor) {
         this.loadDataToMapEditor = loadDataToMapEditor;
-        riskModel = new RiskModel();
-        mapFileHelper = MapFileHelper.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (loadDataToMapEditor) {
+            riskModel = new RiskModel();
+            clearData();
             populateMapDataToMapEditor();
             setDataToUserInterfaceElements();
         }
+        mapFileHelper = MapFileHelper.getInstance();
         initViewListeners();
     }
 
@@ -488,6 +489,13 @@ public class MapController implements Initializable {
         alertDialog.setHeaderText(headerText);
         alertDialog.setContentText(contentText);
         alertDialog.show();
+    }
+
+    /**
+     * Method to clear data
+     */
+    private void clearData() {
+        riskModel.getGame().getGameMap().getMapFileHelper().cleanUp();
     }
 
 }
