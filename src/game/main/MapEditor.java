@@ -19,12 +19,9 @@ import java.util.Map;
 
 public class MapEditor implements EventHandler<ActionEvent> {
 
-    private RiskModel riskModel;
-
     @Override
     public void handle(ActionEvent event) {
         LogHelper.printMessage("Opening Map editor");
-        //populateMapDataToMapEditor();
         openMapEditorLayout();
     }
 

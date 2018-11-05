@@ -1,6 +1,7 @@
 package game.controller;
 
 import game.main.MapEditorOptions;
+import game.main.PlayerSelect;
 import game.model.RiskModel;
 import game.utils.LogHelper;
 import javafx.fxml.FXML;
@@ -44,7 +45,7 @@ public class RiskController implements Initializable {
      * Method to initialize button  actions
      */
     private void initButtonActions() {
-        newGameButton.setOnAction(event -> newGame());
+        newGameButton.setOnAction(openPlayerSelectDialog());
         mapEditorButton.setOnAction(openMapEditorOptionsDialog());
         quitGameButton.setOnAction(event -> quitGame());
     }
@@ -55,6 +56,15 @@ public class RiskController implements Initializable {
     private void newGame() {
         riskModel.newGame();
     }
+
+    /**
+     * Method to opens player selection dialog
+     */
+    private PlayerSelect openPlayerSelectDialog() {
+        PlayerSelect playerSelect = new PlayerSelect();
+        return playerSelect;
+    }
+
 
     /**
      * Method to open map editor options dialog
