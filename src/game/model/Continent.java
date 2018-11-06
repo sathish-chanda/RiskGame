@@ -16,6 +16,9 @@ public class Continent {
     private int countryNum;
     private int continentStrength;
 
+    /**
+     * Constructor of class {@link Continent}
+     */
     public Continent() {
         //Empty constructor required
     }
@@ -81,10 +84,5 @@ public class Continent {
     public int getMaximumArmy() {
         return maximumArmy;
     }
-
-
-//    public void setCountryNum(int countryNum) {
-//        this.countryNum = countryNum;
-//    }
 
 }
