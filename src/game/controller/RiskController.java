@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 public class RiskController implements Initializable, ControllerListener {
 
     private RiskModel riskModel;
-
     @FXML
     private Button newGameButton;
     @FXML
@@ -53,6 +52,7 @@ public class RiskController implements Initializable, ControllerListener {
 
     /**
      * Method to start new game
+     *
      * @param numberOfPlayer
      */
     private void newGame(int numberOfPlayer) {
@@ -94,6 +94,7 @@ public class RiskController implements Initializable, ControllerListener {
 
     @Override
     public void onPlayerSelected(int numberOfPlayer) {
+        riskModel.getGame().setPlayerNum(numberOfPlayer);
         newGame(numberOfPlayer);
     }
 }

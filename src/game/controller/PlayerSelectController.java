@@ -6,6 +6,7 @@ import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
@@ -42,6 +43,7 @@ public class PlayerSelectController implements Initializable {
         for (int i = 2; i <= 6; i++) {
             selectPlayerComboBox.getItems().add(i);
         }
+        selectPlayerComboBox.getSelectionModel().select(0);
     }
 
     /**
@@ -57,7 +59,12 @@ public class PlayerSelectController implements Initializable {
      * @return
      */
     private int getTotalNumberOfPlayers() {
-        return (int) selectPlayerComboBox.getSelectionModel().getSelectedItem();
+        try {
+            int totalPlayers = (int) selectPlayerComboBox.getSelectionModel().getSelectedItem();
+            return totalPlayers;
+        } catch (Exception exception) {
+            return 0;
+        }
     }
 
     /**

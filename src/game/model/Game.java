@@ -210,14 +210,9 @@ public class Game implements GameListener {
     }
 
     /**
-     * This method allows users to select the number of players
+     * This method sets players as per the selection of user
      */
     private void chooseNumberOfPlayers() {
-        LogHelper.printMessage("please input the number of players");
-        Scanner readInput = new Scanner(System.in);
-        if (readInput.hasNextInt()) {
-            playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
-        }
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
             players.add(new Player(playerNum));
@@ -317,6 +312,24 @@ public class Game implements GameListener {
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    /**
+     * Method to get Total number of players
+     *
+     * @return
+     */
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
+    /**
+     * Method to set Total number of players
+     *
+     * @param playerNum
+     */
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
     }
 }
 
