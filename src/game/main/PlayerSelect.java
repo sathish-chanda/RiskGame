@@ -1,6 +1,7 @@
 package game.main;
 
 import game.controller.PlayerSelectController;
+import game.listeners.ControllerListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import javafx.event.ActionEvent;
@@ -15,6 +16,15 @@ import javafx.stage.Stage;
 
 
 public class PlayerSelect implements EventHandler<ActionEvent> {
+
+    private ControllerListener controllerListener;
+
+    /**
+     * Constructor of class {@link PlayerSelect}
+     */
+    public PlayerSelect(ControllerListener controllerListener) {
+        this.controllerListener = controllerListener;
+    }
 
     @Override
     public void handle(ActionEvent event) {
@@ -31,10 +41,10 @@ public class PlayerSelect implements EventHandler<ActionEvent> {
         Stage mapEditorStage = new Stage();
         mapEditorStage.setTitle("Select Number of players");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("resources/player_select.fxml"));
-        PlayerSelectController playerSelectController = new PlayerSelectController();
+        PlayerSelectController playerSelectController = new PlayerSelectController(controllerListener);
         fxmlLoader.setController(playerSelectController);
         Parent root = fxmlLoader.load();
-        mapEditorStage.setScene(new Scene(root, 950, 500));
+        mapEditorStage.setScene(new Scene(root, 300, 275));
         mapEditorStage.show();
     }
 

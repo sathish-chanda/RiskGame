@@ -428,7 +428,17 @@ public class MapController implements Initializable {
     private void saveMapFile() {
         saveMapComponents();
         saveCompleteMapDataList();
-        mapFileHelper.initMapFileSaver();
+        if (isMapFileValid()) {
+            mapFileHelper.initMapFileSaver();
+        }
+    }
+
+    /**
+     * Method to validate saved map file
+     */
+    private boolean isMapFileValid() {
+        //TODO validate Map with Yu's code
+        return true;
     }
 
     /**

@@ -1,5 +1,6 @@
 package game.controller;
 
+import game.listeners.ControllerListener;
 import game.main.MapEditorOptions;
 import game.main.PlayerSelect;
 import game.model.RiskModel;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
  * This controller class maps the user's actions to both RiskView and RiskModel
  * to handle data
  */
-public class RiskController implements Initializable {
+public class RiskController implements Initializable, ControllerListener {
 
     private RiskModel riskModel;
 
@@ -52,16 +53,17 @@ public class RiskController implements Initializable {
 
     /**
      * Method to start new game
+     * @param numberOfPlayer
      */
-    private void newGame() {
-        riskModel.newGame();
+    private void newGame(int numberOfPlayer) {
+        riskModel.newGame(numberOfPlayer);
     }
 
     /**
      * Method to opens player selection dialog
      */
     private PlayerSelect openPlayerSelectDialog() {
-        PlayerSelect playerSelect = new PlayerSelect();
+        PlayerSelect playerSelect = new PlayerSelect(this);
         return playerSelect;
     }
 
@@ -90,5 +92,8 @@ public class RiskController implements Initializable {
         riskModel.quitGame();
     }
 
-
+    @Override
+    public void onPlayerSelected(int numberOfPlayer) {
+        newGame(numberOfPlayer);
+    }
 }

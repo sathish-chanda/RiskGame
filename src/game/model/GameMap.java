@@ -427,7 +427,7 @@ public class GameMap {
             }
         }
         if (totalVisitedTerritory != territoryListSize) {
-            LogHelper.printMessage("the input map is invalid");
+            gameListener.onTerritoryMapInvalid("the input map is invalid");
             return;
         } else {
             LogHelper.printMessage("the input map is valid");

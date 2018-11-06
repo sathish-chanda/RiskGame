@@ -2,6 +2,7 @@ package game.model;
 
 
 import game.utils.Constants;
+import game.utils.LogHelper;
 
 /**
  * It loads map file into the game
@@ -19,9 +20,10 @@ public class RiskModel {
 
     /**
      * Method to open new game
+     * @param numberOfPlayer
      */
-    public void newGame() {
-        //ToDo open file chooser
+    public void newGame(int numberOfPlayer) {
+        LogHelper.printMessage("new game loading in progress......... players = "+numberOfPlayer);
     }
 
     /**
