@@ -32,7 +32,6 @@ public class Game implements GameListener {
      * @param fileName, send map file name.
      */
     public void loadMapData(String fileName) {
-        setFileName(fileName);
         gameMap.loadMap(fileName);
     }
 
@@ -292,26 +291,6 @@ public class Game implements GameListener {
         if (scanner.hasNextLine())
             System.exit(1);
 
-    }
-
-
-    /**
-     * This method is used to get Map file name
-     *
-     * @return filename
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-
-    /**
-     * This method is used set file name
-     *
-     * @param fileName
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     /**

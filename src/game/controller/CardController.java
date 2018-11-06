@@ -10,7 +10,7 @@ public class CardController extends Object {
     private CardModel cardModel;
     private CardView cardView;
 
-    public CardController (){
+    public CardController() {
         cardModel = new CardModel();
         cardView = new CardView();
         cardModel.addObserver(cardView);

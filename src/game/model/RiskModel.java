@@ -3,6 +3,9 @@ package game.model;
 
 import game.utils.Constants;
 import game.utils.LogHelper;
+import game.utils.MapFileHelper;
+
+import java.io.File;
 
 /**
  * It loads map file into the game
@@ -20,10 +23,10 @@ public class RiskModel {
 
     /**
      * Method to open new game
-     * @param numberOfPlayer
      */
-    public void newGame(int numberOfPlayer) {
-        LogHelper.printMessage("new game loading in progress......... players = "+numberOfPlayer);
+    public void newGame() {
+        LogHelper.printMessage("Initializing new Game");
+        initNewGame();
     }
 
     /**
@@ -33,6 +36,11 @@ public class RiskModel {
         game.loadMapData(Constants.MAP_FILE_NAME);
     }
 
+    /**
+     * Method to load Map Data
+     *
+     * @param file
+     */
     public void loadMapData(String file) {
         game.loadMapData(file);
     }
@@ -51,6 +59,18 @@ public class RiskModel {
      */
     public Game getGame() {
         return game;
+    }
+
+    /**
+     * Method to initialize new Game
+     */
+    private void initNewGame() {
+        File file = MapFileHelper.getFileFromFileChooser();
+        if (file != null) {
+            loadMapData(file.getPath());
+        } else {
+            LogHelper.printMessage("Unable to read file or Invalid file");
+        }
     }
 
 }

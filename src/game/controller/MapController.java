@@ -4,6 +4,7 @@ import game.model.Continent;
 import game.model.RiskModel;
 import game.model.Territory;
 import game.utils.Constants;
+import game.utils.ErrorViewUtils;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 import javafx.fxml.FXML;
@@ -342,7 +343,7 @@ public class MapController implements Initializable {
         String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
         String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
         if (territory.equals(adjacentTerritory)) {
-            showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
+            ErrorViewUtils.showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
         } else {
             continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().add(adjacentTerritory);
             syncAddAdjacentTerritory(adjacentTerritory);
@@ -378,7 +379,7 @@ public class MapController implements Initializable {
         String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
         String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
         if (territory.equals(adjacentTerritory)) {
-            showErrorDialog("Cannot delete Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
+            ErrorViewUtils.showErrorDialog("Cannot delete Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
         } else {
             continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().remove(adjacentTerritory);
             syncDeleteAdjacentTerritory(adjacentTerritory);
@@ -484,21 +485,6 @@ public class MapController implements Initializable {
      */
     private int getTerritoryCurrentIndex() {
         return territoriesListView.getSelectionModel().getSelectedIndex();
-    }
-
-    /**
-     * Method to show error dialog
-     *
-     * @param title
-     * @param headerText
-     * @param contentText
-     */
-    private void showErrorDialog(String title, String headerText, String contentText) {
-        Alert alertDialog = new Alert(Alert.AlertType.INFORMATION);
-        alertDialog.setTitle(title);
-        alertDialog.setHeaderText(headerText);
-        alertDialog.setContentText(contentText);
-        alertDialog.show();
     }
 
     /**

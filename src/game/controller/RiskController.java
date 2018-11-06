@@ -53,10 +53,9 @@ public class RiskController implements Initializable, ControllerListener {
     /**
      * Method to start new game
      *
-     * @param numberOfPlayer
      */
-    private void newGame(int numberOfPlayer) {
-        riskModel.newGame(numberOfPlayer);
+    private void newGame() {
+        riskModel.newGame();
     }
 
     /**
@@ -95,6 +94,6 @@ public class RiskController implements Initializable, ControllerListener {
     @Override
     public void onPlayerSelected(int numberOfPlayer) {
         riskModel.getGame().setPlayerNum(numberOfPlayer);
-        newGame(numberOfPlayer);
+        newGame();
     }
 }
