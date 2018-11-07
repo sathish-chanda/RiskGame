@@ -33,7 +33,6 @@ public class Game implements GameListener {
      * @param fileName, send map file name.
      */
     public void loadMapData(String fileName) {
-        setFileName(fileName);
         gameMap.loadMap(fileName);
     }
 
@@ -241,10 +240,6 @@ public class Game implements GameListener {
      */
     private void chooseNumberOfPlayers() {
         LogHelper.printMessage("please input the number of players");
-        Scanner readInput = new Scanner(System.in);
-        if (readInput.hasNextInt()) {
-            playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
-        }
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
             players.add(new Player(playerNum));
@@ -338,6 +333,18 @@ public class Game implements GameListener {
         this.beginStartUpPhase = beginStartUpPhase;
     }
 
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
+    }
+
+    /**
+     * Method check if map is valid
+     *
+     * @return
+     */
+    public boolean isMapValid() {
+        return isMapValid;
+    }
 
     /**
      * Method set map validity
