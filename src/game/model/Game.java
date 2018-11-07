@@ -77,13 +77,6 @@ public class Game implements GameListener {
         gameMap.saveMap();
     }
 
-    /**
-     * Method to save map data
-     */
-    public void editMapData() {
-        gameMap.initEditMap();
-    }
-
     @Override
     public void onMapLoadSuccess() {
         gameMap.loadMapComponents();
@@ -197,26 +190,6 @@ public class Game implements GameListener {
             }
         }
         declareWin(players.get(0));
-    }
-
-    /**
-     * This method allows user to edit the map
-     */
-    private void editMapFileChoice() {
-        Scanner scanner = new Scanner(System.in);
-        String feedback = scanner.next();
-        switch (feedback) {
-            case Constants.YES:
-                editMapData();
-                break;
-            case Constants.NO:
-                saveMapData();
-                break;
-            default:
-                LogHelper.printMessage("please select y or n");
-                editMapFileChoice();
-                break;
-        }
     }
 
     @Override
