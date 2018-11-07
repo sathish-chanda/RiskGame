@@ -127,22 +127,18 @@ public class Game implements GameListener {
                 attacker.placeArmyOnCountry(gameMap);
                 LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
                 String alloutMode = "";
-                alloutMode = scanner.next();
-                while (alloutMode.length() > 0) {
-                    switch (alloutMode) {
-                        case "y":
-                            attacker.attackAllOut(gameMap);
-                            alloutMode = "";
-                            break;
-                        case "n":
-                            attacker.attack(gameMap);
-                            alloutMode = "";
-                            break;
-                        default:
-                            LogHelper.printMessage("wrong input format! please reinput");
-                            break;
-                    }
+                alloutMode = scanner.nextLine();
+
+                while (!alloutMode.matches("y") && !alloutMode.matches("n")) {
+                    LogHelper.printMessage("wrong input! please input again.");
+                    alloutMode = scanner.nextLine();
                 }
+                if (alloutMode.matches("y")) {
+                    attacker.attackAllOut(gameMap);
+                }else  if (alloutMode.matches("n")) {
+                    attacker.attack(gameMap);
+                }
+
                 while (attacker.getArmyNum() > 0) {
                     LogHelper.printMessage("--------------------------------------------------------------------------------");
                     LogHelper.printMessage("do you still want to attack? y for yes, n for no");
@@ -151,21 +147,16 @@ public class Game implements GameListener {
                         LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
                         String nextAttack = "";
                         nextAttack = scanner.next();
-                        while (nextAttack.length() > 0) {
-                            switch (nextAttack) {
-                                case "y":
-                                    attacker.attackAllOut(gameMap);
-                                    nextAttack = "";
-                                    break;
-                                case "n":
-                                    attacker.attack(gameMap);
-                                    nextAttack = "";
-                                    break;
-                                default:
-                                    LogHelper.printMessage("wrong input format! please reinput");
-                                    break;
-                            }
+                        while (!nextAttack.matches("y") && !nextAttack.matches("n")) {
+                            LogHelper.printMessage("wrong input! please input again.");
+                            nextAttack = scanner.nextLine();
                         }
+                        if (nextAttack.matches("y")) {
+                            attacker.attackAllOut(gameMap);
+                        }else  if (nextAttack.matches("n")) {
+                            attacker.attack(gameMap);
+                        }
+
                     } else if (input.matches("n")) {
                         break;
                     } else {
