@@ -374,7 +374,7 @@ public class Player {
             }
 
             defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
-            if ((defendingTerritoryArmyNum >= 2) && (maxAttackingDiceNum >= 2)) {
+            if (defendingTerritoryArmyNum >= 2) {
                 maxDefendingDiceNum = 2;
             } else {
                 maxDefendingDiceNum = 1;
@@ -467,7 +467,7 @@ public class Player {
             }
 
             defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
-            if ((defendingTerritoryArmyNum >= 2) && (maxAttackingDiceNum >= 2)) {
+            if (defendingTerritoryArmyNum >= 2) {
                 maxDefendingDiceNum = 2;
             } else {
                 maxDefendingDiceNum = 1;
