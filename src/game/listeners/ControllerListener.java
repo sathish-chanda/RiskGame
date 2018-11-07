@@ -1,5 +1,8 @@
 package game.listeners;
 
+/**
+ * interface for control listener in the game
+ */
 public interface ControllerListener {
 
     /**

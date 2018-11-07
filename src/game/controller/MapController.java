@@ -16,6 +16,10 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Class implements the java FX to the game
+ * create Map, loading map, save map, add and delete territories all where can do with this class
+ */
 public class MapController implements Initializable {
 
     private boolean loadDataToMapEditor;

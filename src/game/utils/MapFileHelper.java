@@ -25,10 +25,17 @@ public class MapFileHelper {
     private boolean isMapInvalid = false;
     private String errorMessage;
 
+    /**
+     * constructor class for map file helper
+     */
     private MapFileHelper() {
         // private constructor needed for singleton class
     }
 
+    /**
+     * Method is used to get instance of map file helper class
+     * @return instance of this class
+     */
     public static MapFileHelper getInstance() {
         if (instance == null) {
             instance = new MapFileHelper();

@@ -22,7 +22,5 @@ public class Constants {
     public static final String QUIT_GAME_BUTTON_LABEL = "Quit Game";
     public static final String SELECT_PLAYER_NEXT_BUTTON_lABEL = "Select player Next";
     public static final String SELECT_PLAYER_BACK_BUTTON_lABEL = "Select player Back";
-
-
     public static final String SPACE = " ";
 }

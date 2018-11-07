@@ -15,6 +15,9 @@ import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 
+/**
+ * class implements the player selection option using java Fx
+ */
 public class PlayerSelect implements EventHandler<ActionEvent> {
 
     private ControllerListener controllerListener;

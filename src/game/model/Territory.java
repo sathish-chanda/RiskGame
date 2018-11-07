@@ -18,6 +18,9 @@ public class Territory {
     public boolean visitedWholeMap = false;
     public boolean visitedContinentMap = false;
 
+    /**
+     * Constructor class for Territory
+     */
     public Territory() {
         armyNum = 0;
     }
