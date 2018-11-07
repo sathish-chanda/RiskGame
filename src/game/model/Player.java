@@ -371,7 +371,7 @@ public class Player extends Observable {
      * @param defendingTerritory the territory which is being attacked
      * @return
      */
-    private int rollingDice(Territory attackingTerritory, Territory defendingTerritory) {
+    public int rollingDice(Territory attackingTerritory, Territory defendingTerritory) {
         int attackingTerritoryArmyNum = 0;
         int defendingTerritoryArmyNum = 0;
         int maxAttackingDiceNum = 0;
