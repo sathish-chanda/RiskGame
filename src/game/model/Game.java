@@ -70,13 +70,6 @@ public class Game implements GameListener {
         }
     }
 
-    /**
-     * Method to save map data
-     */
-    public void saveMapData() {
-        gameMap.saveMap();
-    }
-
     @Override
     public void onMapLoadSuccess() {
         gameMap.loadMapComponents();
@@ -197,17 +190,6 @@ public class Game implements GameListener {
         setMapValid(false);
     }
 
-    @Override
-    public void onUserMapSaveSuccess() {
-        gameMap.cleanUp();
-        loadMapData(Constants.USER_MAP_FILE_NAME);
-    }
-
-    @Override
-    public void onUserMapEditSuccess() {
-        saveMapData();
-    }
-
     /**
      * This method allows users to select the number of players
      */
@@ -223,7 +205,7 @@ public class Game implements GameListener {
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
     private void randomAssignCountryToPlayers() {
-        int playerSelect,countrySelect;
+        int playerSelect, countrySelect;
         Random rand = new Random();
         List<Territory> countryList = new ArrayList<Territory>();
         for (int i = 0; i < gameMap.getTerritoryList().size(); i++)

@@ -45,15 +45,6 @@ public class GameMap {
     }
 
     /**
-     * This method is used to save map data to file
-     */
-    public void saveMap() {
-        LogHelper.printMessage("User map file is saved");
-        gameListener.onUserMapSaveSuccess();
-    }
-
-
-    /**
      * This method validates if mad is valid or not
      */
     private void onMapLoaded() {

@@ -40,14 +40,4 @@ public interface GameListener {
      */
     void onContinentMapInvalid();
 
-    /**
-     * Listen when map is saved successfully
-     */
-    void onUserMapSaveSuccess();
-
-    /**
-     * Listen when map is edited successfully
-     */
-    void onUserMapEditSuccess();
-
 }
