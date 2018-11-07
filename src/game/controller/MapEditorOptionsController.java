@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class implements java FX for map editor
+ */
 public class MapEditorOptionsController implements Initializable {
 
 

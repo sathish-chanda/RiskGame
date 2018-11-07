@@ -16,6 +16,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Class implements Java FX for select the number of players
+ */
 public class PlayerSelectController implements Initializable {
 
     private ControllerListener controllerListener;
@@ -25,6 +28,10 @@ public class PlayerSelectController implements Initializable {
     @FXML
     ComboBox selectPlayerComboBox;
 
+    /**
+     * Constructor used to listen player selection layout
+     * @param controllerListener
+     */
     public PlayerSelectController(ControllerListener controllerListener) {
         this.controllerListener = controllerListener;
     }
@@ -56,7 +63,7 @@ public class PlayerSelectController implements Initializable {
     /**
      * Method to get total number of players from select player combo box
      *
-     * @return
+     * @return player count
      */
     private int getTotalNumberOfPlayers() {
         try {

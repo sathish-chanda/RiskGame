@@ -1,7 +1,10 @@
 package game.utils;
-
 import javafx.scene.control.Alert;
 
+/**
+ * Class used to show the errors in the game
+ * It implements using java FX
+ */
 public class ErrorViewUtils {
 
     /**

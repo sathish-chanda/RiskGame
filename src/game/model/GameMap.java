@@ -201,7 +201,7 @@ public class GameMap {
      * Method to get adjacent country List
      *
      * @param territory
-     * @return
+     * @return terrriroty list
      */
     private String getAdjacentCountryList(Territory territory) {
         String territoryListValue = "";
@@ -537,6 +537,10 @@ public class GameMap {
         return mapFileHelper;
     }
 
+    /**
+     * Method to get map component
+     * @return map component
+     */
     public Map<String, String> getMapComponentsHashMap() {
         return mapComponentsHashMap;
     }

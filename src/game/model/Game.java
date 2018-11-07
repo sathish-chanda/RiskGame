@@ -273,6 +273,9 @@ public class Game implements GameListener {
         LogHelper.printMessage("--------------------------------------------------------------------------------");
     }
 
+    /**
+     * This method used to assigning countries randomly to the players
+     */
     public void roundRobinPlaceArmyOnCountry() {
         Random rand = new Random();
         int[] armiesCount = new int[players.size()];

@@ -17,6 +17,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class used to edit the map
+ */
 public class MapEditor implements EventHandler<ActionEvent> {
 
     @Override

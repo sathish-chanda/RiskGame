@@ -18,14 +18,26 @@ public class Player {
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
     private CardModel card;
 
+    /**
+     *Method used to get reinforcement army count
+     * @return reinforcement army count
+     */
     public int getReinforcementArmyNum() {
         return reinforcementArmyNum;
     }
 
+    /**
+     * Method used to set reinforcement army count
+     * @param reinforcementArmyNum
+     */
     public void setReinforcementArmyNum(int reinforcementArmyNum) {
         this.reinforcementArmyNum = reinforcementArmyNum;
     }
 
+    /**
+     * Method used to update reinforcement army count
+     * @param reinforcementArmyNum
+     */
     public void updateReinforcementArmyNum(int reinforcementArmyNum) {
         this.reinforcementArmyNum = this.reinforcementArmyNum + reinforcementArmyNum;
     }
@@ -58,7 +70,6 @@ public class Player {
 
     /**
      * method get player unique Id
-     *
      * @return player Id
      */
     public int getPlayerID() {
@@ -67,7 +78,6 @@ public class Player {
 
     /**
      * Method to add player owned territory to the list
-     *
      * @param country
      */
     public void addCountry(Territory country) {
@@ -193,7 +203,8 @@ public class Player {
     }
 
     /**
-     * The attack method realize the attack logic
+     * Method relaise the attack phase of the game
+     * @param gameMap, map List
      */
     public void attack(GameMap gameMap) {
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
@@ -263,7 +274,8 @@ public class Player {
     }
 
     /**
-     * the attackAllOut method realize the all-out requirements in the grading sheet
+     * This method implements the All-Out mode in the attack Phase
+     * @param gameMap map List
      */
     public void attackAllOut(GameMap gameMap) {
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
@@ -429,6 +441,13 @@ public class Player {
             return 0;
     }
 
+    /**
+     * The rollingDiceAllOut method realize the dice rolling logic for All-Out mode
+     *
+     * @param attackingTerritory the territory which want to attack other territories
+     * @param defendingTerritory the territory which is being attacked
+     * @return
+     */
     private int rollingDiceAllOut(Territory attackingTerritory, Territory defendingTerritory) {
         int attackingTerritoryArmyNum = 0;
         int defendingTerritoryArmyNum = 0;
@@ -499,7 +518,8 @@ public class Player {
     }
 
     /**
-     * Method to inititalize fortification process
+     * Method initites the fortification Phase
+     * @param gameMap
      */
     public void initFortification(GameMap gameMap) {
         Scanner scanner = new Scanner(System.in);

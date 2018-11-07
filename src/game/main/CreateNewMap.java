@@ -11,6 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Class to create new Map from the scratch
+ */
 public class CreateNewMap implements EventHandler<ActionEvent> {
 
 

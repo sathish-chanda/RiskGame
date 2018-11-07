@@ -12,6 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
+/**
+ * Class used to crate editor window for Map using java Fx
+ */
 public class MapEditorOptions implements EventHandler<ActionEvent> {
 
 
@@ -24,6 +28,10 @@ public class MapEditorOptions implements EventHandler<ActionEvent> {
         }
     }
 
+    /**
+     * Method used to create map editor layout
+     * @throws Exception
+     */
     private void createMapEditorOptionsLayout() throws Exception {
         Stage mapEditorOptionStage = new Stage();
         mapEditorOptionStage.setTitle("Edit Map Options");

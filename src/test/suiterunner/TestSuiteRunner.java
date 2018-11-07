@@ -9,6 +9,9 @@ import test.model.TestTerritory;
 import test.utils.TestLogHelper;
 import test.utils.TestMapFileHelper;
 
+/**
+ * suite class run the all test classes
+ */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({TestMapFileHelper.class,
         TestContinent.class,
