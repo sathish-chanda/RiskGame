@@ -32,16 +32,42 @@ public class Game implements GameListener {
      * @param fileName, send map file name.
      */
     public void loadMapData(String fileName) {
+        setFileName(fileName);
         gameMap.loadMap(fileName);
     }
 
-    /**
-     * Method to get gameMap instance
-     *
-     * @return
-     */
     public GameMap getGameMap() {
         return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
+    /**
+     * This method displays list of continents to user
+     */
+    private void displayListOfContinentsToUser() {
+        List<Continent> continentList = gameMap.getContinentListMap();
+        LogHelper.printMessage("\nSelect Continents ");
+        for (int i = 0; i < continentList.size(); i++) {
+            LogHelper.printMessage(continentList.get(i).getContinentName() + " --- " + (i + 1));
+        }
+        displayListOfTerrritoriesToUser();
+    }
+
+    /**
+     * This method displays list of the territories to  user
+     */
+    private void displayListOfTerrritoriesToUser() {
+        List<Continent> continentList = gameMap.getContinentListMap();
+        LogHelper.printMessage("\nSelect Territories ");
+        for (int i = 0; i < continentList.size(); i++) {
+            List<Territory> territoryList = continentList.get(i).getTerritoryList();
+            for (int j = 0; j < territoryList.size(); j++) {
+                LogHelper.printMessage(territoryList.get(j).getTerritoryName() + " --- " + (j + 1));
+            }
+        }
     }
 
     /**
@@ -79,7 +105,6 @@ public class Game implements GameListener {
 
     @Override
     public void onTerritoryMapInvalid(String message) {
-        //TODO set elements
         LogHelper.printMessage(message);
     }
 
@@ -209,9 +234,14 @@ public class Game implements GameListener {
     }
 
     /**
-     * This method sets players as per the selection of user
+     * This method allows users to select the number of players
      */
     private void chooseNumberOfPlayers() {
+        LogHelper.printMessage("please input the number of players");
+        Scanner readInput = new Scanner(System.in);
+        if (readInput.hasNextInt()) {
+            playerNum = readInput.nextInt(); // how many player are playing the gamecomponents
+        }
         players = new ArrayList<Player>();
         for (int i = 1; i <= playerNum; i++)
             players.add(new Player(playerNum));
@@ -222,7 +252,7 @@ public class Game implements GameListener {
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
     private void randomAssignCountryToPlayers() {
-        int playerSelect, countrySelect;
+        int playerSelect,countrySelect;
         Random rand = new Random();
         List<Territory> countryList = new ArrayList<Territory>();
         for (int i = 0; i < gameMap.getTerritoryList().size(); i++)
@@ -293,22 +323,24 @@ public class Game implements GameListener {
 
     }
 
-    /**
-     * Method to get Total number of players
-     *
-     * @return
-     */
-    public int getPlayerNum() {
-        return playerNum;
-    }
 
     /**
-     * Method to set Total number of players
+     * This method is used to get Map file name
      *
-     * @param playerNum
+     * @return filename
      */
-    public void setPlayerNum(int playerNum) {
-        this.playerNum = playerNum;
+    public String getFileName() {
+        return fileName;
+    }
+
+
+    /**
+     * This method is used set file name
+     *
+     * @param fileName
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
 

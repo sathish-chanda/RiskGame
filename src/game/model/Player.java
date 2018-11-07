@@ -39,6 +39,7 @@ public class Player {
      * @param playerNum, no of players in the game
      */
     public Player(int playerNum) {
+
         playerID = ++playerCounter;
         int initialArmyNum = 40 - 5 * (playerNum - 2);
         armyNum = armyNum + initialArmyNum;
