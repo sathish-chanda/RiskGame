@@ -336,7 +336,7 @@ public class Player {
      * @param defendingTerritory the territory which is being attacked
      * @return
      */
-    private int rollingDice(Territory attackingTerritory, Territory defendingTerritory) {
+    public int rollingDice(Territory attackingTerritory, Territory defendingTerritory) {
         int attackingTerritoryArmyNum = 0;
         int defendingTerritoryArmyNum = 0;
         int maxAttackingDiceNum = 0;
@@ -428,7 +428,7 @@ public class Player {
             return 0;
     }
 
-    private int rollingDiceAllOut(Territory attackingTerritory, Territory defendingTerritory) {
+    public int rollingDiceAllOut(Territory attackingTerritory, Territory defendingTerritory) {
         int attackingTerritoryArmyNum = 0;
         int defendingTerritoryArmyNum = 0;
         int maxAttackingDiceNum = 0;
