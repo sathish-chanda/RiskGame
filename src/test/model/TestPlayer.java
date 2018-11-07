@@ -26,6 +26,11 @@ public class TestPlayer {
     @Test
     public void testReinforcement() {
 
+        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
+        gameMap.loadContinents();
+        gameMap.loadTerritories();
+        gameMap.syncContinentsAndTerritories();
+
         gameMap = new GameMap(game);
         gameMap.loadMap(Constants.FILE_DOMAIN_PATH + Constants.USER_MAP_FILE_NAME);
         gameMap.loadContinents();
