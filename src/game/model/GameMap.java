@@ -383,6 +383,7 @@ public class GameMap {
                 isMapValid = false;
                 LogHelper.printMessage("the input map is invalid");
                 LogHelper.printMessage("the problem is in the continent " + continentListMap.get(i).getContinentName());
+                gameListener.onContinentMapInvalid();
                 return;
             } else {
                 isMapValid = true;

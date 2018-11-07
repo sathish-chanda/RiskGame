@@ -13,6 +13,7 @@ public interface GameListener {
 
     /**
      * Listen when the loading map is invalid
+     *
      * @param message, error message for failure
      */
     void onMapLoadFailure(String message);
@@ -24,6 +25,7 @@ public interface GameListener {
 
     /**
      * Listen when territory data in invalid
+     *
      * @param message, error message for failure
      */
     void onTerritoryMapInvalid(String message);
@@ -35,9 +37,8 @@ public interface GameListener {
 
     /**
      * triggers when continent data is invalid
-     * @param message, error message for failure
      */
-    void onContinentMapInvalid(String message);
+    void onContinentMapInvalid();
 
     /**
      * Listen when map is saved successfully

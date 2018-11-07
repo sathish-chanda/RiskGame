@@ -89,6 +89,7 @@ public class MapController implements Initializable {
         if (loadDataToMapEditor) {
             riskModel = new RiskModel();
             clearData();
+            riskModel.getGame().setBeginStartUpPhase(false);
             populateMapDataToMapEditor();
             setDataToUserInterfaceElements();
         }
@@ -432,6 +433,8 @@ public class MapController implements Initializable {
      */
     private void saveMapFile() {
         saveMapComponents();
+        saveContinents();
+        saveTerritories();
         saveCompleteMapDataList();
         if (isMapFileValid()) {
             mapFileHelper.initMapFileSaver();
@@ -442,8 +445,28 @@ public class MapController implements Initializable {
      * Method to validate saved map file
      */
     private boolean isMapFileValid() {
-        //TODO validate Map with Yu's code
-        return true;
+        if (riskModel == null) {
+            riskModel = new RiskModel();
+        }
+        riskModel.getGame().getGameMap().verifyTerritoryMap();
+        return riskModel.getGame().isMapValid();
+    }
+
+    /**
+     * Method to save continents
+     */
+    private void saveContinents(){
+
+        for (Continent continent : continentList) {
+
+        }
+    }
+
+    /**
+     * Method to save territories
+     */
+    private void saveTerritories() {
+
     }
 
     /**

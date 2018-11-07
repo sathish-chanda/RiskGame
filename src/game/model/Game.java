@@ -14,7 +14,8 @@ public class Game implements GameListener {
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
     private GameMap gameMap;
-    private String fileName;
+    private boolean beginStartUpPhase;
+    private boolean isMapValid;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -110,9 +111,11 @@ public class Game implements GameListener {
 
     @Override
     public void onContinentMapValid() {
-        startupPhase();
-        roundRobinPlay();
-
+        setMapValid(true);
+        if (beginStartUpPhase) {
+            startupPhase();
+            roundRobinPlay();
+        }
     }
 
     /**
@@ -218,8 +221,8 @@ public class Game implements GameListener {
     }
 
     @Override
-    public void onContinentMapInvalid(String message) {
-        LogHelper.printMessage(message);
+    public void onContinentMapInvalid() {
+        setMapValid(false);
     }
 
     @Override
@@ -326,24 +329,23 @@ public class Game implements GameListener {
 
     }
 
-
     /**
-     * This method is used to get Map file name
+     * Method to set flag for starting a game phase
      *
-     * @return filename
+     * @param beginStartUpPhase
      */
-    public String getFileName() {
-        return fileName;
+    public void setBeginStartUpPhase(boolean beginStartUpPhase) {
+        this.beginStartUpPhase = beginStartUpPhase;
     }
 
 
     /**
-     * This method is used set file name
+     * Method set map validity
      *
-     * @param fileName
+     * @param mapValid
      */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setMapValid(boolean mapValid) {
+        isMapValid = mapValid;
     }
 }
 
