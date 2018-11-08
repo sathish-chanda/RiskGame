@@ -521,38 +521,8 @@ public class MapController implements Initializable {
      */
     private void saveMapFile() {
         saveMapComponents();
-        saveContinents();
-        saveTerritories();
         saveCompleteMapDataList();
-
-        LogHelper.printMessage("isMyMapFile valid = " + isMapFileValid());
-
-        //mapFileHelper.initMapFileSaver();
-    }
-
-    /**
-     * Method to validate saved map file
-     */
-    private boolean isMapFileValid() {
-        MapValidator mapValidator = new MapValidator(continentList, continentList, getAllTerritories());
-        mapValidator.verifyContinentMap();
-        return true;
-    }
-
-    /**
-     * Method to save continents
-     */
-    private void saveContinents() {
-        for (Continent continent : continentList) {
-
-        }
-    }
-
-    /**
-     * Method to save territories
-     */
-    private void saveTerritories() {
-
+        mapFileHelper.initMapFileSaver();
     }
 
     /**
