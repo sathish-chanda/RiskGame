@@ -22,7 +22,7 @@ public class GameMap {
     private List<Continent> continentList = new ArrayList<>();
     private List<Continent> continentListMap;
     private List<Territory> territoryListMap;
-    private MapFileHelper mapFileHelper;
+    public MapFileHelper mapFileHelper;
     private Map<String, String> mapComponentsHashMap;
     private Map<String, Integer> continentsHashMap;
 
@@ -310,6 +310,15 @@ public class GameMap {
         return;
     }
 
+    /**
+     * This method helps for testing fortification
+     *
+     * @param countrySourceName
+     * @param countryDestinationName
+     * @param moveArmyNumint
+     * @param playerID
+     * @return
+     */
     public boolean fortificationTest(String countrySourceName, String countryDestinationName, int moveArmyNumint, int playerID) {
         Territory t1 = searchCountry(countrySourceName);
         Territory t2 = searchCountry(countryDestinationName);
@@ -335,28 +344,17 @@ public class GameMap {
         }
         if (flag) {
             int moveArmyNum = 0;
-            LogHelper.printMessage("please input the number of armys you want to move");
-            LogHelper.printMessage("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
-            Scanner readInput = new Scanner(System.in);
-            if (readInput.hasNextInt())
-                moveArmyNum = readInput.nextInt();
-            while (moveArmyNum > searchCountry(countrySourceName).getArmyNum()) {
-                LogHelper.printMessage("exceed maximum number you can move");
-                LogHelper.printMessage("please input the number of armys you want to move");
-                LogHelper.printMessage("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
-                if (readInput.hasNextInt())
-                    moveArmyNum = readInput.nextInt();
-            }
+            moveArmyNum = moveArmyNumint;
             t1.updateArmyNum(0 - moveArmyNum);
             LogHelper.printMessage("now " + countrySourceName + " has " + t1.getArmyNum() + " armies");
             t2.updateArmyNum(moveArmyNum);
             LogHelper.printMessage("now " + countryDestinationName + " has " + t2.getArmyNum() + " armies");
+            return true;
 
         } else {
             LogHelper.printMessage("cant move army");
             return false;
         }
-        return false;
     }
 
 
@@ -407,6 +405,7 @@ public class GameMap {
 
     /**
      * Method to get map component
+     *
      * @return map component
      */
     public Map<String, String> getMapComponentsHashMap() {

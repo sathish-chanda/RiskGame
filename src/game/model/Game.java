@@ -13,7 +13,7 @@ import java.util.*;
 public class Game implements GameListener {
     private int playerNum;//the number of players playing the gamecomponents
     public ArrayList<Player> players;
-    private GameMap gameMap;
+    public GameMap gameMap;
     private boolean beginStartUpPhase;
     private boolean isMapValid;
 
@@ -116,6 +116,7 @@ public class Game implements GameListener {
         roundRobinPlaceArmyOnCountry();
     }
 
+
     /**
      * the roundRobinPlay method is used to realize round robin logic
      */
@@ -194,10 +195,22 @@ public class Game implements GameListener {
     }
 
     /**
+     * This method helps for tesing the functionality of choosing players
+     *
+     * @param number
+     */
+    public void chooseNumberOfPlayersTest(int number) {
+        playerNum = number; // how many player are playing the gamecomponents
+        players = new ArrayList<Player>();
+        for (int i = 1; i <= playerNum; i++)
+            players.add(new Player(playerNum));
+    }
+
+    /**
      * The assignCountrytoPlayers method is used in the constructor.
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
-    private void randomAssignCountryToPlayers() {
+    public void randomAssignCountryToPlayers() {
         int playerSelect, countrySelect;
         Random rand = new Random();
         List<Territory> countryList = new ArrayList<Territory>();
@@ -262,16 +275,14 @@ public class Game implements GameListener {
     }
 
     /**
-     * The declairWin method is used when a player enlimate all other players and win the game
+     * The declairWin method is used when a player eliminate all other players and win the game
      *
      * @param attacker the player who wins the game
      */
     public void declareWin(Player attacker) {
         LogHelper.printMessage("the player" + attacker.getPlayerID() + " wins the game");
-        LogHelper.printMessage("press any key to exit the game");
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNextLine())
-            System.exit(1);
+        LogHelper.printMessage("Game Finished");
+        //System.exit(1);
 
     }
 

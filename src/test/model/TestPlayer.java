@@ -2,8 +2,9 @@ package test.model;
 
 import game.model.*;
 import game.utils.Constants;
+import game.utils.MapFileHelper;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,51 +24,108 @@ public class TestPlayer {
     public Game game;
 
 
-    @Test
-    public void testReinforcement() {
-
-        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
-        gameMap.loadContinents();
-        gameMap.loadTerritories();
-        gameMap.syncContinentsAndTerritories();
-
-        gameMap = new GameMap(game);
-        gameMap.loadMap(Constants.FILE_DOMAIN_PATH + Constants.USER_MAP_FILE_NAME);
-        gameMap.loadContinents();
-        gameMap.loadTerritories();
-        gameMap.syncContinentsAndTerritories();
-        player = new Player(2);
-        player.reinforcement(gameMap);
-        assertEquals(0, player.getReinforcementArmyNum());
-    }
-
     /**
-     * Initialize member variables for class TestPlayer prior to execution of test cases
+     * The init method is for the initilization of the test data
      */
     @Before
     public void init() {
-        territory = new Territory();
+
+        MapFileHelper mapFileHelper = MapFileHelper.getInstance();
+        mapFileHelper.readMapFile("C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map");
+        game = new Game();
+        gameMap = new GameMap(game);
+        gameMap.mapFileHelper = mapFileHelper;
+        gameMap.loadMapComponents();
+        gameMap.loadContinents();
+        gameMap.loadTerritories();
+        gameMap.syncContinentsAndTerritories();
+
     }
 
     /**
-     * perform test for player ID
-     * Test whether player ID generated
+     * This method test the major function of reinforcement
      */
     @Test
-    public void testFotification() {
+    public void testReinforcement() {
         player = new Player(2);
-        Territory sourceTerritory = gameMap.getTerritoryListMap().get(0);
-        sourceTerritory.setPlayer(player.getPlayerID());
-        sourceTerritory.updateArmyNum(5);
-        Territory destineTerritory = gameMap.searchCountry(sourceTerritory.getAdjacentCountryList().get(0));
-        destineTerritory.setPlayer(player.getPlayerID());
+        player.reinforcementTest(gameMap);
+        assertEquals(3, player.getReinforcementArmyNum());
+    }
 
-        boolean result = gameMap.fortificationTest(sourceTerritory.getTerritoryName(), destineTerritory.getTerritoryName(), 100, player.getPlayerID());
-        assertEquals(false, result);
+    /**
+     * This method tests reinforcement in the case that a player owned a whole continent
+     */
+    @Test
+    public void testReinforcementOwnedContinent() {
+        player = new Player(2);
+        Continent continent = gameMap.getContinentListMap().get(1);
+        for (int i = 0; i < continent.getTerritoryList().size(); i++) {
+            continent.getTerritoryList().get(i).setPlayer(player.getPlayerID());
+            player.addCountry(continent.getTerritoryList().get(i));
+
+        }
+        player.reinforcementTest(gameMap);
+        assertEquals(continent.getMaximumArmy(), player.getReinforcementArmyNum());
     }
 
     @Test
-    public void testFotification2() {
+    public void testReinforcementDividedBy3() {
+        player = new Player(2);
+        int count = 0;
+        for (int i = 0; i < gameMap.getContinentListMap().size(); i++) {
+            Continent continent = gameMap.getContinentListMap().get(i);
+            for (int j = 1; j < continent.getTerritoryList().size(); j++) {
+                player.addCountry(continent.getTerritoryList().get(j));
+                count++;
+            }
+        }
+        player.reinforcementTest(gameMap);
+        assertEquals(count / 3, player.getReinforcementArmyNum());
+    }
+
+
+    /**
+     * This test case tests the attacker
+     */
+    @Test
+    public void testAttackRollingDiceAttacker() {
+        player = new Player(2);
+        Territory attackTerritory = gameMap.getTerritoryList().get(0);
+        Territory defendTerritory = gameMap.searchCountry(attackTerritory.getAdjacentCountryList().get(0));
+        attackTerritory.updateArmyNum(50);
+        defendTerritory.updateArmyNum(0);
+        assertEquals(1, player.rollingDiceAllOut(attackTerritory, defendTerritory));
+    }
+
+    /**
+     * This test case tests the defender
+     */
+    @Test
+    public void testAttackRollingDiceDefender() {
+        player = new Player(2);
+        Territory attackTerritory = gameMap.getTerritoryListMap().get(0);
+        Territory defendTerritory = gameMap.searchCountry(attackTerritory.getAdjacentCountryList().get(0));
+        attackTerritory.updateArmyNum(0);
+        defendTerritory.updateArmyNum(50);
+        assertEquals(-1, player.rollingDiceAllOut(attackTerritory, defendTerritory));
+    }
+
+
+    /**
+     * This test case tests the end of game
+     * */
+    @Test
+    public void testDeclairWin() {
+        game.players = new ArrayList<Player>(10);
+        game.players.add(player = new Player(2));
+        assertEquals(true, game.roundRobinPlay());
+    }
+
+    /**
+     * This test case test fortification
+     */
+    @Test
+    public void testFotification() {
         player = new Player(2);
         Territory sourceTerritory = gameMap.getTerritoryListMap().get(0);
         sourceTerritory.setPlayer(player.getPlayerID());
@@ -78,6 +136,23 @@ public class TestPlayer {
         boolean result = gameMap.fortificationTest(sourceTerritory.getTerritoryName(), destineTerritory.getTerritoryName(), 1, player.getPlayerID());
         assertEquals(false, result);
     }
+
+    /**
+     * This test tests fortification
+     */
+    @Test
+    public void testFotification2() {
+        player = new Player(2);
+        Territory sourceTerritory = gameMap.getTerritoryListMap().get(0);
+        sourceTerritory.setPlayer(player.getPlayerID());
+        sourceTerritory.updateArmyNum(5);
+        Territory destineTerritory = gameMap.searchCountry(sourceTerritory.getAdjacentCountryList().get(0));
+        destineTerritory.setPlayer(player.getPlayerID());
+
+        boolean result = gameMap.fortificationTest(sourceTerritory.getTerritoryName(), destineTerritory.getTerritoryName(), 1, player.getPlayerID());
+        assertEquals(true, result);
+    }
+
 
 
     /**
