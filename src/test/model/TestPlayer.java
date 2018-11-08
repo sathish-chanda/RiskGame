@@ -54,9 +54,16 @@ public class TestPlayer {
      * Test whether player ID generated
      */
     @Test
-    public void testPlayerId() {
+    public void testFotification() {
         player = new Player(2);
-        assertEquals(1, player.getPlayerID());
+        Territory sourceTerritory = gameMap.getTerritoryListMap().get(0);
+        sourceTerritory.setPlayer(player.getPlayerID());
+        sourceTerritory.updateArmyNum(5);
+        Territory destineTerritory = gameMap.searchCountry(sourceTerritory.getAdjacentCountryList().get(0));
+        destineTerritory.setPlayer(player.getPlayerID());
+
+        boolean result = gameMap.fortificationTest(sourceTerritory.getTerritoryName(), destineTerritory.getTerritoryName(), 100, player.getPlayerID());
+        assertEquals(false, result);
     }
 
     @Test
