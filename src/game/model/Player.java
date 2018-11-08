@@ -1,6 +1,8 @@
 package game.model;
 
+import game.PlayerView;
 import game.controller.CardController;
+import game.controller.PlayerSelectController;
 import game.model.Territory;
 import game.utils.LogHelper;
 
@@ -9,7 +11,7 @@ import java.util.*;
 /**
  * This class represents players playing the gamecomponents
  */
-public class Player {
+public class Player extends Observable {
 
     private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player
@@ -17,9 +19,12 @@ public class Player {
     private int armyNum = 0;//number of army owned by a player
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
     private CardModel card;
+    private GameMap gameMap;
+    private float percentageOfCountriesOwned;
 
     /**
-     *Method used to get reinforcement army count
+     * Method used to get reinforcement army count
+     *
      * @return reinforcement army count
      */
     public int getReinforcementArmyNum() {
@@ -28,6 +33,7 @@ public class Player {
 
     /**
      * Method used to set reinforcement army count
+     *
      * @param reinforcementArmyNum
      */
     public void setReinforcementArmyNum(int reinforcementArmyNum) {
@@ -36,6 +42,7 @@ public class Player {
 
     /**
      * Method used to update reinforcement army count
+     *
      * @param reinforcementArmyNum
      */
     public void updateReinforcementArmyNum(int reinforcementArmyNum) {
@@ -56,9 +63,8 @@ public class Player {
         int initialArmyNum = 40 - 5 * (playerNum - 2);
         armyNum = armyNum + initialArmyNum;
         ownedCountry = new ArrayList<Territory>();
-
-        //LogHelper.printMessage("" + armyNum);
-
+        PlayerView playerView = new PlayerView();
+        addObserver(playerView);
     }
 
     /**
@@ -70,6 +76,7 @@ public class Player {
 
     /**
      * method get player unique Id
+     *
      * @return player Id
      */
     public int getPlayerID() {
@@ -78,6 +85,7 @@ public class Player {
 
     /**
      * Method to add player owned territory to the list
+     *
      * @param country
      */
     public void addCountry(Territory country) {
@@ -204,6 +212,7 @@ public class Player {
 
     /**
      * Method relaise the attack phase of the game
+     *
      * @param gameMap, map List
      */
     public void attack(GameMap gameMap) {
@@ -244,7 +253,6 @@ public class Player {
                 inputAttackingTerritoryName = scanner.nextLine();
                 attackingTerritory = gameMap.searchCountry(inputAttackingTerritoryName);
             }
-
             LogHelper.printMessage("please choose a country to attack");
             String inputDefendingTerritoryName = scanner.nextLine();
             defendingTerritory = gameMap.searchCountry(inputDefendingTerritoryName);
@@ -259,10 +267,10 @@ public class Player {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins");
-            if(card != null ){
+            if (card != null) {
                 card.increaseCard();
             }
-            if(defender != null){
+            if (defender != null) {
                 defender.removeCountry(defendingTerritory);
             }
             defendingTerritory.setPlayer(getPlayerID());
@@ -275,6 +283,7 @@ public class Player {
 
     /**
      * This method implements the All-Out mode in the attack Phase
+     *
      * @param gameMap map List
      */
     public void attackAllOut(GameMap gameMap) {
@@ -331,7 +340,7 @@ public class Player {
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins this round");
 
-            if(defender != null){
+            if (defender != null) {
                 defender.removeCountry(defendingTerritory);
             }
             defendingTerritory.setPlayer(getPlayerID());
@@ -363,7 +372,7 @@ public class Player {
                 maxAttackingDiceNum = 3;
             } else if (attackingTerritoryArmyNum == 3) {
                 maxAttackingDiceNum = 2;
-            }else if (attackingTerritoryArmyNum == 2) {
+            } else if (attackingTerritoryArmyNum == 2) {
                 maxAttackingDiceNum = 1;
             }
             LogHelper.printMessage("attacker, you can roll up to " + maxAttackingDiceNum + " dice, how many dice you want to roll?");
@@ -519,6 +528,7 @@ public class Player {
 
     /**
      * Method initites the fortification Phase
+     *
      * @param gameMap
      */
     public void initFortification(GameMap gameMap) {
@@ -536,5 +546,24 @@ public class Player {
         gameMap.fortification(territorySourceName, territoryDestinationName, getPlayerID());
     }
 
+    /**
+     * Returns percentage of countries owned player
+     */
+    public float getPercentageOfCountriesOwned() {
+        return percentageOfCountriesOwned;
+    }
+
+    public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned) {
+        this.percentageOfCountriesOwned = percentageOfCountriesOwned;
+        invokePlayerObserver();
+    }
+
+    /**
+     * Method to invoke player observer
+     */
+    public void invokePlayerObserver() {
+        setChanged();
+        notifyObservers(this);
+    }
 
 }

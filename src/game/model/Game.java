@@ -135,7 +135,7 @@ public class Game implements GameListener {
                 }
                 if (alloutMode.matches("y")) {
                     attacker.attackAllOut(gameMap);
-                }else  if (alloutMode.matches("n")) {
+                } else if (alloutMode.matches("n")) {
                     attacker.attack(gameMap);
                 }
 
@@ -153,7 +153,7 @@ public class Game implements GameListener {
                         }
                         if (nextAttack.matches("y")) {
                             attacker.attackAllOut(gameMap);
-                        }else  if (nextAttack.matches("n")) {
+                        } else if (nextAttack.matches("n")) {
                             attacker.attack(gameMap);
                         }
 
@@ -213,6 +213,9 @@ public class Game implements GameListener {
 
         for (int j = 0; j < players.size(); j++) {
             LogHelper.printMessage("the player" + players.get(j).getPlayerID() + " has " + players.get(j).getCountry().size() + " countries");
+            float percentage = getPercentageCountriesOwnedByPlayer(players.get(j).getCountry().size());
+            players.get(j).setPercentageOfCountriesOwned(percentage);
+
         }
         LogHelper.printMessage("--------------------------------------------------------------------------------");
     }
@@ -300,6 +303,19 @@ public class Game implements GameListener {
     public void setMapValid(boolean mapValid) {
         isMapValid = mapValid;
     }
+
+    /**
+     * Method to get percentage of countries owned by a player
+     *
+     * @param countriesOwned
+     */
+    public float getPercentageCountriesOwnedByPlayer(int countriesOwned) {
+        float countriesOwnedFloat = countriesOwned;
+        float totalTerritories = getGameMap().getTerritoryList().size();
+        float result = (countriesOwnedFloat / totalTerritories) * 100;
+        return result;
+    }
+
 }
 
 
