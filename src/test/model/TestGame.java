@@ -23,6 +23,9 @@ public class TestGame {
     public ArrayList<Player> players;
     public Game game;
 
+    /**
+     * initilization of test case
+     */
     @Before
     public void init() {
 
@@ -37,6 +40,10 @@ public class TestGame {
         gameMap.syncContinentsAndTerritories();
 
     }
+
+    /**
+     * This test case tests the start up phase of game
+     */
 
     @Test
     public void testStartUp() {

@@ -182,6 +182,31 @@ public class Player extends Observable {
         cardController.exchangeCardsForArmies(this);
     }
 
+    public void reinforcementTest(GameMap gameMap) {
+        int reinforcementArmyNum = 0;
+        int deleteTerritoryNum = 0;
+        for (int j = 0; j < gameMap.getContinentListMap().size(); j++) {
+            Continent continent = gameMap.getContinentListMap().get(j);
+            boolean flag = true;
+            for (int k = 0; k < continent.getTerritoryList().size(); k++) {
+                Territory territory = continent.getTerritoryList().get(k);
+                if (territory.getPlayerID() == playerID)
+                    continue;
+                else
+                    flag = false;
+            }
+            if (flag) {
+                reinforcementArmyNum = reinforcementArmyNum + continent.getMaximumArmy();
+                deleteTerritoryNum = deleteTerritoryNum + continent.getTerritoryList().size();
+            }
+        }
+        reinforcementArmyNum = reinforcementArmyNum + (getCountry().size() - deleteTerritoryNum) / 3;
+        if (reinforcementArmyNum < 3)
+            reinforcementArmyNum = 3;
+        updateArmyNum(reinforcementArmyNum);
+        setReinforcementArmyNum(reinforcementArmyNum);
+    }
+
     /**
      * The placeArmynonCountry method is used at the beginning of each round of play.
      * It assign a player's army to the countries owned by that player.

@@ -4,6 +4,7 @@ import game.model.*;
 import game.utils.Constants;
 import game.utils.MapFileHelper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ public class TestPlayer {
     public GameMap gameMap;
     public Game game;
 
+
+    /**
+     * The init method is for the initilization of the test data
+     */
     @Before
     public void init() {
 
@@ -37,14 +42,19 @@ public class TestPlayer {
 
     }
 
-
+    /**
+     * This method test the major function of reinforcement
+     */
     @Test
     public void testReinforcement() {
         player = new Player(2);
-        player.reinforcement(gameMap);
+        player.reinforcementTest(gameMap);
         assertEquals(3, player.getReinforcementArmyNum());
     }
 
+    /**
+     * This method tests reinforcement in the case that a player owned a whole continent
+     */
     @Test
     public void testReinforcementOwnedContinent() {
         player = new Player(2);
@@ -54,7 +64,7 @@ public class TestPlayer {
             player.addCountry(continent.getTerritoryList().get(i));
 
         }
-        player.reinforcement(gameMap);
+        player.reinforcementTest(gameMap);
         assertEquals(continent.getMaximumArmy(), player.getReinforcementArmyNum());
     }
 
@@ -69,12 +79,16 @@ public class TestPlayer {
                 count++;
             }
         }
-        player.reinforcement(gameMap);
+        player.reinforcementTest(gameMap);
         assertEquals(count / 3, player.getReinforcementArmyNum());
     }
 
+
+    /**
+     * This test case tests the attacker
+     */
     @Test
-    public void testAttackRollingDiceAttackWin() {
+    public void testAttackRollingDiceAttacker() {
         player = new Player(2);
         Territory attackTerritory = gameMap.getTerritoryList().get(0);
         Territory defendTerritory = gameMap.searchCountry(attackTerritory.getAdjacentCountryList().get(0));
@@ -83,8 +97,11 @@ public class TestPlayer {
         assertEquals(1, player.rollingDiceAllOut(attackTerritory, defendTerritory));
     }
 
+    /**
+     * This test case tests the defender
+     */
     @Test
-    public void testAttackRollingDiceDefendWin() {
+    public void testAttackRollingDiceDefender() {
         player = new Player(2);
         Territory attackTerritory = gameMap.getTerritoryListMap().get(0);
         Territory defendTerritory = gameMap.searchCountry(attackTerritory.getAdjacentCountryList().get(0));
@@ -93,6 +110,10 @@ public class TestPlayer {
         assertEquals(-1, player.rollingDiceAllOut(attackTerritory, defendTerritory));
     }
 
+
+    /**
+     * This test case tests the end of game
+     * */
     @Test
     public void testDeclairWin() {
         game.players = new ArrayList<Player>(10);
@@ -100,7 +121,9 @@ public class TestPlayer {
         assertEquals(true, game.roundRobinPlay());
     }
 
-
+    /**
+     * This test case test fortification
+     */
     @Test
     public void testFotification() {
         player = new Player(2);
@@ -114,6 +137,9 @@ public class TestPlayer {
         assertEquals(false, result);
     }
 
+    /**
+     * This test tests fortification
+     */
     @Test
     public void testFotification2() {
         player = new Player(2);

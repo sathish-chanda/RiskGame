@@ -195,6 +195,18 @@ public class Game implements GameListener {
     }
 
     /**
+     * This method helps for tesing the functionality of choosing players
+     *
+     * @param number
+     */
+    public void chooseNumberOfPlayersTest(int number) {
+        playerNum = number; // how many player are playing the gamecomponents
+        players = new ArrayList<Player>();
+        for (int i = 1; i <= playerNum; i++)
+            players.add(new Player(playerNum));
+    }
+
+    /**
      * The assignCountrytoPlayers method is used in the constructor.
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
@@ -263,14 +275,14 @@ public class Game implements GameListener {
     }
 
     /**
-     * The declairWin method is used when a player enlimate all other players and win the game
+     * The declairWin method is used when a player eliminate all other players and win the game
      *
      * @param attacker the player who wins the game
      */
     public void declareWin(Player attacker) {
         LogHelper.printMessage("the player" + attacker.getPlayerID() + " wins the game");
         LogHelper.printMessage("Game Finished");
-        System.exit(1);
+        //System.exit(1);
 
     }
 
