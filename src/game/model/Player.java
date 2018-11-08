@@ -1,9 +1,7 @@
 package game.model;
 
-import game.PlayerView;
+import game.view.PlayerView;
 import game.controller.CardController;
-import game.controller.PlayerSelectController;
-import game.model.Territory;
 import game.utils.LogHelper;
 
 import java.util.*;
@@ -64,6 +62,7 @@ public class Player extends Observable {
         armyNum = armyNum + initialArmyNum;
         ownedCountry = new ArrayList<Territory>();
         PlayerView playerView = new PlayerView();
+        card = new CardModel();
         addObserver(playerView);
     }
 
@@ -267,9 +266,7 @@ public class Player extends Observable {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             LogHelper.printMessage("attacker wins");
-            if (card != null) {
-                card.increaseCard();
-            }
+            card.increaseCard();
             if (defender != null) {
                 defender.removeCountry(defendingTerritory);
             }
@@ -556,6 +553,15 @@ public class Player extends Observable {
     public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned) {
         this.percentageOfCountriesOwned = percentageOfCountriesOwned;
         invokePlayerObserver();
+    }
+
+    /**
+     * Method to get card model
+     *
+     * @return
+     */
+    public CardModel getCard() {
+        return card;
     }
 
     /**

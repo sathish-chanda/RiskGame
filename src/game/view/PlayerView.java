@@ -1,4 +1,4 @@
-package game;
+package game.view;
 
 import game.model.Player;
 import game.utils.LogHelper;

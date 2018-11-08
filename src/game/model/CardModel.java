@@ -58,14 +58,21 @@ public class CardModel extends Observable {
     }
 
     public void exchangeCardForArmy(Player player) {
+        if (player != null) {
+            totalCardNum = player.getCard().getTotalCardNum();
+            infantryCard = player.getCard().getInfantryCardNum();
+            cavalryCard = player.getCard().getCavalryCardNum();
+            artilleryCard = player.getCard().getArtilleryCardNum();
+        }
+
         Scanner scanner = new Scanner(System.in);
         if (totalCardNum >= 5) {
             LogHelper.printMessage("you have 5 or more than 5 cards, you must exchange some of them for armies");
-            if (infantryCard >=3)
+            if (infantryCard >= 3)
                 LogHelper.printMessage("you have " + infantryCard + " infantry cards, you can exchange 3 of them for armies");
-            else if (cavalryCard >=3)
+            else if (cavalryCard >= 3)
                 LogHelper.printMessage("you have " + cavalryCard + " cavalry cards, you can exchange 3 of them for armies");
-            else if (artilleryCard >=3)
+            else if (artilleryCard >= 3)
                 LogHelper.printMessage("you have " + artilleryCard + " artillery cards, you can exchange 3 of them for armies");
             else
                 LogHelper.printMessage("you have " + infantryCard + " infantry cards, " + cavalryCard + " cavalry cards, " + artilleryCard + " artillery cards, you can exchange 3 cards of each kind for army");
@@ -95,8 +102,7 @@ public class CardModel extends Observable {
             setChanged();
             notifyObservers(this);
             return;
-        }
-        else {
+        } else {
             LogHelper.printMessage("you have " + infantryCard + " infantry cards, " + cavalryCard + " cavalry cards, " + artilleryCard + " artillery cards");
             LogHelper.printMessage("do you want to exchange cards for armies? input y for yes, n for no");
             String input = scanner.nextLine();
@@ -107,29 +113,24 @@ public class CardModel extends Observable {
             if (input.matches("n")) {
                 LogHelper.printMessage("exit card exchange");
                 return;
-            }
-            else if (input.matches("y")  && infantryCard < 3 && cavalryCard < 3 && artilleryCard < 3 && (infantryCard == 0 || cavalryCard == 0 || artilleryCard == 0)) {
+            } else if (input.matches("y") && infantryCard < 3 && cavalryCard < 3 && artilleryCard < 3 && (infantryCard == 0 || cavalryCard == 0 || artilleryCard == 0)) {
                 LogHelper.printMessage("you don't have enough cards to exchange for armies");
                 return;
-            }
-            else {
+            } else {
                 LogHelper.printMessage("you have " + infantryCard + " infantry cards, " + cavalryCard + " cavalry cards, " + artilleryCard + " artillery cards");
                 if (infantryCard >= 3) {
                     LogHelper.printMessage("you have more than 3 of infantry cards, you exchange 3 of them for armies");
                     infantryCard = infantryCard - 3;
                     player.updateReinforcementArmyNum(cardUsedTimes * 5);
-                }
-                else if (cavalryCard >= 3) {
+                } else if (cavalryCard >= 3) {
                     LogHelper.printMessage("you have more than 3 of cavalry cards, you exchange 3 of them for armies");
                     cavalryCard = cavalryCard - 3;
                     player.updateReinforcementArmyNum(cardUsedTimes * 5);
-                }
-                else if (artilleryCard >= 3) {
+                } else if (artilleryCard >= 3) {
                     LogHelper.printMessage("you have more than 3 of artillery cards, you exchange 3 of them for armies");
                     artilleryCard = artilleryCard - 3;
                     player.updateReinforcementArmyNum(cardUsedTimes * 5);
-                }
-                else if ((infantryCard >= 1) && (cavalryCard >= 1) && (artilleryCard >= 1)) {
+                } else if ((infantryCard >= 1) && (cavalryCard >= 1) && (artilleryCard >= 1)) {
                     LogHelper.printMessage("you have one of each cards, you can exchange them for armies");
                     infantryCard = infantryCard - 1;
                     cavalryCard = cavalryCard - 1;

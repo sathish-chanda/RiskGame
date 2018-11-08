@@ -33,6 +33,7 @@ public class PlayerSelectController implements Initializable {
 
     /**
      * Constructor used to listen player selection layout
+     *
      * @param controllerListener
      */
     public PlayerSelectController(ControllerListener controllerListener) {
@@ -50,7 +51,7 @@ public class PlayerSelectController implements Initializable {
      */
     private void loadSelectPlayerComboBox() {
         selectPlayerComboBox.getItems().clear();
-        for (int i = 3; i <= 6; i++) {
+        for (int i = 2; i <= 6; i++) {
             selectPlayerComboBox.getItems().add(i);
         }
         selectPlayerComboBox.getSelectionModel().select(0);
