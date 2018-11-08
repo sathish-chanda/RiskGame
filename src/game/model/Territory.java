@@ -38,7 +38,6 @@ public class Territory {
         this.continentName = continentName;
         this.latitude = latitude;
         this.longitude = longitude;
-        //this.adjacentCountryList = adjacentCountryList;
     }
 
     /**
