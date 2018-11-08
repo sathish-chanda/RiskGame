@@ -3,10 +3,7 @@ package game.controller;
 import game.model.Continent;
 import game.model.RiskModel;
 import game.model.Territory;
-import game.utils.Constants;
-import game.utils.ErrorViewUtils;
-import game.utils.LogHelper;
-import game.utils.MapFileHelper;
+import game.utils.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -401,13 +398,13 @@ public class MapController implements Initializable {
      *
      * @return
      */
-    private List<String> getAllterritories() {
-        List<String> territoryCompleteList = new ArrayList<>();
+    private List<Territory> getAllTerritories() {
+        List<Territory> territoryCompleteList = new ArrayList<>();
         for (Continent continent : continentList) {
             List<Territory> territoryList = continent.getTerritoryList();
             if (territoryList != null) {
                 for (Territory territory : territoryList) {
-                    territoryCompleteList.add(territory.getTerritoryName());
+                    territoryCompleteList.add(territory);
                 }
             }
         }
@@ -527,25 +524,25 @@ public class MapController implements Initializable {
         saveContinents();
         saveTerritories();
         saveCompleteMapDataList();
-        mapFileHelper.initMapFileSaver();
+
+        LogHelper.printMessage("isMyMapFile valid = " + isMapFileValid());
+
+        //mapFileHelper.initMapFileSaver();
     }
 
     /**
      * Method to validate saved map file
      */
     private boolean isMapFileValid() {
-        if (riskModel == null) {
-            riskModel = new RiskModel();
-        }
-        riskModel.getGame().getGameMap().verifyTerritoryMap();
-        return riskModel.getGame().isMapValid();
+        MapValidator mapValidator = new MapValidator(continentList, continentList, getAllTerritories());
+        mapValidator.verifyContinentMap();
+        return true;
     }
 
     /**
      * Method to save continents
      */
     private void saveContinents() {
-
         for (Continent continent : continentList) {
 
         }
