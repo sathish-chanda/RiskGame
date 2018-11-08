@@ -1,10 +1,14 @@
 package test.model;
 
-import game.model.Player;
+import game.model.*;
+import game.utils.Constants;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import game.model.Territory;
 
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 
@@ -15,6 +19,27 @@ import static org.junit.Assert.assertEquals;
 public class TestPlayer {
     public Player player;
     public Territory territory;
+    public GameMap gameMap;
+    public Game game;
+
+
+    @Test
+    public void testReinforcement() {
+
+        gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
+        gameMap.loadContinents();
+        gameMap.loadTerritories();
+        gameMap.syncContinentsAndTerritories();
+
+        gameMap = new GameMap(game);
+        gameMap.loadMap(Constants.FILE_DOMAIN_PATH + Constants.USER_MAP_FILE_NAME);
+        gameMap.loadContinents();
+        gameMap.loadTerritories();
+        gameMap.syncContinentsAndTerritories();
+        player = new Player(2);
+        player.reinforcement(gameMap);
+        assertEquals(0, player.getReinforcementArmyNum());
+    }
 
     /**
      * Initialize member variables for class TestPlayer prior to execution of test cases
@@ -29,10 +54,31 @@ public class TestPlayer {
      * Test whether player ID generated
      */
     @Test
-    public void testPlayerId() {
+    public void testFotification() {
         player = new Player(2);
-        assertEquals(1, player.getPlayerID());
+        Territory sourceTerritory = gameMap.getTerritoryListMap().get(0);
+        sourceTerritory.setPlayer(player.getPlayerID());
+        sourceTerritory.updateArmyNum(5);
+        Territory destineTerritory = gameMap.searchCountry(sourceTerritory.getAdjacentCountryList().get(0));
+        destineTerritory.setPlayer(player.getPlayerID());
+
+        boolean result = gameMap.fortificationTest(sourceTerritory.getTerritoryName(), destineTerritory.getTerritoryName(), 100, player.getPlayerID());
+        assertEquals(false, result);
     }
+
+    @Test
+    public void testFotification2() {
+        player = new Player(2);
+        Territory sourceTerritory = gameMap.getTerritoryListMap().get(0);
+        sourceTerritory.setPlayer(player.getPlayerID());
+        sourceTerritory.updateArmyNum(5);
+        Territory destineTerritory = gameMap.searchCountry(sourceTerritory.getAdjacentCountryList().get(0));
+        destineTerritory.setPlayer(player.getPlayerID() + 1);
+
+        boolean result = gameMap.fortificationTest(sourceTerritory.getTerritoryName(), destineTerritory.getTerritoryName(), 1, player.getPlayerID());
+        assertEquals(false, result);
+    }
+
 
     /**
      * perform test for randomly generated armies when player count = 2

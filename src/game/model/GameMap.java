@@ -310,6 +310,56 @@ public class GameMap {
         return;
     }
 
+    public boolean fortificationTest(String countrySourceName, String countryDestinationName, int moveArmyNumint, int playerID) {
+        Territory t1 = searchCountry(countrySourceName);
+        Territory t2 = searchCountry(countryDestinationName);
+        Queue<Territory> q = new LinkedList<Territory>();
+        boolean flag = false;
+        Territory startCountry = t1;
+        q.offer(startCountry);
+        ArrayList<Territory> searchedTerritory = new ArrayList<Territory>();
+
+        while (!q.isEmpty()) {
+            Territory c = q.poll();
+            searchedTerritory.add(c);
+            for (int i = 0; i < c.getAdjacentCountryList().size(); i++) {
+                Territory adjacentCountry = searchCountry(c.getAdjacentCountryList().get(i));
+                if (adjacentCountry.getTerritoryName().matches(countryDestinationName) && (adjacentCountry.getPlayerID() == playerID)) {
+                    flag = true;
+                    break;
+                } else if ((adjacentCountry.getPlayerID() == playerID) && !searchedTerritory.contains(adjacentCountry)) {
+                    q.offer(adjacentCountry);
+                } else
+                    continue;
+            }
+        }
+        if (flag) {
+            int moveArmyNum = 0;
+            LogHelper.printMessage("please input the number of armys you want to move");
+            LogHelper.printMessage("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
+            Scanner readInput = new Scanner(System.in);
+            if (readInput.hasNextInt())
+                moveArmyNum = readInput.nextInt();
+            while (moveArmyNum > searchCountry(countrySourceName).getArmyNum()) {
+                LogHelper.printMessage("exceed maximum number you can move");
+                LogHelper.printMessage("please input the number of armys you want to move");
+                LogHelper.printMessage("you can move up to " + searchCountry(countrySourceName).getArmyNum() + " armies");
+                if (readInput.hasNextInt())
+                    moveArmyNum = readInput.nextInt();
+            }
+            t1.updateArmyNum(0 - moveArmyNum);
+            LogHelper.printMessage("now " + countrySourceName + " has " + t1.getArmyNum() + " armies");
+            t2.updateArmyNum(moveArmyNum);
+            LogHelper.printMessage("now " + countryDestinationName + " has " + t2.getArmyNum() + " armies");
+
+        } else {
+            LogHelper.printMessage("cant move army");
+            return false;
+        }
+        return false;
+    }
+
+
     /**
      * method to get territory list
      *

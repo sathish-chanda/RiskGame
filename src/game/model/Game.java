@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class Game implements GameListener {
     private int playerNum;//the number of players playing the gamecomponents
-    private ArrayList<Player> players;
+    public ArrayList<Player> players;
     private GameMap gameMap;
     private boolean beginStartUpPhase;
     private boolean isMapValid;
@@ -119,7 +119,7 @@ public class Game implements GameListener {
     /**
      * the roundRobinPlay method is used to realize round robin logic
      */
-    private void roundRobinPlay() {
+    public boolean roundRobinPlay() {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
@@ -175,6 +175,7 @@ public class Game implements GameListener {
             }
         }
         declareWin(players.get(0));
+        return true;
     }
 
     @Override
@@ -265,7 +266,7 @@ public class Game implements GameListener {
      *
      * @param attacker the player who wins the game
      */
-    void declareWin(Player attacker) {
+    public void declareWin(Player attacker) {
         LogHelper.printMessage("the player" + attacker.getPlayerID() + " wins the game");
         LogHelper.printMessage("press any key to exit the game");
         Scanner scanner = new Scanner(System.in);
