@@ -136,9 +136,9 @@ public class Game implements GameListener {
                     alloutMode = scanner.nextLine();
                 }
                 if (alloutMode.matches("y")) {
-                    attacker.attackAllOut(gameMap);
+                    attacker.attackAllOut(gameMap, players);
                 } else if (alloutMode.matches("n")) {
-                    attacker.attack(gameMap);
+                    attacker.attack(gameMap, players);
                 }
 
                 while (attacker.getArmyNum() > 0) {
@@ -154,9 +154,9 @@ public class Game implements GameListener {
                             nextAttack = scanner.nextLine();
                         }
                         if (nextAttack.matches("y")) {
-                            attacker.attackAllOut(gameMap);
+                            attacker.attackAllOut(gameMap, players);
                         } else if (nextAttack.matches("n")) {
-                            attacker.attack(gameMap);
+                            attacker.attack(gameMap, players);
                         }
 
                     } else if (input.matches("n")) {

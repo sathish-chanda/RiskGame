@@ -251,7 +251,7 @@ public class Player extends Observable {
      *
      * @param gameMap, map List
      */
-    public void attack(GameMap gameMap) {
+    public void attack(GameMap gameMap, ArrayList<Player> players) {
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
         ArrayList<Territory> defendingTerritoryList = new ArrayList<Territory>();
         Territory attackingTerritory = null;
@@ -302,20 +302,32 @@ public class Player extends Observable {
                 inputDefendingTerritoryName = scanner.nextLine();
                 defendingTerritory = gameMap.searchCountry(inputDefendingTerritoryName);
             }
+            int defenderID = defendingTerritory.getPlayerID();
+            for (int x = 0; x < players.size(); x++) {
+                if (players.get(x).getPlayerID() == defenderID) {
+                    defender = players.get(x);
+                    break;
+                }
+            }
 
         }
 
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
-            LogHelper.printMessage("attacker wins");
+            LogHelper.printMessage("attacker wins this attack phase");
             card.increaseCard();
-            if (defender != null) {
-                defender.removeCountry(defendingTerritory);
-            }
+            defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
+            LogHelper.printMessage("How many armies do you want to share from " +attackingTerritory.getTerritoryName() +" to " +defendingTerritory.getTerritoryName());
+            int maxArmyShare = attackingTerritory.getArmyNum()-1;
+            LogHelper.printMessage("you can move up to " + maxArmyShare +" armies");
+            int armyShare = scanner.nextInt();
+            defendingTerritory.updateArmyNum(armyShare);
+            attackingTerritory.updateArmyNum(0 - armyShare);
+            LogHelper.printMessage("attacker conquer " + defendingTerritory.getTerritoryName());
         } else if (result == -1) {
-            LogHelper.printMessage("defender wins");
+            LogHelper.printMessage("attacker loses this attack phase");
         }
 
     }
@@ -325,7 +337,7 @@ public class Player extends Observable {
      *
      * @param gameMap map List
      */
-    public void attackAllOut(GameMap gameMap) {
+    public void attackAllOut(GameMap gameMap, ArrayList<Player> players ){
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
         ArrayList<Territory> defendingTerritoryList = new ArrayList<Territory>();
         Territory attackingTerritory = null;
@@ -373,18 +385,31 @@ public class Player extends Observable {
                 defendingTerritory = gameMap.searchCountry(inputDefendingTerritoryName);
             }
         }
+        int defenderID = defendingTerritory.getPlayerID();
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPlayerID() == defenderID) {
+                defender = players.get(x);
+                break;
+            }
+
+        }
 
         int result = rollingDiceAllOut(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
-            LogHelper.printMessage("attacker wins this round");
-
-            if (defender != null) {
-                defender.removeCountry(defendingTerritory);
-            }
+            LogHelper.printMessage("attacker wins this attack phase");
+            card.increaseCard();
+            defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
+            LogHelper.printMessage("How many armies do you want to share from " +attackingTerritory.getTerritoryName() +" to " +defendingTerritory.getTerritoryName());
+            int maxArmyShare = attackingTerritory.getArmyNum()-1;
+            LogHelper.printMessage("you can move up to " + maxArmyShare + " armies");
+            int armyShare = scanner.nextInt();
+            defendingTerritory.updateArmyNum(armyShare);
+            attackingTerritory.updateArmyNum(0 - armyShare);
+            LogHelper.printMessage("attacker conquer " + defendingTerritory.getTerritoryName());
         } else if (result == -1) {
-            LogHelper.printMessage("defender wins this round");
+            LogHelper.printMessage("attacker loses this attack phase");
         }
 
     }
@@ -465,20 +490,20 @@ public class Player extends Observable {
                     attackingTerritory.updateArmyNum(-1);
                 }
             }
-            LogHelper.printMessage("do you want to continue to attack: y/n?");
+
+            LogHelper.printMessage("do you want to continue this attack phase: y/n?");
             String choice = "";
             choice = scanner.next();
-            while (choice.length() > 0) {
-                if (choice.matches("y"))
-                    break;
-                else if (choice.matches("n"))
-                    return 0;
-                else {
-                    LogHelper.printMessage("wrong input format! please reinput");
-                    choice = "";
-                }
-
+            if (choice.matches("y"))
+                continue;
+            else if (choice.matches("n"))
+                break;
+            else {
+                LogHelper.printMessage("wrong input format! please reinput");
+                choice = "";
             }
+
+
         }
         if (attackingTerritory.getArmyNum() == 0) {
             return -1;
