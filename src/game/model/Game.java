@@ -229,6 +229,7 @@ public class Game implements GameListener {
         for (int j = 0; j < players.size(); j++) {
             LogHelper.printMessage("the player" + players.get(j).getPlayerID() + " has " + players.get(j).getCountry().size() + " countries");
             float percentage = getPercentageCountriesOwnedByPlayer(players.get(j).getCountry().size());
+            players.get(j).setGameMap(gameMap);
             players.get(j).setPercentageOfCountriesOwned(percentage);
 
         }

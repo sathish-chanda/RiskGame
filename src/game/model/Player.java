@@ -630,6 +630,11 @@ public class Player extends Observable {
         return actions;
     }
 
+    /**
+     * Sets percentage of countries owned player
+     *
+     * @param percentageOfCountriesOwned
+     */
     public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned) {
         this.percentageOfCountriesOwned = percentageOfCountriesOwned;
         invokePlayerObserver();
@@ -651,4 +656,56 @@ public class Player extends Observable {
         setChanged();
         notifyObservers(this);
     }
+
+    /**
+     * Method to initialize gameMap in player class
+     *
+     * @param gameMap
+     */
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
+    /**
+     * Method to get list of continent owned
+     */
+    public List<Continent> getListOfContinentsOwned() {
+        List<String> tempPlayerContinentList = new ArrayList<>();
+        List<Continent> playerContinentList = new ArrayList<>();
+        List<Continent> continentListMap = gameMap.getContinentListMap();
+        List<Continent> playerOwnedContinentList = new ArrayList<>();
+        for (Territory territory : getCountry()) {
+            //Continent continent = new Continent(territory.getContinentName(), 0);
+            tempPlayerContinentList.add(territory.getContinentName());
+        }
+        HashSet hashSet = new HashSet();
+        hashSet.addAll(tempPlayerContinentList);
+        tempPlayerContinentList.clear();
+        tempPlayerContinentList.addAll(hashSet);
+
+        for (int i = 0; i < tempPlayerContinentList.size(); i++) {
+            Continent continent = new Continent(tempPlayerContinentList.get(i), 0);
+            playerContinentList.add(continent);
+        }
+
+        for (int i = 0; i < playerContinentList.size(); i++) {
+            for (int j = 0; j < getCountry().size(); j++) {
+                if (playerContinentList.get(i).getContinentName().equals(getCountry().get(j).getContinentName())) {
+                    playerContinentList.get(i).addTerritoryList(getCountry().get(j));
+                }
+            }
+        }
+
+        for (int i = 0; i < continentListMap.size(); i++) {
+            for (int j = 0; j < playerContinentList.size(); j++) {
+                if (continentListMap.get(i).getContinentName().equals(playerContinentList.get(j).getContinentName())) {
+                    if (continentListMap.get(i).getTerritoryList().size() == playerContinentList.get(j).getTerritoryList().size()) {
+                        playerOwnedContinentList.add(continentListMap.get(i));
+                    }
+                }
+            }
+        }
+        return playerOwnedContinentList;
+    }
+
 }
