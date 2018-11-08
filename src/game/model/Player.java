@@ -259,7 +259,6 @@ public class Player extends Observable {
         Player defender = null;
         Scanner scanner = new Scanner(System.in);
         actions.clear();
-        actions.add("Allout-Attacking mode");
         actions.add("Attacking mode");
         actions.add("Rolling Dice");
         phaseChanged("Attack Phase");
@@ -342,6 +341,10 @@ public class Player extends Observable {
         ArrayList<Territory> defendingTerritoryList = new ArrayList<Territory>();
         Territory attackingTerritory = null;
         Territory defendingTerritory = null;
+        actions.clear();
+        actions.add("Allout-Attacking mode");
+        actions.add("Rolling dice");
+        phaseChanged("Attack Phase");
         Player defender = null;
         Scanner scanner = new Scanner(System.in);
         for (int j = 0; j < getCountry().size(); j++) {
