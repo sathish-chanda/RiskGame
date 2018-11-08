@@ -13,7 +13,7 @@ import java.util.*;
 public class Game implements GameListener {
     private int playerNum;//the number of players playing the gamecomponents
     public ArrayList<Player> players;
-    private GameMap gameMap;
+    public GameMap gameMap;
     private boolean beginStartUpPhase;
     private boolean isMapValid;
 
@@ -116,6 +116,7 @@ public class Game implements GameListener {
         roundRobinPlaceArmyOnCountry();
     }
 
+
     /**
      * the roundRobinPlay method is used to realize round robin logic
      */
@@ -197,7 +198,7 @@ public class Game implements GameListener {
      * The assignCountrytoPlayers method is used in the constructor.
      * Its main function is to assign every country to players at the very beginning of gamecomponents
      */
-    private void randomAssignCountryToPlayers() {
+    public void randomAssignCountryToPlayers() {
         int playerSelect, countrySelect;
         Random rand = new Random();
         List<Territory> countryList = new ArrayList<Territory>();
@@ -268,10 +269,8 @@ public class Game implements GameListener {
      */
     public void declareWin(Player attacker) {
         LogHelper.printMessage("the player" + attacker.getPlayerID() + " wins the game");
-        LogHelper.printMessage("press any key to exit the game");
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNextLine())
-            System.exit(1);
+        LogHelper.printMessage("Game Finished");
+        System.exit(1);
 
     }
 

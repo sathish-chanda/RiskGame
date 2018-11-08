@@ -45,6 +45,7 @@ public class TestGameMap {
      */
     @Test
     public void testSyncContinentsAndTerritories() {
+        //gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
         gameMap.loadMap(Constants.USER_MAP_FILE_NAME);
         gameMap.loadContinents();
         gameMap.loadTerritories();
