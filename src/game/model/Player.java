@@ -1,9 +1,9 @@
 package game.model;
 
-import game.PhaseViewStartup;
 import game.view.PlayerView;
 import game.controller.CardController;
 import game.utils.LogHelper;
+import game.view.PhaseView;
 
 import java.util.*;
 
@@ -18,6 +18,8 @@ public class Player extends Observable {
     private int armyNum = 0;//number of army owned by a player
     private ArrayList<Territory> ownedCountry;// countries owned by a player, the elements in ArrayList is examples ofCountry class
     private CardModel card;
+    private String message;
+    private ArrayList<String> actions;
     private GameMap gameMap;
     private float percentageOfCountriesOwned;
 
@@ -61,12 +63,17 @@ public class Player extends Observable {
         int initialArmyNum = 40 - 5 * (playerNum - 2);
         armyNum = armyNum + initialArmyNum;
         ownedCountry = new ArrayList<Territory>();
-        PlayerView playerView = new PlayerView();
+        actions = new ArrayList<String>();
         card = new CardModel();
-        addObserver(playerView);
-        PhaseViewStartup phaseView=new PhaseViewStartup();
+        PhaseView phaseView = new PhaseView();
         addObserver(phaseView);
-
+        PlayerView playerView = new PlayerView();
+        addObserver(playerView);
+        message = "Start up Phase";
+        actions.clear();
+        actions.add("Choosing the Number of Player");
+        actions.add("Random Assignment of Countries");
+        actions.add("Round Robin Placing of Armies in Countries");
     }
 
     /**
@@ -144,7 +151,6 @@ public class Player extends Observable {
      * The getArmy method print out in the console how many armies are owned by players.
      */
     public void reinforcement(GameMap gameMap) {
-
         int reinforcementArmyNum = 0;
         int deleteTerritoryNum = 0;
         for (int j = 0; j < gameMap.getContinentListMap().size(); j++) {
@@ -167,6 +173,10 @@ public class Player extends Observable {
             reinforcementArmyNum = 3;
         updateArmyNum(reinforcementArmyNum);
         setReinforcementArmyNum(reinforcementArmyNum);
+        actions.clear();
+        actions.add("Allocate Armies");
+        actions.add("Exchanging Card");
+        phaseChanged("Reinforcement Phase");
         LogHelper.printMessage("Player" + playerID + " has " + reinforcementArmyNum + " reinforcement armies.");
         CardController cardController = new CardController();
         cardController.exchangeCardsForArmies(this);
@@ -201,7 +211,6 @@ public class Player extends Observable {
                 LogHelper.printMessage("you assign " + inputArmyNum + " armies to " + territory.getTerritoryName());
             } else
                 break;
-
         }
         LogHelper.printMessage("--------------------------------------------------------------------------------");
         setReinforcementArmyNum(0);
@@ -224,6 +233,11 @@ public class Player extends Observable {
         Territory defendingTerritory = null;
         Player defender = null;
         Scanner scanner = new Scanner(System.in);
+        actions.clear();
+        actions.add("Allout-Attacking mode");
+        actions.add("Attacking mode");
+        actions.add("Rolling Dice");
+        phaseChanged("Attack Phase");
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
             boolean flag = true;
@@ -303,7 +317,6 @@ public class Player extends Observable {
                     if (adjacentTerritory.getPlayerID() != getPlayerID()) {
                         attackingTerritoryList.add(territory);
                         if (flag) {
-
                             LogHelper.printMessage("you can choose " + territory.getTerritoryName() + " as attacking country, it has " + territory.getArmyNum() + " armies");
                             flag = false;
                         }
@@ -334,7 +347,6 @@ public class Player extends Observable {
                 inputDefendingTerritoryName = scanner.nextLine();
                 defendingTerritory = gameMap.searchCountry(inputDefendingTerritoryName);
             }
-
         }
 
         int result = rollingDiceAllOut(attackingTerritory, defendingTerritory);
@@ -463,8 +475,6 @@ public class Player extends Observable {
         int defendingTerritoryArmyNum = 0;
         int maxAttackingDiceNum = 0;
         int maxDefendingDiceNum = 0;
-        //int inputAttackingDiceNum = 0;
-        //int inputDefendingDiceNum = 0;
         Scanner scanner = new Scanner(System.in);
         while ((attackingTerritory.getArmyNum() > 1) && (defendingTerritory.getArmyNum() > 0)) {
             attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
@@ -534,7 +544,9 @@ public class Player extends Observable {
      */
     public void initFortification(GameMap gameMap) {
         Scanner scanner = new Scanner(System.in);
-
+        actions.clear();
+        actions.add("Moving Armies between countries");
+        phaseChanged("Fortification Phase");
         LogHelper.printMessage("now it's the player" + getPlayerID() + " term to do fortification");
         LogHelper.printMessage("Select source country");
         String territorySourceName = scanner.nextLine();
@@ -547,11 +559,25 @@ public class Player extends Observable {
         gameMap.fortification(territorySourceName, territoryDestinationName, getPlayerID());
     }
 
+    public void phaseChanged(String message) {
+        this.message = message;
+        setChanged();
+        notifyObservers(this);
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
     /**
      * Returns percentage of countries owned player
      */
     public float getPercentageOfCountriesOwned() {
         return percentageOfCountriesOwned;
+    }
+
+    public ArrayList<String> getActions() {
+        return actions;
     }
 
     public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned) {
@@ -575,5 +601,4 @@ public class Player extends Observable {
         setChanged();
         notifyObservers(this);
     }
-
 }

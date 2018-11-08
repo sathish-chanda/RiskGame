@@ -13,6 +13,7 @@ public class CardModel extends Observable {
     private int cavalryCard = 0;
     private int artilleryCard = 0;
     private static int cardUsedTimes = 1;
+    private String action;
 
     public int getTotalCardNum() {
         return totalCardNum;
@@ -77,6 +78,7 @@ public class CardModel extends Observable {
             else
                 LogHelper.printMessage("you have " + infantryCard + " infantry cards, " + cavalryCard + " cavalry cards, " + artilleryCard + " artillery cards, you can exchange 3 cards of each kind for army");
             LogHelper.printMessage("type infantry, cavalry, artillery or each to choose the cards you want to exchange for army:");
+            action = "card is being exchanged";
             String choice = scanner.nextLine();
             switch (choice) {
                 case "infantry":
@@ -145,5 +147,23 @@ public class CardModel extends Observable {
                 return;
             }
         }
+    }
+
+    /**
+     * Method to get current action
+     *
+     * @return
+     */
+    public String getAction() {
+        return action;
+    }
+
+    /**
+     * Method to set current action
+     *
+     * @param action
+     */
+    public void setAction(String action) {
+        this.action = action;
     }
 }

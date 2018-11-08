@@ -3,6 +3,7 @@ package game.model;
 import game.listeners.GameListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
+import game.view.PhaseView;
 
 import java.util.*;
 
@@ -10,7 +11,6 @@ import java.util.*;
  * This class implements all the game components logics
  */
 public class Game implements GameListener {
-
     private int playerNum;//the number of players playing the gamecomponents
     private ArrayList<Player> players;
     private GameMap gameMap;
@@ -26,6 +26,7 @@ public class Game implements GameListener {
     public Game() {
         gameMap = new GameMap(this);
     }
+
 
     /**
      * This method set and load the map file
