@@ -55,6 +55,7 @@ public class RiskController implements Initializable, ControllerListener {
      *
      */
     private void newGame() {
+        riskModel.getGame().getGameMap().getMapFileHelper().cleanUp();
         riskModel.getGame().setBeginStartUpPhase(true);
         riskModel.newGame();
     }

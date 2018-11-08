@@ -527,9 +527,7 @@ public class MapController implements Initializable {
         saveContinents();
         saveTerritories();
         saveCompleteMapDataList();
-        if (isMapFileValid()) {
-            mapFileHelper.initMapFileSaver();
-        }
+        mapFileHelper.initMapFileSaver();
     }
 
     /**

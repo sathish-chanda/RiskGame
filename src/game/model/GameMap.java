@@ -186,7 +186,7 @@ public class GameMap {
                     Territory adjacentCountry = searchCountry(c.getAdjacentCountryList().get(y));
                     if (adjacentCountry == null) {
                         isMapValid = false;
-                        LogHelper.printMessage("the input map is invalid");
+                        LogHelper.printMessage("the input map is invalid 1");
                         return;
                     }
                     if ((adjacentCountry.visitedContinentMap == false) && (adjacentCountry.getContinentName().matches(continentList.get(i).getContinentName()))) {
@@ -198,7 +198,7 @@ public class GameMap {
             }
             if (totalVisitedCountry != continentListMap.get(i).getTerritoryList().size()) {
                 isMapValid = false;
-                LogHelper.printMessage("the input map is invalid");
+                LogHelper.printMessage("the input map is invalid 2");
                 LogHelper.printMessage("the problem is in the continent " + continentListMap.get(i).getContinentName());
                 gameListener.onContinentMapInvalid();
                 return;
@@ -234,7 +234,7 @@ public class GameMap {
             for (int j = 0; j < c.getAdjacentCountryList().size(); j++) {
                 Territory adjacentTerritory = searchCountry(c.getAdjacentCountryList().get(j));
                 if (adjacentTerritory == null) {
-                    LogHelper.printMessage("the input map is invalid");
+                    LogHelper.printMessage("the input map is invalid 3");
                     return;
                 }
                 if (adjacentTerritory.visitedWholeMap == false) {
@@ -245,7 +245,7 @@ public class GameMap {
             }
         }
         if (totalVisitedTerritory != territoryListSize) {
-            gameListener.onTerritoryMapInvalid("the input map is invalid");
+            gameListener.onTerritoryMapInvalid("the input map is invalid 4");
             return;
         } else {
             LogHelper.printMessage("the input map is valid");
