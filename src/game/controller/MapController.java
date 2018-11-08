@@ -165,10 +165,16 @@ public class MapController implements Initializable {
     private void addContinent() {
         String continentName = continentTextField.getText();
         int continentValue = Integer.parseInt(continentValueTextField.getText());
-        Continent continent = new Continent(continentName, continentValue);
-        continentList.add(continent);
-        loadContinentsListView();
-        loadContinentsComboBox();
+        if (!continentExists(continentName)) {
+            Continent continent = new Continent(continentName, continentValue);
+            continentList.add(continent);
+            loadContinentsListView();
+            loadContinentsComboBox();
+            loadAllTerritoriesInAdjacentComboBox();
+        } else {
+            String errorMsg = continentName + " Already Exists";
+            ErrorViewUtils.showErrorDialog("Cannot add continent", errorMsg, "");
+        }
     }
 
     /**
@@ -176,10 +182,29 @@ public class MapController implements Initializable {
      */
     private void deleteContinent(int position) {
         if (position >= 0) {
-            continentList.remove(position);
-            loadContinentsListView();
-            loadContinentsComboBox();
+            String continentToBeDeleted = continentList.get(position).getContinentName();
+            if (continentExists(continentToBeDeleted)) {
+                continentList.remove(position);
+                loadContinentsListView();
+                loadContinentsComboBox();
+                loadAllTerritoriesInAdjacentComboBox();
+            } else {
+                String errorMsg = continentList.get(position).getContinentName() + " Does not Exists";
+                ErrorViewUtils.showErrorDialog("Cannot delete continent", errorMsg, "");
+            }
         }
+    }
+
+    private boolean continentExists(String continentToBeAddedOrDeleted) {
+        if (continentList != null && continentList.size() != 0) {
+            for (Continent continent : continentList) {
+                if (continent.getContinentName().equals(continentToBeAddedOrDeleted)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     /**
@@ -203,21 +228,52 @@ public class MapController implements Initializable {
         String latitude = latitudeTextField.getText();
         String longitude = longitudeTextField.getText();
         Territory territory = new Territory(territoryName, latitude, longitude, continentName);
-        continentList.get(continentPosition).addTerritoryList(territory);
-
-        LogHelper.printMessage("continent position = " + continentPosition);
-        LogHelper.printMessage("added territoryName " + territoryName + " in " + continentList.get(continentPosition).getContinentName());
-
-        loadTerritoriesListView(continentPosition);
+        if (!territoryExists(territory, continentPosition)) {
+            continentList.get(continentPosition).addTerritoryList(territory);
+            LogHelper.printMessage("continent position = " + continentPosition);
+            LogHelper.printMessage("added territoryName " + territoryName + " in " + continentList.get(continentPosition).getContinentName());
+            loadTerritoriesListView(continentPosition);
+            loadAllTerritoriesInAdjacentComboBox();
+        } else {
+            String errorMsg = territory.getTerritoryName() + " Already Exists";
+            ErrorViewUtils.showErrorDialog("Cannot add territory", errorMsg, "");
+        }
     }
 
     /**
      * Method to delete Territory
      */
     private void deleteTerritory(int continentPosition, int territoryPosition) {
-        clearContinentTextFields();
-        continentList.get(continentPosition).getTerritoryList().remove(territoryPosition);
-        loadTerritoriesListView(continentPosition);
+        if (continentPosition >= 0 && territoryPosition >= 0) {
+            Territory territory = continentList.get(continentPosition).getTerritoryList().get(territoryPosition);
+            if (territoryExists(territory, continentPosition)) {
+                clearContinentTextFields();
+                continentList.get(continentPosition).getTerritoryList().remove(territoryPosition);
+                loadTerritoriesListView(continentPosition);
+                loadAllTerritoriesInAdjacentComboBox();
+            } else {
+                String errorMsg = territory.getTerritoryName() + " Does not Exists";
+                ErrorViewUtils.showErrorDialog("Cannot delete territory", errorMsg, "");
+            }
+        }
+    }
+
+    /**
+     * Method to check if territory already exists
+     *
+     * @param territoryToBeAddedOrDeleted
+     * @param continentPosition
+     */
+    private boolean territoryExists(Territory territoryToBeAddedOrDeleted, int continentPosition) {
+        if (continentList.get(continentPosition).getTerritoryList() != null && continentList.get(continentPosition).getTerritoryList().size() != 0) {
+            for (Territory territory : continentList.get(continentPosition).getTerritoryList()) {
+                if (territory.getTerritoryName().equals(territoryToBeAddedOrDeleted.getTerritoryName())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     /**
@@ -341,17 +397,42 @@ public class MapController implements Initializable {
     }
 
     /**
+     * Method to get all territories
+     *
+     * @return
+     */
+    private List<String> getAllterritories() {
+        List<String> territoryCompleteList = new ArrayList<>();
+        for (Continent continent : continentList) {
+            List<Territory> territoryList = continent.getTerritoryList();
+            if (territoryList != null) {
+                for (Territory territory : territoryList) {
+                    territoryCompleteList.add(territory.getTerritoryName());
+                }
+            }
+        }
+        return territoryCompleteList;
+    }
+
+    /**
      * Method to add adjacent territory
      */
     private void addAdjacentTerritory() {
-        String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
-        String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
-        String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
-        if (territory.equals(adjacentTerritory)) {
-            ErrorViewUtils.showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
-        } else {
-            continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().add(adjacentTerritory);
-            syncAddAdjacentTerritory(adjacentTerritory);
+        if (getContinentComboBoxCurrentIndex() >= 0 && getTerritoryCurrentIndex() >= 0) {
+            String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
+            String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
+            String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
+            if (territory.equals(adjacentTerritory)) {
+                ErrorViewUtils.showErrorDialog("Cannot add Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
+            } else {
+                if (!adjacentTerritoryExists(adjacentTerritory, continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList())) {
+                    continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().add(adjacentTerritory);
+                    syncAddAdjacentTerritory(adjacentTerritory);
+                } else {
+                    String errorMsg = adjacentTerritory + " Already Exists";
+                    ErrorViewUtils.showErrorDialog("Cannot add adjacent territory", errorMsg, "");
+                }
+            }
         }
     }
 
@@ -373,6 +454,8 @@ public class MapController implements Initializable {
                 }
             }
         }
+        loadAdjacentTerritoriesListView(getContinentComboBoxCurrentIndex(),
+                territoriesComboBox.getSelectionModel().getSelectedIndex());
         LogHelper.printMessage("territories synced");
     }
 
@@ -380,15 +463,21 @@ public class MapController implements Initializable {
      * Method to delete adjacent territory
      */
     private void deleteAdjacentTerritory() {
-        String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
-        String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
-        String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
-        if (territory.equals(adjacentTerritory)) {
-            ErrorViewUtils.showErrorDialog("Cannot delete Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
-        } else {
-            continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().remove(adjacentTerritory);
-            syncDeleteAdjacentTerritory(adjacentTerritory);
-            LogHelper.printMessage("deleted");
+        if (getContinentComboBoxCurrentIndex() >= 0 && getTerritoryCurrentIndex() >= 0) {
+            String territory = String.valueOf(territoriesComboBox.getSelectionModel().getSelectedItem());
+            String adjacentTerritory = String.valueOf(adjacentTerritoriesComboBox.getSelectionModel().getSelectedItem());
+            String message = "Territory = " + territory + Constants.NEXT_LINE + "Adjacent Territory = " + adjacentTerritory;
+            if (territory.equals(adjacentTerritory)) {
+                ErrorViewUtils.showErrorDialog("Cannot delete Adjacent Territory ", message, "Territory and Adjacent Territory Error cannot be same");
+            } else {
+                if (adjacentTerritoryExists(adjacentTerritory, continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList())) {
+                    continentList.get(getContinentComboBoxCurrentIndex()).getTerritoryList().get(getTerritoryCurrentIndex()).getAdjacentCountryList().remove(adjacentTerritory);
+                    syncDeleteAdjacentTerritory(adjacentTerritory);
+                } else {
+                    String errorMsg = adjacentTerritory + " Does not Exists";
+                    ErrorViewUtils.showErrorDialog("Cannot delete adjacent territory", errorMsg, "");
+                }
+            }
         }
     }
 
@@ -408,6 +497,8 @@ public class MapController implements Initializable {
                 }
             }
         }
+        loadAdjacentTerritoriesListView(getContinentComboBoxCurrentIndex(),
+                territoriesComboBox.getSelectionModel().getSelectedIndex());
         LogHelper.printMessage("territories synced");
     }
 
@@ -455,7 +546,7 @@ public class MapController implements Initializable {
     /**
      * Method to save continents
      */
-    private void saveContinents(){
+    private void saveContinents() {
 
         for (Continent continent : continentList) {
 
@@ -512,6 +603,18 @@ public class MapController implements Initializable {
      */
     private int getTerritoryCurrentIndex() {
         return territoriesListView.getSelectionModel().getSelectedIndex();
+    }
+
+    /**
+     * Method to check if adjacent territory exists
+     */
+    public boolean adjacentTerritoryExists(String territoryToBeAdded, ArrayList<String> adjacentTerritoryList) {
+        for (String adjacentTerritory : adjacentTerritoryList) {
+            if (adjacentTerritory.equalsIgnoreCase(territoryToBeAdded)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
