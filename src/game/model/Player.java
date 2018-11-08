@@ -1,5 +1,6 @@
 package game.model;
 
+import game.PhaseViewStartup;
 import game.view.PlayerView;
 import game.controller.CardController;
 import game.utils.LogHelper;
@@ -56,7 +57,6 @@ public class Player extends Observable {
      * @param playerNum, no of players in the game
      */
     public Player(int playerNum) {
-
         playerID = ++playerCounter;
         int initialArmyNum = 40 - 5 * (playerNum - 2);
         armyNum = armyNum + initialArmyNum;
@@ -64,6 +64,9 @@ public class Player extends Observable {
         PlayerView playerView = new PlayerView();
         card = new CardModel();
         addObserver(playerView);
+        PhaseViewStartup phaseView=new PhaseViewStartup();
+        addObserver(phaseView);
+
     }
 
     /**
@@ -300,6 +303,7 @@ public class Player extends Observable {
                     if (adjacentTerritory.getPlayerID() != getPlayerID()) {
                         attackingTerritoryList.add(territory);
                         if (flag) {
+
                             LogHelper.printMessage("you can choose " + territory.getTerritoryName() + " as attacking country, it has " + territory.getArmyNum() + " armies");
                             flag = false;
                         }

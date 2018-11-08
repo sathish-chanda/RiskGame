@@ -12,10 +12,13 @@ public class PlayerView implements Observer {
     public void update(Observable obs, Object arg) {
         int playerId = ((Player) obs).getPlayerID();
         int armyNum = ((Player) obs).getArmyNum();
+        //int ContinentList
         float percentageOfCountryOwned = ((Player) obs).getPercentageOfCountriesOwned();
-
-        LogHelper.printMessage("Player  " + playerId + " total army of " + armyNum + " and he owns " + percentageOfCountryOwned + " of total territories");
-
+        LogHelper.printMessage("======================================================\n");
+        LogHelper.printMessage("PLAYERS WORLD DOMINATION VIEW");
+        LogHelper.printMessage("Player Id: " + playerId + "\n Army Number: " + armyNum + "\n Percentage of countries he own: " + percentageOfCountryOwned );
+        LogHelper.printMessage("PLAYERS WORLD DOMINATION VIEW");
+        LogHelper.printMessage("======================================================\n");
     }
 
 }
