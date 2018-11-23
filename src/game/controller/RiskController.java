@@ -3,6 +3,7 @@ package game.controller;
 import game.listeners.ControllerListener;
 import game.main.MapEditorOptions;
 import game.main.PlayerSelect;
+import game.main.Tournament;
 import game.model.RiskModel;
 import game.utils.LogHelper;
 import javafx.fxml.FXML;
@@ -22,6 +23,8 @@ public class RiskController implements Initializable, ControllerListener {
     private RiskModel riskModel;
     @FXML
     private Button newGameButton;
+    @FXML
+    private Button tournamentButton;
     @FXML
     private Button mapEditorButton;
     @FXML
@@ -48,11 +51,11 @@ public class RiskController implements Initializable, ControllerListener {
         newGameButton.setOnAction(openPlayerSelectDialog());
         mapEditorButton.setOnAction(openMapEditorOptionsDialog());
         quitGameButton.setOnAction(event -> quitGame());
+        tournamentButton.setOnAction(event -> startTournamentMode());
     }
 
     /**
      * Method to start new game
-     *
      */
     private void newGame() {
         riskModel.getGame().getGameMap().getMapFileHelper().cleanUp();
@@ -75,6 +78,13 @@ public class RiskController implements Initializable, ControllerListener {
     private MapEditorOptions openMapEditorOptionsDialog() {
         MapEditorOptions mapEditorOptions = new MapEditorOptions();
         return mapEditorOptions;
+    }
+
+    /**
+     * Method to start tournament mode
+     */
+    private void startTournamentMode() {
+
     }
 
     /**
