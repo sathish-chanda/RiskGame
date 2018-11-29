@@ -58,7 +58,7 @@ public class RiskModel {
             objectOutputStream.writeObject(game);
             objectOutputStream.close();
             fileOutputStream.close();
-            LogHelper.printMessage("Game saved to file "+file.getPath());
+            LogHelper.printMessage("Game saved to file " + file.getPath());
             setSavedFileValid(true);
         } catch (Exception exeption) {
             LogHelper.printMessage("Error Message " + exeption);
@@ -67,10 +67,32 @@ public class RiskModel {
     }
 
     /**
-     * It loading the map file into the game.
+     * It loads the saved file.
      */
     public void loadGame() {
-        game.loadMapData(Constants.MAP_FILE_NAME);
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Saved files (*.ser)", "*.ser");
+        fileChooser.getExtensionFilters().add(filter);
+        File file = fileChooser.showOpenDialog(null);
+        LogHelper.printMessage("file path == " + file.getPath());
+        loadFile(file);
+    }
+
+    /**
+     * Method to load file
+     */
+    public void loadFile(File file) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            game = (Game) objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+            setLoadFileValid(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            setLoadFileValid(false);
+        }
     }
 
     /**
@@ -129,7 +151,7 @@ public class RiskModel {
     }
 
     /**
-     *Condition to check whether the load file is valid
+     * Condition to check whether the load file is valid
      *
      * @return
      */
@@ -139,7 +161,7 @@ public class RiskModel {
 
     /**
      * Set the validity of the load file
-     * 
+     *
      * @param loadFileValid
      */
     public void setLoadFileValid(boolean loadFileValid) {
