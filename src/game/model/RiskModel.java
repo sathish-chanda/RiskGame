@@ -4,8 +4,9 @@ package game.model;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
+import javafx.stage.FileChooser;
 
-import java.io.File;
+import java.io.*;
 
 /**
  * It loads map file into the game
@@ -13,6 +14,9 @@ import java.io.File;
 public class RiskModel {
 
     private Game game;
+    private boolean isSavedFileValid;
+    private boolean isLoadFileValid;
+
 
     /**
      * It is the constructor class, creating instance for game
@@ -27,6 +31,39 @@ public class RiskModel {
     public void newGame() {
         LogHelper.printMessage("Initializing new Game");
         initNewGame();
+    }
+
+    /**
+     * Method to initialize save game
+     */
+    public void saveGame() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Saved files (*.ser)", "*.ser");
+        fileChooser.getExtensionFilters().add(filter);
+        fileChooser.setInitialFileName("risk game saved file");
+        File file = fileChooser.showOpenDialog(null);
+        LogHelper.printMessage("file path == " + file.getPath());
+        saveFile(file);
+    }
+
+    /**
+     * Method to save file
+     *
+     * @param file
+     */
+    public void saveFile(File file) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(game);
+            objectOutputStream.close();
+            fileOutputStream.close();
+            LogHelper.printMessage("Game saved to file "+file.getPath());
+            setSavedFileValid(true);
+        } catch (Exception exeption) {
+            LogHelper.printMessage("Error Message " + exeption);
+            setSavedFileValid(false);
+        }
     }
 
     /**
@@ -73,4 +110,39 @@ public class RiskModel {
         }
     }
 
+    /**
+     * Condition to check if the saved file is valid
+     *
+     * @return
+     */
+    public boolean isSavedFileValid() {
+        return isSavedFileValid;
+    }
+
+    /**
+     * Set the validity of saved file.
+     *
+     * @return
+     */
+    public void setSavedFileValid(boolean savedFileValid) {
+        isSavedFileValid = savedFileValid;
+    }
+
+    /**
+     *Condition to check whether the load file is valid
+     *
+     * @return
+     */
+    public boolean isLoadFileValid() {
+        return isLoadFileValid;
+    }
+
+    /**
+     * Set the validity of the load file
+     * 
+     * @param loadFileValid
+     */
+    public void setLoadFileValid(boolean loadFileValid) {
+        isLoadFileValid = loadFileValid;
+    }
 }
