@@ -51,7 +51,7 @@ public class RiskController implements Initializable, ControllerListener {
         newGameButton.setOnAction(openPlayerSelectDialog());
         mapEditorButton.setOnAction(openMapEditorOptionsDialog());
         quitGameButton.setOnAction(event -> quitGame());
-        tournamentButton.setOnAction(event -> startTournamentMode());
+        tournamentButton.setOnAction(startTournamentMode());
     }
 
     /**
@@ -82,8 +82,9 @@ public class RiskController implements Initializable, ControllerListener {
     /**
      * Method to start tournament mode
      */
-    private void startTournamentMode() {
-////;SKDJHFA;osudhuxuhcLKzdbfISUDXHHXHCJkbsdhfSODJFHKJXCBBsdfHSDFUJDJDJKSKSKndnncnncjjcjcuduhfLKDJ;
+    private Tournament startTournamentMode() {
+        Tournament tournament =new Tournament();
+        return tournament;
     }
 
     /**
