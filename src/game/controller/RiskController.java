@@ -71,7 +71,6 @@ public class RiskController implements Initializable, ControllerListener {
         return playerSelect;
     }
 
-
     /**
      * Method to open map editor options dialog
      */
@@ -84,7 +83,7 @@ public class RiskController implements Initializable, ControllerListener {
      * Method to start tournament mode
      */
     private void startTournamentMode() {
-
+////;SKDJHFA;osudhuxuhcLKzdbfISUDXHHXHCJkbsdhfSODJFHKJXCBBsdfHSDFUJDJDJKSKSKndnncnncjjcjcuduhfLKDJ;
     }
 
     /**

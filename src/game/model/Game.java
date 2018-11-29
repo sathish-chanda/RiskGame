@@ -11,11 +11,11 @@ import java.util.*;
  * This class implements all the game components logics
  */
 public class Game implements GameListener {
-    private int playerNum;//the number of players playing the gamecomponents
-    public ArrayList<Player> players;
+    public int playerNum;//the number of players playing the gamecomponents
+    public ArrayList<PlayerStrategy> players;
     public GameMap gameMap;
-    private boolean beginStartUpPhase;
-    private boolean isMapValid;
+    public boolean beginStartUpPhase;
+    public boolean isMapValid;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -118,13 +118,13 @@ public class Game implements GameListener {
 
 
     /**
-     * the roundRobinPlay method is used to realize round robin logic
+     * the roundRobinPlay method is uxcxzsed to realize round robin logic
      */
     public boolean roundRobinPlay() {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
-                Player attacker = players.get(i);
+                PlayerStrategy attacker = players.get(i);
                 attacker.reinforcement(gameMap);
                 attacker.placeArmyOnCountry(gameMap);
                 LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
@@ -168,7 +168,7 @@ public class Game implements GameListener {
                 attacker.initFortification(gameMap);
             }
             for (int j = 0; j < players.size(); j++) {
-                Player player = players.get(j);
+                PlayerStrategy player = players.get(j);
                 if (player.getCountryNum() == 0) {
                     players.remove(player);
                     j--;
@@ -189,9 +189,32 @@ public class Game implements GameListener {
      */
     private void chooseNumberOfPlayers() {
         LogHelper.printMessage("please input the number of players");
-        players = new ArrayList<Player>();
-        for (int i = 1; i <= playerNum; i++)
-            players.add(new Player(playerNum));
+        setTheStrategyOfPlayers(playerNum);
+    }
+
+    public void setTheStrategyOfPlayers(int P) {
+        Scanner scanner = new Scanner(System.in);
+        players = new ArrayList<PlayerStrategy>();
+        String typeOfPlayer;
+        for (int i = 1; i <= P; i++) {
+            LogHelper.printMessage("set the type of player" + i +" choose from aggressive benevolent cheater random human");
+            typeOfPlayer = scanner.nextLine();
+            if (typeOfPlayer.equalsIgnoreCase("aggressive")) {
+                players.add(new AggressiveComputerPlayer(P));
+            }
+            else if (typeOfPlayer.equalsIgnoreCase("benevolent")) {
+                players.add(new BenevolentComputerPlayer(P));
+            }
+            else if (typeOfPlayer.equalsIgnoreCase("cheater")) {
+                players.add(new CheaterComputerPlayer(P));
+            }
+            else if (typeOfPlayer.equalsIgnoreCase("random")) {
+                players.add(new RandomComputerPlayer(P));
+            }
+            else if (typeOfPlayer.equalsIgnoreCase("human")) {
+                players.add(new Player(P));
+            }
+        }
     }
 
     /**
@@ -201,7 +224,7 @@ public class Game implements GameListener {
      */
     public void chooseNumberOfPlayersTest(int number) {
         playerNum = number; // how many player are playing the gamecomponents
-        players = new ArrayList<Player>();
+        players = new ArrayList<PlayerStrategy>();
         for (int i = 1; i <= playerNum; i++)
             players.add(new Player(playerNum));
     }
@@ -265,7 +288,7 @@ public class Game implements GameListener {
             currentPlayer++;
         }
         for (int k = 0; k < players.size(); k++) {
-            Player player = players.get(k);
+            PlayerStrategy player = players.get(k);
             LogHelper.printMessage("Player-" + player.getPlayerID() + " has");
             for (int m = 0; m < player.getCountryNum(); m++) {
                 Territory territory = player.getCountry().get(m);
@@ -280,7 +303,7 @@ public class Game implements GameListener {
      *
      * @param attacker the player who wins the game
      */
-    public void declareWin(Player attacker) {
+    public void declareWin(PlayerStrategy attacker) {
         LogHelper.printMessage("the player" + attacker.getPlayerID() + " wins the game");
         LogHelper.printMessage("Game Finished");
         //System.exit(1);
