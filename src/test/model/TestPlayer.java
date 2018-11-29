@@ -116,7 +116,7 @@ public class TestPlayer {
      * */
     @Test
     public void testDeclairWin() {
-        game.players = new ArrayList<Player>(10);
+        game.players = new ArrayList<PlayerStrategy>(10);
         game.players.add(player = new Player(2));
         assertEquals(true, game.roundRobinPlay());
     }

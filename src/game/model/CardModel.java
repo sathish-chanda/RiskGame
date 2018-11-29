@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class CardModel extends Observable {
 
-    private int totalCardNum = 0;
-    private int infantryCard = 0;
+    private int totalCardNum = 4;
+    private int infantryCard = 4;
     private int cavalryCard = 0;
     private int artilleryCard = 0;
     private static int cardUsedTimes = 1;
@@ -58,7 +58,7 @@ public class CardModel extends Observable {
         artilleryCard = defenderCard.artilleryCard + artilleryCard;
     }
 
-    public void exchangeCardForArmy(Player player) {
+    public void exchangeCardForArmy(PlayerStrategy player) {
         if (player != null) {
             totalCardNum = player.getCard().getTotalCardNum();
             infantryCard = player.getCard().getInfantryCardNum();

@@ -1,6 +1,7 @@
 package game.controller;
 
 import game.model.CardModel;
+import game.model.PlayerStrategy;
 import game.utils.LogHelper;
 import game.model.Player;
 import game.view.CardView;
@@ -29,7 +30,7 @@ public class CardController extends Object {
      *
      * @param player
      */
-    public void exchangeCardsForArmies(Player player) {
+    public void exchangeCardsForArmies(PlayerStrategy player) {
         cardModel.exchangeCardForArmy(player);
     }
 }
