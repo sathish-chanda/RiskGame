@@ -110,6 +110,10 @@ public class Game implements GameListener, Externalizable {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
+                LogHelper.printMessage("**********************************************");
+                LogHelper.printMessage("saved round "+i);
+                LogHelper.printMessage("**********************************************");
+
                 round = i;
                 saveFile();
                 PlayerStrategy attacker = players.get(i);
@@ -174,10 +178,12 @@ public class Game implements GameListener, Externalizable {
     public void continueRoundRobinPlay() {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
-            for (round = 0; round < players.size(); round++) {
+            LogHelper.printMessage("**********************************************");
+            LogHelper.printMessage("loaded round "+round);
+            LogHelper.printMessage("**********************************************");
+            for (int i = round; i < players.size(); i++) {
                 saveFile();
-
-                PlayerStrategy attacker = players.get(round);
+                PlayerStrategy attacker = players.get(i);
                 attacker.reinforcement(gameMap);
                 attacker.placeArmyOnCountry(gameMap);
 
@@ -438,6 +444,7 @@ public class Game implements GameListener, Externalizable {
         gameMap = (GameMap) in.readObject();
         beginStartUpPhase = in.readBoolean();
         isMapValid = in.readBoolean();
+        round = in.readInt();
         LogHelper.printMessage("Game Load Successful");
     }
 }
