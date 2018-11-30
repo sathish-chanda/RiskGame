@@ -1,9 +1,11 @@
 package game.model;
 
+import java.io.Serializable;
+
 /**
  * This class performs Map validation
  */
-public class MapValidator {
+public class MapValidator implements Serializable {
 
     private boolean isMapKeyValid;
     private boolean isContinentKeyValid;

@@ -1,5 +1,6 @@
 package game.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * It has an ArrayList variable called territoryList which represents countries in a continent.
  * The elements in territoryList are exmples of Territory class.
  */
-public class Continent {
+public class Continent implements Serializable {
 
     private List<Territory> territoryList;// all the countries in a continent
     private int maximumArmy = 0;//army number on a continent if the continent is owned by one player

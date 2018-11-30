@@ -1,7 +1,7 @@
 package game.model;
 
 
-import game.utils.Constants;
+import game.listeners.ControllerListener;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 import javafx.stage.FileChooser;
@@ -16,6 +16,7 @@ public class RiskModel {
     private Game game;
     private boolean isSavedFileValid;
     private boolean isLoadFileValid;
+    private ControllerListener controllerListener;
 
 
     /**
@@ -27,9 +28,12 @@ public class RiskModel {
 
     /**
      * Method to open new game
+     *
+     * @param controllerListener
      */
-    public void newGame() {
+    public void newGame(ControllerListener controllerListener) {
         LogHelper.printMessage("Initializing new Game");
+        this.controllerListener = controllerListener;
         initNewGame();
     }
 
@@ -60,8 +64,8 @@ public class RiskModel {
             fileOutputStream.close();
             LogHelper.printMessage("Game saved to file " + file.getPath());
             setSavedFileValid(true);
-        } catch (Exception exeption) {
-            LogHelper.printMessage("Error Message " + exeption);
+        } catch (Exception exception) {
+            LogHelper.printMessage("Error Message " + exception);
             setSavedFileValid(false);
         }
     }
@@ -89,6 +93,7 @@ public class RiskModel {
             objectInputStream.close();
             fileInputStream.close();
             setLoadFileValid(true);
+            game.continueRoundRobinPlay();
         } catch (Exception e) {
             e.printStackTrace();
             setLoadFileValid(false);
@@ -167,4 +172,5 @@ public class RiskModel {
     public void setLoadFileValid(boolean loadFileValid) {
         isLoadFileValid = loadFileValid;
     }
+
 }

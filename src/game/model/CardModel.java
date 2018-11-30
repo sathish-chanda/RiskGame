@@ -2,11 +2,12 @@ package game.model;
 
 import game.utils.LogHelper;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
 
-public class CardModel extends Observable {
+public class CardModel extends Observable implements Serializable {
 
     private int totalCardNum = 4;
     private int infantryCard = 4;

@@ -26,6 +26,8 @@ public class RiskController implements Initializable, ControllerListener {
     @FXML
     private Button tournamentButton;
     @FXML
+    private Button loadGameButton;
+    @FXML
     private Button mapEditorButton;
     @FXML
     private Button quitGameButton;
@@ -52,6 +54,7 @@ public class RiskController implements Initializable, ControllerListener {
         mapEditorButton.setOnAction(openMapEditorOptionsDialog());
         quitGameButton.setOnAction(event -> quitGame());
         tournamentButton.setOnAction(startTournamentMode());
+        loadGameButton.setOnAction(event -> loadGame());
     }
 
     /**
@@ -60,7 +63,8 @@ public class RiskController implements Initializable, ControllerListener {
     private void newGame() {
         riskModel.getGame().getGameMap().getMapFileHelper().cleanUp();
         riskModel.getGame().setBeginStartUpPhase(true);
-        riskModel.newGame();
+        //pass listener
+        riskModel.newGame(this);
     }
 
     /**
@@ -83,16 +87,24 @@ public class RiskController implements Initializable, ControllerListener {
      * Method to start tournament mode
      */
     private Tournament startTournamentMode() {
-        Tournament tournament =new Tournament();
+        Tournament tournament = new Tournament();
         return tournament;
     }
 
     /**
-     * Method to load map
+     * Method to load game
      */
-    public void loadMap() {
+    public void loadGame() {
         LogHelper.printMessage("loading map file");
         riskModel.loadGame();
+    }
+
+    /**
+     * Method to save game
+     */
+    public void saveGame() {
+        LogHelper.printMessage("Saving Game");
+        riskModel.saveGame();
     }
 
     /**
@@ -108,4 +120,5 @@ public class RiskController implements Initializable, ControllerListener {
         riskModel.getGame().setPlayerNum(numberOfPlayer);
         newGame();
     }
+
 }

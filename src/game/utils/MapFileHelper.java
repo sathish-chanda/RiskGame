@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * MapFileHelper class used to store map file data
  */
-public class MapFileHelper {
+public class MapFileHelper implements Serializable {
 
     private static MapFileHelper instance = null;
     Map<String, String> mapComponents = new HashMap<>();

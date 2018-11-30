@@ -5,17 +5,20 @@ import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.PhaseView;
 
+import java.io.*;
 import java.util.*;
 
 /**
  * This class implements all the game components logics
  */
-public class Game implements GameListener {
-    public int playerNum;//the number of players playing the gamecomponents
+public class Game implements GameListener, Externalizable {
+    public int playerNum;//the number of players playing the game components
     public ArrayList<PlayerStrategy> players;
     public GameMap gameMap;
     public boolean beginStartUpPhase;
     public boolean isMapValid;
+    private String filePath = "d:\\risk saved file.ser";
+    int round = 0;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -24,6 +27,7 @@ public class Game implements GameListener {
      * After the initial assignment of countries, the main gamecomponents, roundRobinPlay begins.
      */
     public Game() {
+        LogHelper.printMessage("Loading game");
         gameMap = new GameMap(this);
     }
 
@@ -37,38 +41,20 @@ public class Game implements GameListener {
         gameMap.loadMap(fileName);
     }
 
+    /**
+     * Method to get game map
+     */
     public GameMap getGameMap() {
         return gameMap;
     }
 
+    /**
+     * Method to set game map
+     *
+     * @param gameMap
+     */
     public void setGameMap(GameMap gameMap) {
         this.gameMap = gameMap;
-    }
-
-    /**
-     * This method displays list of continents to user
-     */
-    private void displayListOfContinentsToUser() {
-        List<Continent> continentList = gameMap.getContinentListMap();
-        LogHelper.printMessage("\nSelect Continents ");
-        for (int i = 0; i < continentList.size(); i++) {
-            LogHelper.printMessage(continentList.get(i).getContinentName() + " --- " + (i + 1));
-        }
-        displayListOfTerrritoriesToUser();
-    }
-
-    /**
-     * This method displays list of the territories to  user
-     */
-    private void displayListOfTerrritoriesToUser() {
-        List<Continent> continentList = gameMap.getContinentListMap();
-        LogHelper.printMessage("\nSelect Territories ");
-        for (int i = 0; i < continentList.size(); i++) {
-            List<Territory> territoryList = continentList.get(i).getTerritoryList();
-            for (int j = 0; j < territoryList.size(); j++) {
-                LogHelper.printMessage(territoryList.get(j).getTerritoryName() + " --- " + (j + 1));
-            }
-        }
     }
 
     @Override
@@ -124,9 +110,12 @@ public class Game implements GameListener {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
+                round = i;
+                saveFile();
                 PlayerStrategy attacker = players.get(i);
                 attacker.reinforcement(gameMap);
                 attacker.placeArmyOnCountry(gameMap);
+
                 LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
                 String alloutMode = "";
                 alloutMode = scanner.nextLine();
@@ -179,6 +168,71 @@ public class Game implements GameListener {
         return true;
     }
 
+    /**
+     * Method to continue round robin play
+     */
+    public void continueRoundRobinPlay() {
+        Scanner scanner = new Scanner(System.in);
+        while (players.size() > 1) {
+            for (round = 0; round < players.size(); round++) {
+                saveFile();
+
+                PlayerStrategy attacker = players.get(round);
+                attacker.reinforcement(gameMap);
+                attacker.placeArmyOnCountry(gameMap);
+
+                LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
+                String alloutMode = "";
+                alloutMode = scanner.nextLine();
+
+                while (!alloutMode.matches("y") && !alloutMode.matches("n")) {
+                    LogHelper.printMessage("wrong input! please input again.");
+                    alloutMode = scanner.nextLine();
+                }
+                if (alloutMode.matches("y")) {
+                    attacker.attackAllOut(gameMap, players);
+                } else if (alloutMode.matches("n")) {
+                    attacker.attack(gameMap, players);
+                }
+
+                while (attacker.getArmyNum() > 0) {
+                    LogHelper.printMessage("--------------------------------------------------------------------------------");
+                    LogHelper.printMessage("do you still want to attack? y for yes, n for no");
+                    String input = scanner.next();
+                    if (input.matches("y")) {
+                        LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
+                        String nextAttack = "";
+                        nextAttack = scanner.next();
+                        while (!nextAttack.matches("y") && !nextAttack.matches("n")) {
+                            LogHelper.printMessage("wrong input! please input again.");
+                            nextAttack = scanner.nextLine();
+                        }
+                        if (nextAttack.matches("y")) {
+                            attacker.attackAllOut(gameMap, players);
+                        } else if (nextAttack.matches("n")) {
+                            attacker.attack(gameMap, players);
+                        }
+
+                    } else if (input.matches("n")) {
+                        break;
+                    } else {
+                        LogHelper.printMessage("wrong input format! please reinput");
+                    }
+                }
+                attacker.initFortification(gameMap);
+            }
+            for (int j = 0; j < players.size(); j++) {
+                PlayerStrategy player = players.get(j);
+                if (player.getCountryNum() == 0) {
+                    players.remove(player);
+                    j--;
+                }
+            }
+        }
+        declareWin(players.get(0));
+    }
+
+
     @Override
     public void onContinentMapInvalid() {
         setMapValid(false);
@@ -197,21 +251,17 @@ public class Game implements GameListener {
         players = new ArrayList<PlayerStrategy>();
         String typeOfPlayer;
         for (int i = 1; i <= P; i++) {
-            LogHelper.printMessage("set the type of player" + i +" choose from aggressive benevolent cheater random human");
+            LogHelper.printMessage("set the type of player" + i + " choose from aggressive benevolent cheater random human");
             typeOfPlayer = scanner.nextLine();
             if (typeOfPlayer.equalsIgnoreCase("aggressive")) {
                 players.add(new AggressiveComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("benevolent")) {
+            } else if (typeOfPlayer.equalsIgnoreCase("benevolent")) {
                 players.add(new BenevolentComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("cheater")) {
+            } else if (typeOfPlayer.equalsIgnoreCase("cheater")) {
                 players.add(new CheaterComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("random")) {
+            } else if (typeOfPlayer.equalsIgnoreCase("random")) {
                 players.add(new RandomComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("human")) {
+            } else if (typeOfPlayer.equalsIgnoreCase("human")) {
                 players.add(new Player(P));
             }
         }
@@ -353,6 +403,43 @@ public class Game implements GameListener {
         return result;
     }
 
+    /**
+     * Method to save file
+     */
+    private void saveFile() {
+        try {
+            File saveFile = new File(filePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(this);
+            objectOutputStream.close();
+            fileOutputStream.close();
+            LogHelper.printMessage("Game saved to file " + saveFile.getPath());
+        } catch (Exception exeption) {
+            LogHelper.printMessage("Error Message " + exeption);
+        }
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(playerNum);
+        out.writeObject(players);
+        out.writeObject(gameMap);
+        out.writeBoolean(beginStartUpPhase);
+        out.writeBoolean(isMapValid);
+        out.writeInt(round);
+        LogHelper.printMessage("Game Save Successful");
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        playerNum = in.readInt();
+        players = (ArrayList<PlayerStrategy>) in.readObject();
+        gameMap = (GameMap) in.readObject();
+        beginStartUpPhase = in.readBoolean();
+        isMapValid = in.readBoolean();
+        LogHelper.printMessage("Game Load Successful");
+    }
 }
 
 

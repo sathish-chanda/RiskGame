@@ -1,9 +1,10 @@
 package game.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PlayerStrategy {
+public interface PlayerStrategy extends Serializable {
     public void reinforcement(GameMap gameMap);
     public void placeArmyOnCountry(GameMap gameMap);
     public void attack(GameMap gameMap, ArrayList<PlayerStrategy> players);

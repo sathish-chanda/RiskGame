@@ -4,6 +4,7 @@ import game.listeners.GameListener;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import java.util.*;
@@ -15,7 +16,7 @@ import java.util.*;
  * The continentListMap is an ArrayList which contains several sub-maps as continents.
  * This class also contains two methods to verify the correctness of input maps.
  */
-public class GameMap {
+public class GameMap implements Serializable {
 
     private GameListener gameListener;
     private List<Territory> territoryList = new ArrayList<>();

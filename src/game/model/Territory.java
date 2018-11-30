@@ -1,12 +1,13 @@
 package game.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This class called Territory is the smallest element in a map.
  * the adjacentCountry variable is an ArrayList that countries' names which this country is adjacent to.
  */
-public class Territory {
+public class Territory implements Serializable {
 
     private String territoryName;//name of the country
     private String continentName;//the continent that the country belongs to
