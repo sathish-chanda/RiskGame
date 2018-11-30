@@ -2,6 +2,7 @@ package game.model;
 
 
 import game.listeners.ControllerListener;
+import game.listeners.ModelListener;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
 import javafx.stage.FileChooser;
@@ -11,13 +12,11 @@ import java.io.*;
 /**
  * It loads map file into the game
  */
-public class RiskModel {
+public class RiskModel implements ModelListener {
 
     private Game game;
     private boolean isSavedFileValid;
     private boolean isLoadFileValid;
-    private ControllerListener controllerListener;
-
 
     /**
      * It is the constructor class, creating instance for game
@@ -28,12 +27,9 @@ public class RiskModel {
 
     /**
      * Method to open new game
-     *
-     * @param controllerListener
      */
-    public void newGame(ControllerListener controllerListener) {
+    public void newGame() {
         LogHelper.printMessage("Initializing new Game");
-        this.controllerListener = controllerListener;
         initNewGame();
     }
 
@@ -65,7 +61,7 @@ public class RiskModel {
             LogHelper.printMessage("Game saved to file " + file.getPath());
             setSavedFileValid(true);
         } catch (Exception exception) {
-            LogHelper.printMessage("Error Message " + exception);
+            LogHelper.printMessage("Risk model Error Message " + exception);
             setSavedFileValid(false);
         }
     }
@@ -79,13 +75,13 @@ public class RiskModel {
         fileChooser.getExtensionFilters().add(filter);
         File file = fileChooser.showOpenDialog(null);
         LogHelper.printMessage("file path == " + file.getPath());
-        loadFile(file);
+        loadFile(file, true);
     }
 
     /**
      * Method to load file
      */
-    public void loadFile(File file) {
+    public void loadFile(File file, boolean isDevelop) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -93,7 +89,9 @@ public class RiskModel {
             objectInputStream.close();
             fileInputStream.close();
             setLoadFileValid(true);
-            game.continueRoundRobinPlay();
+            if (isDevelop) {
+                game.continueRoundRobinPlay();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             setLoadFileValid(false);
@@ -106,6 +104,7 @@ public class RiskModel {
      * @param file
      */
     public void loadMapData(String file) {
+        game.setListeners(this);
         game.loadMapData(file);
     }
 
@@ -173,4 +172,8 @@ public class RiskModel {
         isLoadFileValid = loadFileValid;
     }
 
+    @Override
+    public void onGameSaved(File file) {
+        saveFile(file);
+    }
 }

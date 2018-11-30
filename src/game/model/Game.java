@@ -1,6 +1,7 @@
 package game.model;
 
 import game.listeners.GameListener;
+import game.listeners.ModelListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
 import game.view.PhaseView;
@@ -18,6 +19,7 @@ public class Game implements GameListener, Externalizable {
     public boolean beginStartUpPhase;
     public boolean isMapValid;
     private String filePath = "d:\\risk saved file.ser";
+    private ModelListener listener;
     int round = 0;
 
     /**
@@ -110,10 +112,6 @@ public class Game implements GameListener, Externalizable {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
-                LogHelper.printMessage("**********************************************");
-                LogHelper.printMessage("saved round "+i);
-                LogHelper.printMessage("**********************************************");
-
                 round = i;
                 saveFile();
                 PlayerStrategy attacker = players.get(i);
@@ -178,9 +176,6 @@ public class Game implements GameListener, Externalizable {
     public void continueRoundRobinPlay() {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
-            LogHelper.printMessage("**********************************************");
-            LogHelper.printMessage("loaded round "+round);
-            LogHelper.printMessage("**********************************************");
             for (int i = round; i < players.size(); i++) {
                 saveFile();
                 PlayerStrategy attacker = players.get(i);
@@ -375,8 +370,22 @@ public class Game implements GameListener, Externalizable {
         this.beginStartUpPhase = beginStartUpPhase;
     }
 
+    /**
+     * Method to set number of players
+     *
+     * @param playerNum
+     */
     public void setPlayerNum(int playerNum) {
         this.playerNum = playerNum;
+    }
+
+    /**
+     * Method to get number of players
+     *
+     * @return
+     */
+    public int getPlayerNum() {
+        return playerNum;
     }
 
     /**
@@ -415,14 +424,9 @@ public class Game implements GameListener, Externalizable {
     private void saveFile() {
         try {
             File saveFile = new File(filePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(this);
-            objectOutputStream.close();
-            fileOutputStream.close();
-            LogHelper.printMessage("Game saved to file " + saveFile.getPath());
-        } catch (Exception exeption) {
-            LogHelper.printMessage("Error Message " + exeption);
+            listener.onGameSaved(saveFile);
+        } catch (Exception exception) {
+            LogHelper.printMessage("Game Error Message " + exception);
         }
     }
 
@@ -434,6 +438,7 @@ public class Game implements GameListener, Externalizable {
         out.writeBoolean(beginStartUpPhase);
         out.writeBoolean(isMapValid);
         out.writeInt(round);
+        out.writeObject(listener);
         LogHelper.printMessage("Game Save Successful");
     }
 
@@ -445,7 +450,17 @@ public class Game implements GameListener, Externalizable {
         beginStartUpPhase = in.readBoolean();
         isMapValid = in.readBoolean();
         round = in.readInt();
+        listener = (ModelListener) in.readObject();
         LogHelper.printMessage("Game Load Successful");
+    }
+
+    /**
+     * Method to set listeners
+     *
+     * @param modelListener
+     */
+    public void setListeners(ModelListener modelListener) {
+        this.listener = modelListener;
     }
 }
 
