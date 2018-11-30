@@ -544,6 +544,12 @@ public class MapController implements Initializable {
         mapFileHelper.setMapComponents(mapComponents);
     }
 
+    /**
+     * Method to check the Empty Data
+     *
+     * @param data
+     * @return
+     */
     private String checkEmptyData(String data) {
         return (data == null || data.equals("")) ? "null" : data;
     }
