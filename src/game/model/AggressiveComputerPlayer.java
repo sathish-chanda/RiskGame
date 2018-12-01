@@ -285,7 +285,7 @@ public class AggressiveComputerPlayer extends PlayerStrategy {
 
             }
         }
-        int defendingTerritoryArmyNum = 1000000;
+        int defendingTerritoryArmyNum = 1000000000;
         for (int i = 0; i < attackingTerritory.getAdjacentCountryList().size(); i++) {
             if ((gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i)).getArmyNum() < defendingTerritoryArmyNum) && (gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i)).getPlayerID() != attackingTerritory.getPlayerID())) {
                 defendingTerritory = gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i));

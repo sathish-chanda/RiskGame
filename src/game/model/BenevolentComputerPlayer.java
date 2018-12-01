@@ -208,8 +208,8 @@ public class BenevolentComputerPlayer extends PlayerStrategy {
      */
     public void placeArmyOnCountry(GameMap gameMap) {
         int armyNumToAllocate = getReinforcementArmyNum();
-        int minArmyNum = 10000000;
-        Territory territoryWithMinArmy = null;
+        int minArmyNum = getCountry().get(0).getArmyNum();
+        Territory territoryWithMinArmy = getCountry().get(0);
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
             if (territory.getArmyNum() < minArmyNum) {
@@ -514,6 +514,9 @@ public class BenevolentComputerPlayer extends PlayerStrategy {
                 sourceCountry = gameMap.searchCountry(t2.getAdjacentCountryList().get(i));
             }
         }
+
+        if (sourceCountry ==null)
+            return;
         sourceCountry.updateArmyNum(sourceCountry.getArmyNum() / 2);
         t2.updateArmyNum(sourceCountry.getArmyNum() / 2);
     }

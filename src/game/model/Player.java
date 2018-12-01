@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class Player extends PlayerStrategy{
 
-    private static int playerCounter = 0;//used to initializing players
+
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
     private int armyNum = 0;//number of army owned by a player
@@ -23,6 +23,7 @@ public class Player extends PlayerStrategy{
     private ArrayList<String> actions;
     private GameMap gameMap;
     private float percentageOfCountriesOwned;
+    public String classType = "human";
 
     /**
      * Method used to get reinforcement army count

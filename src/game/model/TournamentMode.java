@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TournamentMode extends Game {
-    ExecuteStrategy executeStrategy;
     public void startTournament(int M, int P, int G, int D) {
-        executeStrategy = new ExecuteStrategy();
         String fileName = null;
         switch (M) {
             case 1:
@@ -38,6 +36,7 @@ public class TournamentMode extends Game {
 
     @Override
     public boolean roundRobinPlay(int M, int G, int D) {
+        ExecuteStrategy executeStrategy = new ExecuteStrategy();
         LogHelper.printMessage("in round robin play");
         int count = 0;
         while (count <= D) {
@@ -62,9 +61,10 @@ public class TournamentMode extends Game {
                 count++;
             }
             if (players.size() == 1) {
-                LogHelper.printMessage("Map" + M + " Game" + G);
+                //LogHelper.printMessage("Map" + M + " Game" + G);
                 declareWin(players.get(0));
-                LogHelper.printMessage("the player is a " + players.get(0));
+                LogHelper.printMessage("the winner is a " + players.get(0));
+                System.exit(1);
                 return true;
             }
         }
