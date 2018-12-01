@@ -9,13 +9,10 @@ import java.io.FileWriter;
 
 public class FileHelper {
 
-    public void writeFileHepler(String context) {
+    public static  void writeFileHepler(String context) {
         try {
-            File writename = new File("C:\\output.txt");
-            writename.createNewFile();
-            BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+            BufferedWriter out = new BufferedWriter(new FileWriter("output.txt"));
             out.write(context);
-            out.flush();
             out.close();
         }catch (Exception e) {
             e.printStackTrace();

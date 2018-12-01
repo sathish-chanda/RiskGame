@@ -19,27 +19,21 @@ public class TournamentMode extends Game {
      * @param D declare draw
      */
     public void startTournament(int M, int P, int G, int D) {
-        String fileName = null;
-        switch (M) {
-            case 1:
-                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
-            case 2:
-                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
-            case 3:
-                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
-            case 4:
-                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
-            case 5:
-                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
-        }
-        for (int i = 0; i < G; i++) {
-            setPlayerNum(P);
-            gameMap = new GameMap(this);
-            MapFileHelper mapFileHelper = MapFileHelper.getInstance();
-            gameMap.mapFileHelper = mapFileHelper;
-            setBeginStartUpPhase(true);
-            loadMapData(fileName);
-            // roundRobinPlay(M, G, D);
+        ArrayList<String> fileName = new ArrayList<String>();
+        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
+        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\3D Cliff.map");
+        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
+        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
+        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
+        for (int k = 0; k < M; k++) {
+            for (int i = 0; i < G; i++) {
+                setPlayerNum(P);
+                gameMap = new GameMap(this);
+                MapFileHelper mapFileHelper = MapFileHelper.getInstance();
+                gameMap.mapFileHelper = mapFileHelper;
+                setBeginStartUpPhase(true);
+                loadMapData(fileName.get(k));
+            }
         }
     }
 
@@ -70,10 +64,8 @@ public class TournamentMode extends Game {
                 count++;
             }
             if (players.size() == 1) {
-                //LogHelper.printMessage("Map" + M + " Game" + G);
                 declareWin(players.get(0));
-                LogHelper.printMessage("the winner is a " + players.get(0));
-                System.exit(1);
+                FileHelper.writeFileHepler("the winner is a " + players.get(0));
                 return true;
             }
         }

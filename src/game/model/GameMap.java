@@ -417,10 +417,20 @@ public class GameMap implements Serializable {
      * Method to clear  stored values
      */
     public void cleanUp() {
-        territoryList.clear();
-        continentList.clear();
-        continentListMap.clear();
-        territoryListMap.clear();
-        mapFileHelper.cleanUp();
+        if (territoryList != null ) {
+            territoryList.clear();
+        }
+        if (continentList != null ) {
+            continentList.clear();
+        }
+        if (continentListMap != null) {
+            continentListMap.clear();
+        }
+        if (territoryListMap != null ) {
+            territoryListMap.clear();
+        }
+        if (mapFileHelper != null ) {
+            mapFileHelper.cleanUp();
+        }
     }
 }

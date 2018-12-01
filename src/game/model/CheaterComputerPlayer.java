@@ -284,6 +284,8 @@ public class CheaterComputerPlayer extends PlayerStrategy {
             }
 
             card.increaseCard();
+            if (defender == null)
+                return;
             defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
