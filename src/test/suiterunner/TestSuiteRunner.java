@@ -18,7 +18,9 @@ import test.utils.TestMapFileHelper;
         TestMapValidator.class,
         TestPlayer.class,
         TestRiskModel.class,
-        TestTournamentMode.class})
+        TestTournamentMode.class,
+        TestAggressPlayer.class,
+        TestCheaterPlayer.class})
 public class TestSuiteRunner {
 
 }
