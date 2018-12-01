@@ -253,11 +253,6 @@ public class Game implements GameListener, Externalizable {
         while (count <= D) {
             while (players.size() > 1) {
                 for (int i = 0; i < players.size(); i++) {
-
-                    LogHelper.printMessage("Testing phase get getActions "+players.get(i).getActions().get(0));
-                    LogHelper.printMessage("Testing phase get message "+players.get(i).getMessage());
-                    LogHelper.printMessage("Testing phase get player "+players.get(i).getPlayerID());
-
                     round = i;
                     saveFile();
                     PlayerStrategy attacker = players.get(i);

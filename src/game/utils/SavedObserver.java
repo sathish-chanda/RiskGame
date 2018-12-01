@@ -38,6 +38,7 @@ public class SavedObserver {
         }
 
 
+
         LogHelper.printMessage("========================================================================================\n");
         LogHelper.printMessage("PLAYERS WORLD DOMINATION VIEW\n");
         LogHelper.printMessage("Player " + playerId + " have total army of " +
@@ -60,6 +61,14 @@ public class SavedObserver {
         String message = savedPLayer.getMessage();
         ArrayList<String> actions = savedPLayer.getActions();
         int playerID = savedPLayer.getPlayerID();
+
+        if (message.equals("Start up Phase")) {
+            message = "Reinforcement Phase";
+            actions.clear();
+            actions.add("Allocate Armies");
+            actions.add("Exchanging Card");
+        }
+
         LogHelper.printMessage("=============================================================================================\n");
         LogHelper.printMessage("\t\t\tPHASE VIEW\n");
         LogHelper.printMessage("Current Phase : " + message);
