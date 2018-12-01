@@ -8,9 +8,17 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+
+/**
+ * This class implements observer view
+ */
 public class PlayerView implements Observer {
 
-    @Override
+    /**
+     * This method observers any change in the observable
+     * @param obs , observable class
+     * @param arg , class which integrates observer and observable
+     */
     public void update(Observable obs, Object arg) {
         int playerId = ((Player) obs).getPlayerID();
         int armyNum = ((Player) obs).getArmyNum();

@@ -58,9 +58,9 @@ public class TestContinent {
     }
 
     /**
-     * Method to prepare continent list
+     * Method to prepare Territory list
      *
-     * @return
+     * @return territoryList
      */
     private List<Territory> prepareTerritoryList() {
         List<Territory> territoryList = new ArrayList<>();
