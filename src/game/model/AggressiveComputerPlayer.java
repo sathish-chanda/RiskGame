@@ -293,6 +293,8 @@ public class AggressiveComputerPlayer extends PlayerStrategy {
             }
         }
 
+        if (defendingTerritory == null)
+            return;
         int defenderID = defendingTerritory.getPlayerID();
         for (int x = 0; x < players.size(); x++) {
             if (players.get(x).getPlayerID() == defenderID) {
@@ -303,7 +305,6 @@ public class AggressiveComputerPlayer extends PlayerStrategy {
 
 
         int result = rollingDice(attackingTerritory, defendingTerritory);
-        LogHelper.printMessage("lsjdhflaksjdhflasdjkfhlasdk");
         if (result == 1) { //result == 1 means attacker wins
             card.increaseCard();
             defender.removeCountry(defendingTerritory);
