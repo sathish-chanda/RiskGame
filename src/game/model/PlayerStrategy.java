@@ -3,30 +3,46 @@ package game.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public interface PlayerStrategy extends Serializable {
-    public void reinforcement(GameMap gameMap);
-    public void placeArmyOnCountry(GameMap gameMap);
-    public void attack(GameMap gameMap, ArrayList<PlayerStrategy> players);
-    public void attackAllOut(GameMap gameMap, ArrayList<PlayerStrategy> players);
-    public int rollingDice(Territory attackingTerritory, Territory defendingTerritory);
-    public int rollingDiceAllOut(Territory attackingTerritory, Territory defendingTerritory);
-    public void initFortification(GameMap gameMap);
+public abstract class PlayerStrategy extends Observable {
 
-    public int getReinforcementArmyNum();
-    public void setReinforcementArmyNum(int reinforcementArmyNum);
-    public void updateReinforcementArmyNum(int reinforcementArmyNum);
-    public void increaseCountryNum();
-    public int getPlayerID();
-    public void addCountry(Territory country);
-    public void removeCountry(Territory country);
-    public ArrayList<Territory> getCountry();
-    public int getCountryNum();
-    public int getArmyNum();
-    public void updateArmyNum(int armyNumber);
-    public void fortification(String territorySourceName, String territoryDestinationName, int PlayerID);
-    public CardModel getCard();
-    public void setGameMap(GameMap gameMap);
-    public List<Continent> getListOfContinentsOwned();
-    public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned);
+
+    public static int playerCounter = 0;
+
+
+
+
+
+    abstract public void reinforcement(GameMap gameMap);
+    abstract public void placeArmyOnCountry(GameMap gameMap);
+    abstract public void attack(GameMap gameMap, ArrayList<PlayerStrategy> players);
+    abstract public void attackAllOut(GameMap gameMap, ArrayList<PlayerStrategy> players);
+    abstract public int rollingDice(Territory attackingTerritory, Territory defendingTerritory);
+    abstract public int rollingDiceAllOut(Territory attackingTerritory, Territory defendingTerritory);
+    abstract public void initFortification(GameMap gameMap);
+    abstract public void fortification(String countrySourceName, String countryDestinationName, int playerID);
+
+    abstract public int getReinforcementArmyNum();
+    abstract public void setReinforcementArmyNum(int reinforcementArmyNum);
+    abstract public void updateReinforcementArmyNum(int reinforcementArmyNum);
+    abstract public void increaseCountryNum();
+    abstract public int getPlayerID();
+    abstract public void addCountry(Territory country);
+    abstract public void removeCountry(Territory country);
+    abstract public ArrayList<Territory> getCountry();
+    abstract public int getCountryNum();
+    abstract public int getArmyNum();
+    abstract public void updateArmyNum(int armyNumber);
+    abstract public CardModel getCard();
+    abstract public void setGameMap(GameMap gameMap);
+    abstract public List<Continent> getListOfContinentsOwned();
+
+
+    abstract public void phaseChanged(String message);
+    abstract public String getMessage();
+    abstract public float getPercentageOfCountriesOwned();
+    abstract public ArrayList<String> getActions();
+    abstract public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned);
+    abstract public void invokePlayerObserver();
 }

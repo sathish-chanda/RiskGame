@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * This class represents players playing the gamecomponents
  */
-public class Player extends Observable implements PlayerStrategy {
+public class Player extends PlayerStrategy{
 
     private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player

@@ -48,7 +48,7 @@ public class TestGame {
     @Test
     public void testStartUp() {
         game.gameMap = gameMap;
-        game.chooseNumberOfPlayersTest(4);
+        //game.chooseNumberOfPlayersTest(4);
         game.randomAssignCountryToPlayers();
         game.roundRobinPlaceArmyOnCountry();
         for (int i = 0; i < game.players.size(); i++) {

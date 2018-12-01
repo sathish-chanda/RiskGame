@@ -3,54 +3,54 @@ package game.model;
 import game.main.Tournament;
 import game.utils.LogHelper;
 import game.utils.MapFileHelper;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TournamentMode extends Game {
-    public GameMap gameMap;
-
+    ExecuteStrategy executeStrategy;
     public void startTournament(int M, int P, int G, int D) {
-        MapFileHelper mapFileHelper = MapFileHelper.getInstance();
+        executeStrategy = new ExecuteStrategy();
+        String fileName = null;
         switch (M) {
             case 1:
-                mapFileHelper.readMapFile("C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map");
+                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
             case 2:
-                mapFileHelper.readMapFile("C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map");
+                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
             case 3:
-                mapFileHelper.readMapFile("C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map");
+                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
             case 4:
-                mapFileHelper.readMapFile("C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map");
+                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
             case 5:
-                mapFileHelper.readMapFile("C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map");
+                fileName = "C:\\Users\\jiaquanyu\\Documents\\Risk Game Files\\world.map";
         }
         for (int i = 0; i < G; i++) {
+            setPlayerNum(P);
             gameMap = new GameMap(this);
+            MapFileHelper mapFileHelper = MapFileHelper.getInstance();
             gameMap.mapFileHelper = mapFileHelper;
-            gameMap.loadMapComponents();
-            gameMap.loadContinents();
-            gameMap.loadTerritories();
-            gameMap.syncContinentsAndTerritories();
-
-            setTheStrategyOfPlayers(P);
-            randomAssignCountryToPlayers();
-            roundRobinPlaceArmyOnCountry();
-            roundRobinPlay(M, G, D);
+            setBeginStartUpPhase(true);
+            loadMapData(fileName);
+            // roundRobinPlay(M, G, D);
         }
     }
 
+    @Override
     public boolean roundRobinPlay(int M, int G, int D) {
+        LogHelper.printMessage("in round robin play");
         int count = 0;
         while (count <= D) {
             while (players.size() > 1) {
                 for (int i = 0; i < players.size(); i++) {
                     PlayerStrategy attacker = players.get(i);
-                    attacker.reinforcement(gameMap);
-                    attacker.placeArmyOnCountry(gameMap);
-                    while (attacker.getArmyNum() > 0) {
-                        attacker.attack(gameMap, players);
-                        attacker.initFortification(gameMap);
-                    }
+
+                    executeStrategy.setStrategy(attacker);
+                    executeStrategy.executeReinforcement(gameMap);
+                    executeStrategy.executePlaceArmyOnCountry(gameMap);
+                    executeStrategy.executeAttack(gameMap, players);
+                    executeStrategy.executeInitFortification(gameMap);
+
                     for (int j = 0; j < players.size(); j++) {
                         PlayerStrategy player = players.get(j);
                         if (player.getCountryNum() == 0) {
@@ -69,27 +69,5 @@ public class TournamentMode extends Game {
             }
         }
         return true;
-    }
-
-    public void setTheStrategyOfPlayers(int P) {
-        Scanner scanner = new Scanner(System.in);
-        players = new ArrayList<PlayerStrategy>();
-        String typeOfPlayer;
-        for (int i = 1; i <= P; i++) {
-            LogHelper.printMessage("set the type of player" + i);
-            typeOfPlayer = scanner.nextLine();
-            if (typeOfPlayer.equalsIgnoreCase("aggressive")) {
-                players.add(new AggressiveComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("benevolent")) {
-                players.add(new BenevolentComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("cheater")) {
-                players.add(new CheaterComputerPlayer(P));
-            }
-            else if (typeOfPlayer.equalsIgnoreCase("random")) {
-                players.add(new RandomComputerPlayer(P));
-            }
-        }
     }
 }

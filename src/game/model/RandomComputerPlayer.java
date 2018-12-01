@@ -1,17 +1,17 @@
 package game.model;
 
+import game.view.PlayerView;
 import game.controller.CardController;
 import game.utils.LogHelper;
 import game.view.PhaseView;
-import game.view.PlayerView;
 
 import java.util.*;
 
-public class RandomComputerPlayer extends Observable implements PlayerStrategy {
+/**
+ * This class represents players playing the gamecomponents
+ */
+public class RandomComputerPlayer extends PlayerStrategy{
 
-
-
-    private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
     private int armyNum = 0;//number of army owned by a player
@@ -172,8 +172,13 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
             reinforcementArmyNum = 3;
         updateArmyNum(reinforcementArmyNum);
         setReinforcementArmyNum(reinforcementArmyNum);
-        CardController cardController = new CardController();
-        cardController.exchangeCardsForArmies(this);
+        actions.clear();
+        actions.add("Allocate Armies");
+        actions.add("Exchanging Card");
+        phaseChanged("Reinforcement Phase");
+        //LogHelper.printMessage("Player" + playerID + " has " + reinforcementArmyNum + " reinforcement armies.");
+        //CardController cardController = new CardController();
+        //cardController.exchangeCardsForArmies(this);
     }
 
     public void reinforcementTest(GameMap gameMap) {
@@ -206,22 +211,14 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
      * It assign a player's army to the countries owned by that player.
      */
     public void placeArmyOnCountry(GameMap gameMap) {
-        Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
         int armyNumToAllocate = getReinforcementArmyNum();
-        for (int j = 0; j < getCountry().size(); j++) {
-            Territory territory = getCountry().get(j);
-        }
-        int allocatedArmyNum;
-        for (int j = 0; j < getCountry().size(); j++) {
-            Territory territory = getCountry().get(j);
-            allocatedArmyNum = random.nextInt(armyNumToAllocate + 1);
-            territory.updateArmyNum(allocatedArmyNum);
-            armyNumToAllocate = armyNumToAllocate - allocatedArmyNum;
-        }
-        setReinforcementArmyNum(0);
-        for (int j = 0; j < getCountry().size(); j++) {
-            Territory territory = getCountry().get(j);
+        int maxArmyNum = 0;
+        Random random = new Random();
+        while(armyNumToAllocate != 0) {
+            int randomArmyNum = random.nextInt(armyNumToAllocate) + 1;
+            int randomTerritory = random.nextInt(getCountry().size());
+            getCountry().get(randomTerritory).updateArmyNum(randomArmyNum);
+            armyNumToAllocate = armyNumToAllocate - randomArmyNum;
         }
     }
 
@@ -231,13 +228,17 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
      * @param gameMap, map List
      */
     public void attack(GameMap gameMap, ArrayList<PlayerStrategy> players) {
+        Random random = new Random();
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
         ArrayList<Territory> defendingTerritoryList = new ArrayList<Territory>();
         Territory attackingTerritory = null;
         Territory defendingTerritory = null;
         PlayerStrategy defender = null;
         Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
+        actions.clear();
+        actions.add("Attacking mode");
+        actions.add("Rolling Dice");
+        phaseChanged("Attack Phase");
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
             boolean flag = true;
@@ -252,39 +253,48 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
             }
         }
         if (attackingTerritoryList.isEmpty()) {
-            return;
-        } else {
-            attackingTerritory = attackingTerritoryList.get(random.nextInt(attackingTerritoryList.size()));
-            String DefendingTerritoryName = attackingTerritory.getAdjacentCountryList().get(random.nextInt(attackingTerritory.getAdjacentCountryList().size()));
-            defendingTerritory = gameMap.searchCountry(DefendingTerritoryName);
-            int defenderID = defendingTerritory.getPlayerID();
-            for (int x = 0; x < players.size(); x++) {
-                if (players.get(x).getPlayerID() == defenderID) {
-                    defender = players.get(x);
+            for (int x = 0; x < getCountry().size(); x++) {
+                if (getCountry().get(x).getArmyNum() == 1) {
+                    getCountry().get(x).updateArmyNum(1);
+                    attackingTerritory = getCountry().get(x);
+                    attackingTerritoryList.add(attackingTerritory);
                     break;
                 }
             }
-
         }
+
+        int attackingTerritoryArmyNum = 0;
+        int attackingTerritoryBound = random.nextInt(attackingTerritoryList.size());
+        attackingTerritory = attackingTerritoryList.get(random.nextInt(attackingTerritoryList.size()));
+        for (int k = 0; k < attackingTerritory.getAdjacentCountryList().size(); k++) {
+            String adjacentTerritoryName = attackingTerritory.getAdjacentCountryList().get(k);
+            Territory adjacentTerritory = gameMap.searchCountry(adjacentTerritoryName);
+            if (adjacentTerritory.getPlayerID() != getPlayerID()) {
+                defendingTerritory = adjacentTerritory;
+                break;
+            }
+        }
+
+        int defenderID = defendingTerritory.getPlayerID();
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPlayerID() == defenderID) {
+                defender = players.get(x);
+                break;
+            }
+        }
+
 
         int result = rollingDice(attackingTerritory, defendingTerritory);
+        LogHelper.printMessage("lsjdhflaksjdhflasdjkfhlasdk");
         if (result == 1) { //result == 1 means attacker wins
-            LogHelper.printMessage("attacker wins this attack phase");
             card.increaseCard();
-            defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
+            defender.removeCountry(defendingTerritory);
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
-            LogHelper.printMessage("How many armies do you want to share from " + attackingTerritory.getTerritoryName() + " to " + defendingTerritory.getTerritoryName());
-            int maxArmyShare = attackingTerritory.getArmyNum() - 1;
-            LogHelper.printMessage("you can move up to " + maxArmyShare + " armies");
-            int armyShare = scanner.nextInt();
+            int armyShare = 1;
             defendingTerritory.updateArmyNum(armyShare);
             attackingTerritory.updateArmyNum(0 - armyShare);
-            LogHelper.printMessage("attacker conquer " + defendingTerritory.getTerritoryName());
-        } else if (result == -1) {
-            LogHelper.printMessage("attacker loses this attack phase");
         }
-
     }
 
     /**
@@ -292,7 +302,7 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
      *
      * @param gameMap map List
      */
-    public void attackAllOut(GameMap gameMap, ArrayList<PlayerStrategy> players) {
+    public void attackAllOut(GameMap gameMap, ArrayList<PlayerStrategy> players ){
         ArrayList<Territory> attackingTerritoryList = new ArrayList<Territory>();
         ArrayList<Territory> defendingTerritoryList = new ArrayList<Territory>();
         Territory attackingTerritory = null;
@@ -360,8 +370,8 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
             defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
-            LogHelper.printMessage("How many armies do you want to share from " + attackingTerritory.getTerritoryName() + " to " + defendingTerritory.getTerritoryName());
-            int maxArmyShare = attackingTerritory.getArmyNum() - 1;
+            LogHelper.printMessage("How many armies do you want to share from " +attackingTerritory.getTerritoryName() +" to " +defendingTerritory.getTerritoryName());
+            int maxArmyShare = attackingTerritory.getArmyNum()-1;
             LogHelper.printMessage("you can move up to " + maxArmyShare + " armies");
             int armyShare = scanner.nextInt();
             defendingTerritory.updateArmyNum(armyShare);
@@ -385,61 +395,52 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
         int defendingTerritoryArmyNum = 0;
         int maxAttackingDiceNum = 0;
         int maxDefendingDiceNum = 0;
-        int AttackingDiceNum = 0;
-        int DefendingDiceNum = 0;
-        Random random = new Random();
         Scanner scanner = new Scanner(System.in);
-        for (int j = 0; j < random.nextInt(10); j++) {
-            if ((attackingTerritory.getArmyNum() > 1) && (defendingTerritory.getArmyNum() > 0)) {
-                attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
-                if (attackingTerritoryArmyNum > 3) {
-                    maxAttackingDiceNum = 3;
-                } else if (attackingTerritoryArmyNum == 3) {
-                    maxAttackingDiceNum = 2;
-                } else if (attackingTerritoryArmyNum == 2) {
-                    maxAttackingDiceNum = 1;
-                }
-                AttackingDiceNum = random.nextInt(maxAttackingDiceNum + 1);
-
-                defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
-                if (defendingTerritoryArmyNum >= 2) {
-                    maxDefendingDiceNum = 2;
-                } else {
-                    maxDefendingDiceNum = 1;
-                }
-                DefendingDiceNum = random.nextInt(maxDefendingDiceNum + 1);
-                PriorityQueue<Integer> attackingDiceQueue = new PriorityQueue<Integer>(new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer o1, Integer o2) {
-                        return o2 - o1;
-                    }
-                });
-                for (int i = 0; i < AttackingDiceNum; i++) {
-                    attackingDiceQueue.add(random.nextInt(6) + 1);
-                }
-                PriorityQueue<Integer> defendingDiceQueue = new PriorityQueue<Integer>(new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer o1, Integer o2) {
-                        return o2 - o1;
-                    }
-                });
-                for (int i = 0; i < DefendingDiceNum; i++) {
-                    defendingDiceQueue.add(random.nextInt(6) + 1);
-                }
-                int minDiceNum = Math.min(AttackingDiceNum, DefendingDiceNum);
-                for (int i = 0; i < minDiceNum; i++) {
-                    int attackingDice = attackingDiceQueue.poll();
-                    int defendingDice = defendingDiceQueue.poll();
-                    if (attackingDice > defendingDice) {
-                        defendingTerritory.updateArmyNum(-1);
-                    } else {
-                        attackingTerritory.updateArmyNum(-1);
-                    }
-                }
-
+        while ((attackingTerritory.getArmyNum() > 1) && (defendingTerritory.getArmyNum() > 0)) {
+            attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
+            if (attackingTerritoryArmyNum > 3) {
+                maxAttackingDiceNum = 3;
+            } else if (attackingTerritoryArmyNum == 3) {
+                maxAttackingDiceNum = 2;
+            } else if (attackingTerritoryArmyNum == 2) {
+                maxAttackingDiceNum = 1;
             }
-            else
-                break;
+
+            defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
+            if (defendingTerritoryArmyNum >= 2) {
+                maxDefendingDiceNum = 2;
+            } else {
+                maxDefendingDiceNum = 1;
+            }
+            Random random = new Random();
+            PriorityQueue<Integer> attackingDiceQueue = new PriorityQueue<Integer>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return o2 - o1;
+                }
+            });
+            for (int i = 0; i < maxAttackingDiceNum; i++) {
+                attackingDiceQueue.add(random.nextInt(5) + 1);
+            }
+            PriorityQueue<Integer> defendingDiceQueue = new PriorityQueue<Integer>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return o2 - o1;
+                }
+            });
+            for (int i = 0; i < maxDefendingDiceNum; i++) {
+                defendingDiceQueue.add(random.nextInt(5) + 1);
+            }
+            int minDiceNum = Math.min(maxAttackingDiceNum, maxDefendingDiceNum);
+            for (int i = 0; i < minDiceNum; i++) {
+                int attackingDice = attackingDiceQueue.poll();
+                int defendingDice = defendingDiceQueue.poll();
+                if (attackingDice > defendingDice) {
+                    defendingTerritory.updateArmyNum(-1);
+                } else {
+                    attackingTerritory.updateArmyNum(-1);
+                }
+            }
 
         }
         if (attackingTerritory.getArmyNum() == 0) {
@@ -530,8 +531,12 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
      * @param gameMap
      */
     public void initFortification(GameMap gameMap) {
+        int biggest = 0;
+        Territory territoryToFortify = null;
         Random random = new Random();
-        Territory territoryToFortify = getCountry().get(random.nextInt(getCountry().size()));
+        int territoryToFortifyIndex = random.nextInt(getCountry().size());
+        territoryToFortify = getCountry().get(territoryToFortifyIndex);
+
         fortification(null, territoryToFortify.getTerritoryName(), getPlayerID());
     }
 
@@ -539,11 +544,21 @@ public class RandomComputerPlayer extends Observable implements PlayerStrategy {
         Territory sourceCountry = null;
         Territory t2 = gameMap.searchCountry(countryDestinationName);
         Random random = new Random();
-        sourceCountry = gameMap.searchCountry(t2.getAdjacentCountryList().get(random.nextInt(t2.getAdjacentCountryList().size())));
-        int fortificationArmy = random.nextInt(sourceCountry.getArmyNum());
-        sourceCountry.updateArmyNum(0 - fortificationArmy);
-        t2.updateArmyNum(fortificationArmy);
+        int armyNum = 0;
+        for (int i = 0; i < t2.getAdjacentCountryList().size(); i++) {
+            if (gameMap.searchCountry(t2.getAdjacentCountryList().get(i)).getPlayerID() != t2.getPlayerID()) {
+                sourceCountry = gameMap.searchCountry(t2.getAdjacentCountryList().get(i));
+                break;
+            }
+        }
+        if (sourceCountry == null)
+            return;
+
+        int updateArmyNum = random.nextInt(sourceCountry.getArmyNum());
+        sourceCountry.updateArmyNum(0 - updateArmyNum + 1);
+        t2.updateArmyNum(updateArmyNum - 1);
     }
+
 
     public void phaseChanged(String message) {
         this.message = message;
