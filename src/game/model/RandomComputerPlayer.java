@@ -263,6 +263,8 @@ public class RandomComputerPlayer extends PlayerStrategy{
             }
         }
 
+        if (attackingTerritory == null)
+            return;
         int attackingTerritoryArmyNum = 0;
         int attackingTerritoryBound = random.nextInt(attackingTerritoryList.size());
         attackingTerritory = attackingTerritoryList.get(random.nextInt(attackingTerritoryList.size()));
@@ -275,6 +277,8 @@ public class RandomComputerPlayer extends PlayerStrategy{
             }
         }
 
+        if (defendingTerritory == null)
+            return;
         int defenderID = defendingTerritory.getPlayerID();
         for (int x = 0; x < players.size(); x++) {
             if (players.get(x).getPlayerID() == defenderID) {
@@ -551,7 +555,7 @@ public class RandomComputerPlayer extends PlayerStrategy{
                 break;
             }
         }
-        if (sourceCountry == null)
+        if ((sourceCountry == null) || (sourceCountry.getArmyNum() <= 0))
             return;
 
         int updateArmyNum = random.nextInt(sourceCountry.getArmyNum());

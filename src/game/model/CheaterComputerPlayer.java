@@ -263,6 +263,8 @@ public class CheaterComputerPlayer extends PlayerStrategy {
                 attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
             }
         }
+        if (attackingTerritory == null)
+            return;
 
         for (int k = 0; k < attackingTerritory.getAdjacentCountryList().size(); k++) {
             defendingTerritory = null;

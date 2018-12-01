@@ -9,7 +9,7 @@ public abstract class PlayerStrategy extends Observable {
 
 
     public static int playerCounter = 0;
-
+    public String classType = "nonhuman";
 
 
 

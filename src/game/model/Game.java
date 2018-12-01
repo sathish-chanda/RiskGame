@@ -85,10 +85,20 @@ public class Game implements GameListener, Externalizable {
 
     @Override
     public void onContinentMapValid() {
+        boolean flag = true;
         setMapValid(true);
         if (beginStartUpPhase) {
             startupPhase();
-            roundRobinPlay(0, 0, 0);
+            for (int i = 0; i < playerNum; i++) {
+                if (players.get(i).classType == "human") {
+                    roundRobinPlay(0, 0, 0);
+                    flag = false;
+                    break;
+                }
+
+            }
+            if(flag)
+                roundRobinPlayAuto(0, 0, 0);
         }
     }
 
@@ -230,6 +240,42 @@ public class Game implements GameListener, Externalizable {
             }
         }
         declareWin(players.get(0));
+    }
+
+    public boolean roundRobinPlayAuto(int M, int G, int D) {
+        ExecuteStrategy executeStrategy = new ExecuteStrategy();
+        LogHelper.printMessage("in round robin play");
+        int count = 0;
+        while (count <= D) {
+            while (players.size() > 1) {
+                for (int i = 0; i < players.size(); i++) {
+                    PlayerStrategy attacker = players.get(i);
+
+                    executeStrategy.setStrategy(attacker);
+                    executeStrategy.executeReinforcement(gameMap);
+                    executeStrategy.executePlaceArmyOnCountry(gameMap);
+                    executeStrategy.executeAttack(gameMap, players);
+                    executeStrategy.executeInitFortification(gameMap);
+
+                    for (int j = 0; j < players.size(); j++) {
+                        PlayerStrategy player = players.get(j);
+                        if (player.getCountryNum() == 0) {
+                            players.remove(player);
+                            j--;
+                        }
+                    }
+                }
+                count++;
+            }
+            if (players.size() == 1) {
+                LogHelper.printMessage("Map" + M + " Game" + G);
+                declareWin(players.get(0));
+                LogHelper.printMessage("the player is a " + players.get(0));
+                System.exit(1);
+                return true;
+            }
+        }
+        return true;
     }
 
 
