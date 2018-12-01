@@ -98,13 +98,6 @@ public class RiskController implements Initializable, ControllerListener {
         riskModel.loadGame();
     }
 
-    /**
-     * Method to save game
-     */
-    public void saveGame() {
-        LogHelper.printMessage("Saving Game");
-        riskModel.saveGame();
-    }
 
     /**
      * Method used to quit game
