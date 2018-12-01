@@ -14,11 +14,7 @@ import java.util.Observer;
  */
 public class PlayerView implements Observer {
 
-    /**
-     * This method observers any change in the observable
-     * @param obs , observable class
-     * @param arg , class which integrates observer and observable
-     */
+    @Override
     public void update(Observable obs, Object arg) {
         int playerId = ((Player) obs).getPlayerID();
         int armyNum = ((Player) obs).getArmyNum();

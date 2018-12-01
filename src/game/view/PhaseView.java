@@ -12,11 +12,8 @@ import java.util.Observer;
  * This class implements observer view
  */
 public class PhaseView implements Observer {
-    /**
-     * This method observers any change in the observable
-     * @param observable , observable class
-     * @param object, class which integrates observer and observable
-     */
+
+    @Override
     public void update(Observable observable, Object object) {
         String message = ((Player) observable).getMessage();
         ArrayList<String> actions = ((Player) observable).getActions();
