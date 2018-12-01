@@ -307,6 +307,8 @@ public class AggressiveComputerPlayer extends PlayerStrategy {
         int result = rollingDice(attackingTerritory, defendingTerritory);
         if (result == 1) { //result == 1 means attacker wins
             card.increaseCard();
+            if (defender == null)
+                return;
             defender.removeCountry(defendingTerritory);
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);

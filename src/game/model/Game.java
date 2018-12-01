@@ -276,9 +276,8 @@ public class Game implements GameListener, Externalizable {
                 count++;
             }
             if (players.size() == 1) {
-                LogHelper.printMessage("Map" + M + " Game" + G);
+                FileHelper.writeFileHepler("Map " + M + " Game " + G);
                 declareWin(players.get(0));
-                System.exit(1);
                 return true;
             }
         }
@@ -390,9 +389,10 @@ public class Game implements GameListener, Externalizable {
      * @param attacker the player who wins the game
      */
     public void declareWin(PlayerStrategy attacker) {
+        FileHelper.writeFileHepler("the player is a " + players.get(0));
         LogHelper.printMessage("the player" + attacker.getPlayerID() + " wins the game");
         LogHelper.printMessage("Game Finished");
-        //System.exit(1);
+
 
     }
 

@@ -533,8 +533,25 @@ public class MapFileHelper implements Serializable {
      * Method to clear  stored values
      */
     public void cleanUp() {
-        mapComponentList.clear();
-        continentsComponentList.clear();
-        territoriesComponentList.clear();
+        if (mapComponentList != null ) {
+            mapComponentList.clear();
+        }
+
+        if (continentsComponentList != null ) {
+            continentsComponentList.clear();
+        }
+
+        if (territoriesComponentList != null ) {
+            territoriesComponentList.clear();
+        }
+
+        if (mapComponents != null) {
+            mapComponents.clear();
+        }
+
+        if (continentsAndTerritoriesList != null) {
+            continentsAndTerritoriesList.clear();
+        }
+
     }
 }

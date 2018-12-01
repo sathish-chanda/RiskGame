@@ -289,7 +289,6 @@ public class RandomComputerPlayer extends PlayerStrategy{
 
 
         int result = rollingDice(attackingTerritory, defendingTerritory);
-        LogHelper.printMessage("lsjdhflaksjdhflasdjkfhlasdk");
         if (result == 1) { //result == 1 means attacker wins
             card.increaseCard();
             defender.removeCountry(defendingTerritory);
