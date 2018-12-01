@@ -1,7 +1,6 @@
 package game.model;
 
 import game.view.PlayerView;
-import game.controller.CardController;
 import game.utils.LogHelper;
 import game.view.PhaseView;
 
@@ -10,9 +9,8 @@ import java.util.*;
 /**
  * This class represents players playing the gamecomponents
  */
-public class AggressiveComputerPlayer extends Observable implements PlayerStrategy {
+public class AggressiveComputerPlayer extends PlayerStrategy {
 
-    private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
     private int armyNum = 0;//number of army owned by a player
@@ -178,8 +176,8 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
         actions.add("Exchanging Card");
         phaseChanged("Reinforcement Phase");
         LogHelper.printMessage("Player" + playerID + " has " + reinforcementArmyNum + " reinforcement armies.");
-        CardController cardController = new CardController();
-        cardController.exchangeCardsForArmies(this);
+        //CardController cardController = new CardController();
+        //cardController.exchangeCardsForArmies(this);
     }
 
     public void reinforcementTest(GameMap gameMap) {
@@ -214,11 +212,22 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
     public void placeArmyOnCountry(GameMap gameMap) {
         int armyNumToAllocate = getReinforcementArmyNum();
         int maxArmyNum = 0;
+        boolean flag = false;
         Territory territoryWithMaxArmy = null;
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
             if (territory.getArmyNum() > maxArmyNum) {
-                territoryWithMaxArmy = territory;
+                for (int i = 0; i < territory.getAdjacentCountryList().size(); i++) {
+                    if (gameMap.searchCountry(territory.getAdjacentCountryList().get(i)).getPlayerID() != territory.getPlayerID()){
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag) {
+                    territoryWithMaxArmy = territory;
+                    maxArmyNum = territoryWithMaxArmy.getArmyNum();
+                    flag = false;
+                }
             }
         }
         territoryWithMaxArmy.updateArmyNum(armyNumToAllocate);
@@ -236,6 +245,12 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
         Territory defendingTerritory = null;
         PlayerStrategy defender = null;
         Scanner scanner = new Scanner(System.in);
+        actions.clear();
+        actions.add("Attacking mode");
+        actions.add("Rolling Dice");
+        phaseChanged("Attack Phase");
+
+
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
             boolean flag = true;
@@ -245,43 +260,53 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
                     Territory adjacentTerritory = gameMap.searchCountry(adjacentTerritoryName);
                     if (adjacentTerritory.getPlayerID() != getPlayerID()) {
                         attackingTerritoryList.add(territory);
+                        break;
                     }
                 }
             }
         }
         if (attackingTerritoryList.isEmpty()) {
-            return;
-        } else {
-            int attackingTerritoryArmyNum = 0;
-            for (int i = 0; i < attackingTerritoryList.size(); i++) {
-                if (attackingTerritoryList.get(i).getArmyNum() >= attackingTerritoryArmyNum) {
-                    attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
-                    attackingTerritory = attackingTerritoryList.get(i);
-
-                }
-            }
-
-            int defendingTerritoryArmyNum = 1000000;
-            for (int i = 0; i < attackingTerritory.getAdjacentCountryList().size(); i++) {
-                if (gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i)).getArmyNum() < defendingTerritoryArmyNum) {
-                    defendingTerritory = gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i));
-                    defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
-                }
-            }
-
-            int defenderID = defendingTerritory.getPlayerID();
-            for (int x = 0; x < players.size(); x++) {
-                if (players.get(x).getPlayerID() == defenderID) {
-                    defender = players.get(x);
-                    break;
+            for (int x = 0; x < getCountry().size(); x++) {
+                if (getCountry().get(x).getArmyNum() == 1) {
+                    getCountry().get(x).updateArmyNum(1);
+                    attackingTerritory = getCountry().get(x);
+                    attackingTerritoryList.add(attackingTerritory);
+                break;
                 }
             }
         }
 
+        int attackingTerritoryArmyNum = 0;
+        attackingTerritory = attackingTerritoryList.get(0);
+        for (int i = 0; i < attackingTerritoryList.size(); i++) {
+            if (attackingTerritoryList.get(i).getArmyNum() > attackingTerritoryArmyNum) {
+                attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
+                attackingTerritory = attackingTerritoryList.get(i);
+
+            }
+        }
+        int defendingTerritoryArmyNum = 1000000;
+        for (int i = 0; i < attackingTerritory.getAdjacentCountryList().size(); i++) {
+            if ((gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i)).getArmyNum() < defendingTerritoryArmyNum) && (gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i)).getPlayerID() != attackingTerritory.getPlayerID())) {
+                defendingTerritory = gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(i));
+                defendingTerritoryArmyNum = defendingTerritory.getArmyNum();
+            }
+        }
+
+        int defenderID = defendingTerritory.getPlayerID();
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPlayerID() == defenderID) {
+                defender = players.get(x);
+                break;
+            }
+        }
+
+
         int result = rollingDice(attackingTerritory, defendingTerritory);
+        LogHelper.printMessage("lsjdhflaksjdhflasdjkfhlasdk");
         if (result == 1) { //result == 1 means attacker wins
             card.increaseCard();
-            defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
+            defender.removeCountry(defendingTerritory);
             defendingTerritory.setPlayer(getPlayerID());
             addCountry(defendingTerritory);
             int armyShare = 1;
@@ -388,8 +413,6 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
         int defendingTerritoryArmyNum = 0;
         int maxAttackingDiceNum = 0;
         int maxDefendingDiceNum = 0;
-        int inputAttackingDiceNum = 0;
-        int inputDefendingDiceNum = 0;
         Scanner scanner = new Scanner(System.in);
         while ((attackingTerritory.getArmyNum() > 1) && (defendingTerritory.getArmyNum() > 0)) {
             attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
@@ -426,7 +449,7 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
             for (int i = 0; i < maxDefendingDiceNum; i++) {
                 defendingDiceQueue.add(random.nextInt(5) + 1);
             }
-            int minDiceNum = Math.min(inputAttackingDiceNum, inputDefendingDiceNum);
+            int minDiceNum = Math.min(maxAttackingDiceNum, maxDefendingDiceNum);
             for (int i = 0; i < minDiceNum; i++) {
                 int attackingDice = attackingDiceQueue.poll();
                 int defendingDice = defendingDiceQueue.poll();
@@ -544,8 +567,8 @@ public class AggressiveComputerPlayer extends Observable implements PlayerStrate
                 sourceCountry = gameMap.searchCountry(t2.getAdjacentCountryList().get(i));
             }
         }
-        sourceCountry.updateArmyNum(0 - gameMap.searchCountry(countrySourceName).getArmyNum() + 1);
-        t2.updateArmyNum(gameMap.searchCountry(countrySourceName).getArmyNum() - 1);
+        sourceCountry.updateArmyNum(0 - sourceCountry.getArmyNum() + 1);
+        t2.updateArmyNum(sourceCountry.getArmyNum() - 1);
     }
 
 

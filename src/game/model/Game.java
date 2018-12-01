@@ -88,7 +88,7 @@ public class Game implements GameListener, Externalizable {
         setMapValid(true);
         if (beginStartUpPhase) {
             startupPhase();
-            roundRobinPlay();
+            roundRobinPlay(0, 0, 0);
         }
     }
 
@@ -108,7 +108,7 @@ public class Game implements GameListener, Externalizable {
     /**
      * the roundRobinPlay method is uxcxzsed to realize round robin logic
      */
-    public boolean roundRobinPlay() {
+    public boolean roundRobinPlay(int M, int G, int D) {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
@@ -121,7 +121,6 @@ public class Game implements GameListener, Externalizable {
                 LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
                 String alloutMode = "";
                 alloutMode = scanner.nextLine();
-
                 while (!alloutMode.matches("y") && !alloutMode.matches("n")) {
                     LogHelper.printMessage("wrong input! please input again.");
                     alloutMode = scanner.nextLine();
@@ -242,42 +241,25 @@ public class Game implements GameListener, Externalizable {
     /**
      * This method allows users to select the number of players
      */
-    private void chooseNumberOfPlayers() {
-        LogHelper.printMessage("please input the number of players");
-        setTheStrategyOfPlayers(playerNum);
-    }
-
-    public void setTheStrategyOfPlayers(int P) {
+    public void chooseNumberOfPlayers() {
         Scanner scanner = new Scanner(System.in);
         players = new ArrayList<PlayerStrategy>();
         String typeOfPlayer;
-        for (int i = 1; i <= P; i++) {
-            LogHelper.printMessage("set the type of player" + i + " choose from aggressive benevolent cheater random human");
+        for (int i = 1; i <= playerNum; i++) {
+            LogHelper.printMessage("set the type of player" + i);
             typeOfPlayer = scanner.nextLine();
             if (typeOfPlayer.equalsIgnoreCase("aggressive")) {
-                players.add(new AggressiveComputerPlayer(P));
+                players.add(new AggressiveComputerPlayer(playerNum));
             } else if (typeOfPlayer.equalsIgnoreCase("benevolent")) {
-                players.add(new BenevolentComputerPlayer(P));
+                players.add(new BenevolentComputerPlayer(playerNum));
             } else if (typeOfPlayer.equalsIgnoreCase("cheater")) {
-                players.add(new CheaterComputerPlayer(P));
+                players.add(new CheaterComputerPlayer(playerNum));
             } else if (typeOfPlayer.equalsIgnoreCase("random")) {
-                players.add(new RandomComputerPlayer(P));
-            } else if (typeOfPlayer.equalsIgnoreCase("human")) {
-                players.add(new Player(P));
+                players.add(new RandomComputerPlayer(playerNum));
+            } else if (typeOfPlayer.equalsIgnoreCase("player")) {
+                players.add(new Player(playerNum));
             }
         }
-    }
-
-    /**
-     * This method helps for tesing the functionality of choosing players
-     *
-     * @param number
-     */
-    public void chooseNumberOfPlayersTest(int number) {
-        playerNum = number; // how many player are playing the gamecomponents
-        players = new ArrayList<PlayerStrategy>();
-        for (int i = 1; i <= playerNum; i++)
-            players.add(new Player(playerNum));
     }
 
     /**

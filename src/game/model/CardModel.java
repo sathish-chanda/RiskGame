@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class CardModel extends Observable implements Serializable {
 
-    private int totalCardNum = 4;
-    private int infantryCard = 4;
+    private int totalCardNum = 0;
+    private int infantryCard = 0;
     private int cavalryCard = 0;
     private int artilleryCard = 0;
     private static int cardUsedTimes = 1;
@@ -70,12 +70,15 @@ public class CardModel extends Observable implements Serializable {
         Scanner scanner = new Scanner(System.in);
         if (totalCardNum >= 5) {
             LogHelper.printMessage("you have 5 or more than 5 cards, you must exchange some of them for armies");
-            if (infantryCard >= 3)
+            if (infantryCard >= 3) {
                 LogHelper.printMessage("you have " + infantryCard + " infantry cards, you can exchange 3 of them for armies");
-            else if (cavalryCard >= 3)
+            }
+            else if (cavalryCard >= 3) {
                 LogHelper.printMessage("you have " + cavalryCard + " cavalry cards, you can exchange 3 of them for armies");
-            else if (artilleryCard >= 3)
+            }
+            else if (artilleryCard >= 3) {
                 LogHelper.printMessage("you have " + artilleryCard + " artillery cards, you can exchange 3 of them for armies");
+            }
             else
                 LogHelper.printMessage("you have " + infantryCard + " infantry cards, " + cavalryCard + " cavalry cards, " + artilleryCard + " artillery cards, you can exchange 3 cards of each kind for army");
             LogHelper.printMessage("type infantry, cavalry, artillery or each to choose the cards you want to exchange for army:");
@@ -83,7 +86,7 @@ public class CardModel extends Observable implements Serializable {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "infantry":
-                    infantryCard = infantryCard - 3;
+                   infantryCard = infantryCard - 3;
                     player.updateReinforcementArmyNum(cardUsedTimes * 5);
                     break;
                 case "cavalry":

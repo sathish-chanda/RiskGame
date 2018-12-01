@@ -1,6 +1,7 @@
 package game.view;
 
 import game.model.Player;
+import game.model.PlayerStrategy;
 import game.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ public class PhaseView implements Observer {
 
     @Override
     public void update(Observable observable, Object object) {
-        String message = ((Player) observable).getMessage();
-        ArrayList<String> actions = ((Player) observable).getActions();
-        int playerID = ((Player) observable).getPlayerID();
+        String message = ((PlayerStrategy) observable).getMessage();
+        ArrayList<String> actions = ((PlayerStrategy) observable).getActions();
+        int playerID = ((PlayerStrategy) observable).getPlayerID();
         LogHelper.printMessage("=============================================================================================\n");
         LogHelper.printMessage("\t\t\tPHASE VIEW\n");
         LogHelper.printMessage("Current Phase : " + message);

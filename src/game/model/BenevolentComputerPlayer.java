@@ -1,15 +1,13 @@
 package game.model;
 
-import game.controller.CardController;
 import game.utils.LogHelper;
 import game.view.PhaseView;
 import game.view.PlayerView;
 
 import java.util.*;
 
-public class BenevolentComputerPlayer extends Observable implements PlayerStrategy {
+public class BenevolentComputerPlayer extends PlayerStrategy {
 
-    private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
     private int armyNum = 0;//number of army owned by a player
@@ -175,8 +173,8 @@ public class BenevolentComputerPlayer extends Observable implements PlayerStrate
         actions.add("Exchanging Card");
         phaseChanged("Reinforcement Phase");
         LogHelper.printMessage("Player" + playerID + " has " + reinforcementArmyNum + " reinforcement armies.");
-        CardController cardController = new CardController();
-        cardController.exchangeCardsForArmies(this);
+        //CardController cardController = new CardController();
+        //cardController.exchangeCardsForArmies(this);
     }
 
     public void reinforcementTest(GameMap gameMap) {
@@ -210,15 +208,16 @@ public class BenevolentComputerPlayer extends Observable implements PlayerStrate
      */
     public void placeArmyOnCountry(GameMap gameMap) {
         int armyNumToAllocate = getReinforcementArmyNum();
-        int maxArmyNum = 10000000;
-        Territory territoryWithMaxArmy = null;
+        int minArmyNum = 10000000;
+        Territory territoryWithMinArmy = null;
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
-            if (territory.getArmyNum() < maxArmyNum) {
-                territoryWithMaxArmy = territory;
+            if (territory.getArmyNum() < minArmyNum) {
+                territoryWithMinArmy = territory;
+                minArmyNum = territoryWithMinArmy.getArmyNum();
             }
         }
-        territoryWithMaxArmy.updateArmyNum(armyNumToAllocate);
+        territoryWithMinArmy.updateArmyNum(armyNumToAllocate);
     }
 
     /**
@@ -515,8 +514,8 @@ public class BenevolentComputerPlayer extends Observable implements PlayerStrate
                 sourceCountry = gameMap.searchCountry(t2.getAdjacentCountryList().get(i));
             }
         }
-        sourceCountry.updateArmyNum(0 - gameMap.searchCountry(countrySourceName).getArmyNum() / 2);
-        t2.updateArmyNum(gameMap.searchCountry(countrySourceName).getArmyNum() / 2);
+        sourceCountry.updateArmyNum(sourceCountry.getArmyNum() / 2);
+        t2.updateArmyNum(sourceCountry.getArmyNum() / 2);
     }
 
 

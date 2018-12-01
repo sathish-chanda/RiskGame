@@ -2,6 +2,7 @@ package game.view;
 
 import game.model.Continent;
 import game.model.Player;
+import game.model.PlayerStrategy;
 import game.utils.LogHelper;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public class PlayerView implements Observer {
 
     @Override
     public void update(Observable obs, Object arg) {
-        int playerId = ((Player) obs).getPlayerID();
-        int armyNum = ((Player) obs).getArmyNum();
-        List<Continent> continentList = ((Player) obs).getListOfContinentsOwned();
+        int playerId = ((PlayerStrategy) obs).getPlayerID();
+        int armyNum = ((PlayerStrategy) obs).getArmyNum();
+        List<Continent> continentList = ((PlayerStrategy) obs).getListOfContinentsOwned();
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -32,7 +33,7 @@ public class PlayerView implements Observer {
             ownedContinents = "owned continents = " + stringBuilder.toString();
         }
 
-        float percentageOfCountryOwned = ((Player) obs).getPercentageOfCountriesOwned();
+        float percentageOfCountryOwned = ((PlayerStrategy) obs).getPercentageOfCountriesOwned();
         LogHelper.printMessage("========================================================================================\n");
         LogHelper.printMessage("PLAYERS WORLD DOMINATION VIEW\n");
         LogHelper.printMessage("Player " + playerId + " have total army of " +

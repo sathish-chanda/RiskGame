@@ -7,9 +7,8 @@ import game.view.PlayerView;
 
 import java.util.*;
 
-public class CheaterComputerPlayer extends Observable implements PlayerStrategy {
+public class CheaterComputerPlayer extends PlayerStrategy {
 
-    private static int playerCounter = 0;//used to initializing players
     private int playerID;//playerID is a integer that identify a player
     private int countryNum = 0;//number of country owned by a player
     private int armyNum = 0;//number of army owned by a player
@@ -175,8 +174,8 @@ public class CheaterComputerPlayer extends Observable implements PlayerStrategy 
         actions.add("Exchanging Card");
         phaseChanged("Reinforcement Phase");
         LogHelper.printMessage("Player" + playerID + " has " + reinforcementArmyNum + " reinforcement armies.");
-        CardController cardController = new CardController();
-        cardController.exchangeCardsForArmies(this);
+        //CardController cardController = new CardController();
+        //cardController.exchangeCardsForArmies(this);
     }
 
     public void reinforcementTest(GameMap gameMap) {
@@ -209,38 +208,16 @@ public class CheaterComputerPlayer extends Observable implements PlayerStrategy 
      * It assign a player's army to the countries owned by that player.
      */
     public void placeArmyOnCountry(GameMap gameMap) {
-        Scanner scanner = new Scanner(System.in);
         int armyNumToAllocate = getReinforcementArmyNum();
-        LogHelper.printMessage("player" + getPlayerID() + " has " + armyNumToAllocate + " number of army to allocate");
+        int maxArmyNum = 0;
+        Territory territoryWithMaxArmy = null;
         for (int j = 0; j < getCountry().size(); j++) {
             Territory territory = getCountry().get(j);
-            LogHelper.printMessage("There are " + territory.getArmyNum() + " armies" + " on " + territory.getTerritoryName());
+            if (territory.getArmyNum() > maxArmyNum) {
+                territoryWithMaxArmy = territory;
+            }
         }
-        int inputArmyNum;
-        for (int j = 0; j < getCountry().size(); j++) {
-            Territory territory = getCountry().get(j);
-            if (armyNumToAllocate > 0) {
-                LogHelper.printMessage("you can place " + armyNumToAllocate + " on " + territory.getTerritoryName());
-                LogHelper.printMessage("input how many army you want to place on " + territory.getTerritoryName());
-                inputArmyNum = scanner.nextInt();
-                while ((inputArmyNum > armyNumToAllocate) || (inputArmyNum < 0)) {
-                    LogHelper.printMessage("wrong input number, reinput");
-                    inputArmyNum = scanner.nextInt();
-                }
-
-                territory.updateArmyNum(inputArmyNum);
-                armyNumToAllocate = armyNumToAllocate - inputArmyNum;
-                LogHelper.printMessage("you assign " + inputArmyNum + " armies to " + territory.getTerritoryName());
-            } else
-                break;
-        }
-        LogHelper.printMessage("--------------------------------------------------------------------------------");
-        setReinforcementArmyNum(0);
-        for (int j = 0; j < getCountry().size(); j++) {
-            Territory territory = getCountry().get(j);
-            LogHelper.printMessage("now there are " + territory.getArmyNum() + "armies" + " on " + territory.getTerritoryName());
-        }
-        LogHelper.printMessage("--------------------------------------------------------------------------------");
+        territoryWithMaxArmy.updateArmyNum(armyNumToAllocate);
     }
 
     /**
@@ -269,16 +246,33 @@ public class CheaterComputerPlayer extends Observable implements PlayerStrategy 
             }
         }
         if (attackingTerritoryList.isEmpty()) {
-            return;
-        } else {
-            int attackingTerritoryArmyNum = 0;
-            for (int i = 0; i < attackingTerritoryList.size(); i++) {
-                if (attackingTerritoryList.get(i).getArmyNum() >= attackingTerritoryArmyNum) {
-                    attackingTerritory = attackingTerritoryList.get(i);
-                    attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
+            for (int x = 0; x < getCountry().size(); x++) {
+                if (getCountry().get(x).getArmyNum() == 1) {
+                    getCountry().get(x).updateArmyNum(1);
+                    attackingTerritory = getCountry().get(x);
+                    attackingTerritoryList.add(attackingTerritory);
+                    break;
                 }
             }
+        }
 
+        int attackingTerritoryArmyNum = 0;
+        for (int i = 0; i < attackingTerritoryList.size(); i++) {
+            if (attackingTerritoryList.get(i).getArmyNum() >= attackingTerritoryArmyNum) {
+                attackingTerritory = attackingTerritoryList.get(i);
+                attackingTerritoryArmyNum = attackingTerritory.getArmyNum();
+            }
+        }
+
+        for (int k = 0; k < attackingTerritory.getAdjacentCountryList().size(); k++) {
+            defendingTerritory = null;
+            int attackerPlayerID = attackingTerritory.getPlayerID();
+            int defenderPlayerID = gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(k)).getPlayerID();
+            if (attackerPlayerID != defenderPlayerID ){
+                defendingTerritory = gameMap.searchCountry(attackingTerritory.getAdjacentCountryList().get(k));
+            }
+            if (defendingTerritory == null)
+                continue;
             int defenderID = defendingTerritory.getPlayerID();
             for (int x = 0; x < players.size(); x++) {
                 if (players.get(x).getPlayerID() == defenderID) {
@@ -286,7 +280,7 @@ public class CheaterComputerPlayer extends Observable implements PlayerStrategy 
                     break;
                 }
             }
-        }
+
             card.increaseCard();
             defender.removeCountry(gameMap.searchCountry(defendingTerritory.getTerritoryName()));
             defendingTerritory.setPlayer(getPlayerID());
@@ -294,6 +288,7 @@ public class CheaterComputerPlayer extends Observable implements PlayerStrategy 
             int armyShare = 1;
             defendingTerritory.updateArmyNum(armyShare);
             attackingTerritory.updateArmyNum(0 - armyShare);
+        }
     }
 
 
@@ -564,11 +559,11 @@ public class CheaterComputerPlayer extends Observable implements PlayerStrategy 
     public void initFortification(GameMap gameMap) {
         for (int i = 0; i < getCountry().size(); i++) {
             for (int j = 0; j < getCountry().get(i).getAdjacentCountryList().size(); j++)
-        if (gameMap.searchCountry(getCountry().get(i).getAdjacentCountryList().get(j)).getPlayerID() != this.playerID) {
-            fortification(null, getCountry().get(i).getTerritoryName(), getPlayerID());
+                if (gameMap.searchCountry(getCountry().get(i).getAdjacentCountryList().get(j)).getPlayerID() != this.playerID) {
+                    fortification(null, getCountry().get(i).getTerritoryName(), getPlayerID());
+                }
         }
     }
-}
 
     public void fortification(String countrySourceName, String countryDestinationName, int playerID) {
         Territory t2 = gameMap.searchCountry(countryDestinationName);
