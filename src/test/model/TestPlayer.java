@@ -68,6 +68,9 @@ public class TestPlayer {
         assertEquals(continent.getMaximumArmy(), player.getReinforcementArmyNum());
     }
 
+    /**
+     * This method tests number of armies could share to each player based on territories that player owned
+     */
     @Test
     public void testReinforcementDividedBy3() {
         player = new Player(2);

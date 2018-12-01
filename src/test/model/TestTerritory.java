@@ -47,7 +47,7 @@ public class TestTerritory {
     /**
      * Method to prepare territory list
      *
-     * @return
+     * @return adjacentTerritoryList
      */
     private ArrayList<String> adjacentTerritoryList() {
         ArrayList<String> adjacentTerritoryList = new ArrayList<>();
