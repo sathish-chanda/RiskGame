@@ -719,6 +719,15 @@ public class Player extends PlayerStrategy{
     }
 
     /**
+     * Method to get gameMap in player class
+     *
+     * @return
+     */
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    /**
      * Method to get list of continent owned
      */
     public List<Continent> getListOfContinentsOwned() {

@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class Tournament implements EventHandler<ActionEvent> {
 
-
     @Override
     public void handle(ActionEvent event) {
         Scanner scanner = new Scanner(System.in);

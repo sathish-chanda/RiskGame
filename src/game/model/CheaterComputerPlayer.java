@@ -620,6 +620,11 @@ public class CheaterComputerPlayer extends PlayerStrategy {
         notifyObservers(this);
     }
 
+    @Override
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
     /**
      * Method to initialize gameMap in player class
      *
@@ -670,5 +675,4 @@ public class CheaterComputerPlayer extends PlayerStrategy {
         }
         return playerOwnedContinentList;
     }
-
 }

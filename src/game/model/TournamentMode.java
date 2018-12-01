@@ -9,6 +9,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TournamentMode extends Game {
+
+    /**
+     * Method to start tournament mode
+     *
+     * @param M number of maps
+     * @param P number of player
+     * @param G number of games
+     * @param D declare draw
+     */
     public void startTournament(int M, int P, int G, int D) {
         String fileName = null;
         switch (M) {

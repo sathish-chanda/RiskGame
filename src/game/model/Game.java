@@ -4,6 +4,7 @@ import game.listeners.GameListener;
 import game.listeners.ModelListener;
 import game.utils.Constants;
 import game.utils.LogHelper;
+import game.utils.SavedObserver;
 import game.view.PhaseView;
 
 import java.io.*;
@@ -21,6 +22,7 @@ public class Game implements GameListener, Externalizable {
     private String filePath = "d:\\risk saved file.ser";
     private ModelListener listener;
     int round = 0;
+    boolean loadObserver;
 
     /**
      * In the constructor, the first input is the number of players.
@@ -116,14 +118,19 @@ public class Game implements GameListener, Externalizable {
 
 
     /**
-     * the roundRobinPlay method is uxcxzsed to realize round robin logic
+     * the roundRobinPlay method is used to implement round robin logic
+     *
+     * @param M Number of Map of the game
+     * @param G Number of Games to be played
+     * @param D is used to declare draw
+     * @return
      */
     public boolean roundRobinPlay(int M, int G, int D) {
         Scanner scanner = new Scanner(System.in);
         while (players.size() > 1) {
             for (int i = 0; i < players.size(); i++) {
-                round = i;
-                saveFile();
+                //round = i;
+                //saveFile();
                 PlayerStrategy attacker = players.get(i);
                 attacker.reinforcement(gameMap);
                 attacker.placeArmyOnCountry(gameMap);
@@ -182,75 +189,21 @@ public class Game implements GameListener, Externalizable {
     /**
      * Method to continue round robin play
      */
-    public void continueRoundRobinPlay() {
-        Scanner scanner = new Scanner(System.in);
-        while (players.size() > 1) {
-            for (int i = round; i < players.size(); i++) {
-                saveFile();
-                PlayerStrategy attacker = players.get(i);
-                attacker.reinforcement(gameMap);
-                attacker.placeArmyOnCountry(gameMap);
-
-                LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
-                String alloutMode = "";
-                alloutMode = scanner.nextLine();
-
-                while (!alloutMode.matches("y") && !alloutMode.matches("n")) {
-                    LogHelper.printMessage("wrong input! please input again.");
-                    alloutMode = scanner.nextLine();
-                }
-                if (alloutMode.matches("y")) {
-                    attacker.attackAllOut(gameMap, players);
-                } else if (alloutMode.matches("n")) {
-                    attacker.attack(gameMap, players);
-                }
-
-                while (attacker.getArmyNum() > 0) {
-                    LogHelper.printMessage("--------------------------------------------------------------------------------");
-                    LogHelper.printMessage("do you still want to attack? y for yes, n for no");
-                    String input = scanner.next();
-                    if (input.matches("y")) {
-                        LogHelper.printMessage("do you want to do attack in All-OUT mode : y/n ?");
-                        String nextAttack = "";
-                        nextAttack = scanner.next();
-                        while (!nextAttack.matches("y") && !nextAttack.matches("n")) {
-                            LogHelper.printMessage("wrong input! please input again.");
-                            nextAttack = scanner.nextLine();
-                        }
-                        if (nextAttack.matches("y")) {
-                            attacker.attackAllOut(gameMap, players);
-                        } else if (nextAttack.matches("n")) {
-                            attacker.attack(gameMap, players);
-                        }
-
-                    } else if (input.matches("n")) {
-                        break;
-                    } else {
-                        LogHelper.printMessage("wrong input format! please reinput");
-                    }
-                }
-                attacker.initFortification(gameMap);
-            }
-            for (int j = 0; j < players.size(); j++) {
-                PlayerStrategy player = players.get(j);
-                if (player.getCountryNum() == 0) {
-                    players.remove(player);
-                    j--;
-                }
-            }
-        }
-        declareWin(players.get(0));
-    }
-
-    public boolean roundRobinPlayAuto(int M, int G, int D) {
+    public boolean continueRoundRobinPlay(int M, int G, int D) {
         ExecuteStrategy executeStrategy = new ExecuteStrategy();
         LogHelper.printMessage("in round robin play");
         int count = 0;
+        boolean alreadyLoaded = true;
         while (count <= D) {
             while (players.size() > 1) {
-                for (int i = 0; i < players.size(); i++) {
+                for (int i = round; i < players.size(); i++) {
+                    if (alreadyLoaded) {
+                        alreadyLoaded = false;
+                        initSavedObserver();
+                    }
+                    round = i;
+                    saveFile();
                     PlayerStrategy attacker = players.get(i);
-
                     executeStrategy.setStrategy(attacker);
                     executeStrategy.executeReinforcement(gameMap);
                     executeStrategy.executePlaceArmyOnCountry(gameMap);
@@ -270,7 +223,66 @@ public class Game implements GameListener, Externalizable {
             if (players.size() == 1) {
                 LogHelper.printMessage("Map" + M + " Game" + G);
                 declareWin(players.get(0));
-                LogHelper.printMessage("the player is a " + players.get(0));
+                System.exit(1);
+                return true;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Method to initialize saved Observer
+     */
+    private void initSavedObserver() {
+        SavedObserver.loadWorldDominationView(players.get(round));
+        SavedObserver.loadPhaseView(players.get(round));
+    }
+
+    /**
+     * This method is used for computer player
+     *
+     * @param M Number of Map of the game
+     * @param G Number of Games to be played
+     * @param D is used to declare draw
+     * @return
+     */
+    public boolean roundRobinPlayAuto(int M, int G, int D) {
+        ExecuteStrategy executeStrategy = new ExecuteStrategy();
+        LogHelper.printMessage("in round robin play");
+        int count = 0;
+        while (count <= D) {
+            while (players.size() > 1) {
+                for (int i = 0; i < players.size(); i++) {
+
+                    LogHelper.printMessage("Testing phase get getActions "+players.get(i).getActions().get(0));
+                    LogHelper.printMessage("Testing phase get message "+players.get(i).getMessage());
+                    LogHelper.printMessage("Testing phase get player "+players.get(i).getPlayerID());
+
+                    round = i;
+                    saveFile();
+                    PlayerStrategy attacker = players.get(i);
+                    executeStrategy.setStrategy(attacker);
+                    executeStrategy.executeReinforcement(gameMap);
+                    executeStrategy.executePlaceArmyOnCountry(gameMap);
+                    executeStrategy.executeAttack(gameMap, players);
+                    executeStrategy.executeInitFortification(gameMap);
+
+                    for (int j = 0; j < players.size(); j++) {
+                        PlayerStrategy player = players.get(j);
+                        if (player.getCountryNum() == 0) {
+                            players.remove(player);
+                            j--;
+                        }
+                    }
+
+
+
+                }
+                count++;
+            }
+            if (players.size() == 1) {
+                LogHelper.printMessage("Map" + M + " Game" + G);
+                declareWin(players.get(0));
                 System.exit(1);
                 return true;
             }

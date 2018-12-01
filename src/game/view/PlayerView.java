@@ -34,6 +34,13 @@ public class PlayerView implements Observer {
         }
 
         float percentageOfCountryOwned = ((PlayerStrategy) obs).getPercentageOfCountriesOwned();
+
+        if (((PlayerStrategy) obs).getGameMap() != null) {
+            float totalCountries = ((PlayerStrategy) obs).getGameMap().getTerritoryList().size();
+            float playerOwnedCountries = ((PlayerStrategy) obs).getCountryNum();
+            percentageOfCountryOwned = (playerOwnedCountries / totalCountries) * 100;
+        }
+
         LogHelper.printMessage("========================================================================================\n");
         LogHelper.printMessage("PLAYERS WORLD DOMINATION VIEW\n");
         LogHelper.printMessage("Player " + playerId + " have total army of " +

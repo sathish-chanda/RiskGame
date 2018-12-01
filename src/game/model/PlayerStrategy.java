@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public abstract class PlayerStrategy extends Observable {
+public abstract class PlayerStrategy extends Observable implements Serializable {
 
 
     public static int playerCounter = 0;
@@ -45,4 +45,5 @@ public abstract class PlayerStrategy extends Observable {
     abstract public ArrayList<String> getActions();
     abstract public void setPercentageOfCountriesOwned(float percentageOfCountriesOwned);
     abstract public void invokePlayerObserver();
+    abstract public GameMap getGameMap();
 }

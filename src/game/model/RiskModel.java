@@ -90,7 +90,7 @@ public class RiskModel implements ModelListener {
             fileInputStream.close();
             setLoadFileValid(true);
             if (isDevelop) {
-                game.continueRoundRobinPlay();
+                game.continueRoundRobinPlay(0, 0, 0);
             }
         } catch (Exception e) {
             e.printStackTrace();

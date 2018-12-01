@@ -663,4 +663,9 @@ public class RandomComputerPlayer extends PlayerStrategy{
         return playerOwnedContinentList;
     }
 
+    @Override
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
 }
