@@ -1,0 +1,27 @@
+[Map]
+image=world.bmp
+warn=yes
+author=Sean O'Connor
+scroll=horizontal
+wrap=yes
+
+[Continents]
+South America=2
+Asia=7
+Europe=5
+Africa=3
+Australia=2
+North America=5
+
+[Territories]
+Venezuala,259,303,South America,Middle East
+
+Middle East,530,234,Asia,Venezuala,Iceland
+
+Iceland,380,126,Europe,Middle East,North Africa
+
+North Africa,420,264,Africa,Iceland,Indonesia
+
+Indonesia,698,314,Australia,North Africa,Alaska
+
+Alaska,70,126,North America,Indonesia

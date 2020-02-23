@@ -20,11 +20,11 @@ public class TournamentMode extends Game {
      */
     public void startTournament(int M, int P, int G, int D) {
         ArrayList<String> fileName = new ArrayList<String>();
-        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
-        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\3D Cliff.map");
-        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
-        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
-        fileName.add("C:\\Users\\jiaquanyu\\Desktop\\world.map");
+        fileName.add("src\\world.map");
+        fileName.add("src\\3D Cliff.map");
+        fileName.add("src\\world.map");
+        fileName.add("src\\world.map");
+        fileName.add("src\\world.map");
         for (int k = 0; k < M; k++) {
             for (int i = 0; i < G; i++) {
                 setPlayerNum(P);
